@@ -1,5 +1,19 @@
+import pandas
 
 
 class SheetLoader:
-    def __init__(self):
+    _portfolios = None
+    _spcs = None
+    _sbcs = None
+    _sdcs = None
+    _sp_search_term_report = None
+
+    def __init__(self, filename):
         pass
+
+    @property
+    def portfolios(self):
+        return self._portfolios
+
+    def read_portfolios(self, filename):
+        self._portfolios = pandas.read_excel(filename, sheet_name='Portfolios')
