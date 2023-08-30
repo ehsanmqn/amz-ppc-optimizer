@@ -17,3 +17,6 @@ class SheetLoader:
 
     def read_portfolios(self, filename):
         self._portfolios = pandas.read_excel(filename, sheet_name='Portfolios')
+
+    def read_sponsored_products_campaigns(self, filename):
+        self._spcs = pandas.read_excel(filename, sheet_name='Sponsored Products Campaigns')
