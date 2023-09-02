@@ -1,16 +1,19 @@
+import datetime
+
 from sheet_loader.loader import SheetLoader
 from optimizer.ppc_optimizer import PpcOptimizer
 
-
 CLICK_NUM_THRESHOLD = 11
 IMPRESSION_NUM_THRESHOLD = 1000
-TARGET_ACOS_THRESHOLD = 30.0
+TARGET_ACOS_THRESHOLD = 0.3
 LOW_CTR_THRESHOLD = 0.15
 INCREASE_RATIO = 1.2
 DECREASE_RATIO = 0.8
-MIN_BID_VALUE = 0.73
+MIN_BID_VALUE = 0.73  # AED
+MAX_BID_VALUE = 6.0  # AED
 
 EXCLUDE_AD_GROUPS = []
+
 
 def is_keyword(item):
     """
@@ -19,6 +22,16 @@ def is_keyword(item):
     :return:
     """
     return item["Entity"] == "Keyword"
+
+
+def is_keyword_enabled(item):
+    """
+    Check whether campaign is enabled
+    :param item:
+    :return:
+    """
+    return item["State"] == "enabled"
+
 
 def is_campaign_enabled(item):
     """
@@ -37,6 +50,7 @@ def is_ad_group_enabled(item):
     """
     return item["Ad Group State (Informational only)"] == "enabled"
 
+
 def main():
     loader = SheetLoader(filename="data.xlsx")
     loader.read_data_file()
@@ -44,7 +58,11 @@ def main():
 
     for index, row in spc.iterrows():
         # Optimize keywords' bid
-        if is_keyword(row) and is_campaign_enabled(row) and is_ad_group_enabled(row):
+        if is_keyword(row) and \
+                is_keyword_enabled(row) and \
+                is_campaign_enabled(row) and \
+                is_ad_group_enabled(row):
+
             is_bid_updated = False
             update_rules = []
 
@@ -76,28 +94,29 @@ def main():
                 update_rules.append("Rule 2")
 
             # Rule 3: Increase low ACOS bid
-            if keyword_acos < TARGET_ACOS_THRESHOLD:
+            if keyword_acos != 0 and keyword_acos < TARGET_ACOS_THRESHOLD:
                 if keyword_average_cpc > 0:
-                    row["Bid"] = round(keyword_average_cpc * 1.2, 2)
+                    row["Bid"] = round(keyword_average_cpc * INCREASE_RATIO, 2)
                 else:
-                    row["Bid"] = round(keyword_bid * 1.2, 2)
+                    row["Bid"] = round(keyword_bid * INCREASE_RATIO, 2)
 
                 is_bid_updated = True
-                update_rules.append("Rule 3")
+                update_rules.append("Rule 3 ACOS: {}".format(keyword_acos))
 
-            # Rule 4: Update high ACOS bid
+            # Rule 4: Decrease high ACOS bid
             if keyword_acos > TARGET_ACOS_THRESHOLD:
                 row["Bid"] = round((TARGET_ACOS_THRESHOLD / keyword_acos) * keyword_average_cpc, 2)
 
                 is_bid_updated = True
-                update_rules.append("Rule 4")
+                update_rules.append("Rule 4 ACOS: {}".format(keyword_acos))
 
             if is_bid_updated:
                 row["Operation"] = "update"
+                spc.loc[index] = row
                 print(index, row["Keyword Text"], keyword_bid, row["Bid"], update_rules)
 
-    print(spc.head())
-    print(spc.columns.ravel())
+    filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
+    loader.write_data_file(filename, spc, "Sponsored Products Campaigns")
 
 
 if __name__ == "__main__":
