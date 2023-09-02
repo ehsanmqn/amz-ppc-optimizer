@@ -1,4 +1,5 @@
 import pandas
+import openpyxl
 
 
 class SheetLoader:
@@ -33,13 +34,17 @@ class SheetLoader:
         return self._sp_search_term_report
 
     def read_data_file(self):
-        sheet_dataframes = pandas.read_excel(self._filename, sheet_name=None)
+        sheet_dataframes = pandas.read_excel(self._filename, engine="openpyxl", sheet_name=None)
 
         self._portfolios = sheet_dataframes['Portfolios']
         self._sponsored_prod_camp = sheet_dataframes['Sponsored Products Campaigns']
         self._sponsored_brand_camp = sheet_dataframes['Sponsored Brands Campaigns']
         self._sponsored_disp_camp = sheet_dataframes['Sponsored Display Campaigns']
         self._sp_search_term_report = sheet_dataframes['SP Search Term Report']
+
+    @staticmethod
+    def write_data_file(filename, data, sheet_name):
+        data.to_excel(filename, sheet_name=sheet_name, index=False)
 
     def read_portfolios(self):
         self._portfolios = pandas.read_excel(self._filename, sheet_name='Portfolios')
