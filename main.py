@@ -3,14 +3,17 @@ import datetime
 from sheet_loader.loader import SheetLoader
 from optimizer.ppc_optimizer import PpcOptimizer
 
-CLICK_NUM_THRESHOLD = 11
-IMPRESSION_NUM_THRESHOLD = 1000
-TARGET_ACOS_THRESHOLD = 0.3
-LOW_CTR_THRESHOLD = 0.15
-INCREASE_RATIO = 1.2
-DECREASE_RATIO = 0.8
-MIN_BID_VALUE = 0.73  # AED
-MAX_BID_VALUE = 6.0  # AED
+USD_TO_AED_FACTOR = 3.67
+AED_TO_USD_FACTOR = 0.27
+
+APEX_CLICK_NUM_THRESHOLD = 11
+APEX_IMPRESSION_NUM_THRESHOLD = 1000
+APEX_TARGET_ACOS_THRESHOLD = 0.3
+APEX_LOW_CTR_THRESHOLD = 0.15
+APEX_INCREASE_BID_FACTOR = 1.2
+APEX_DECREASE_BID_FACTOR = 0.8
+APEX_MIN_BID_VALUE = 0.2 * USD_TO_AED_FACTOR
+APEX_MAX_BID_VALUE = 2.0 * USD_TO_AED_FACTOR
 
 EXCLUDE_AD_GROUPS = []
 
@@ -78,34 +81,34 @@ def main():
             keyword_average_cpc = float(row["CPC"])
 
             # Rule 1: Decrease bid for orderless clicked keyword
-            if keyword_clicks >= CLICK_NUM_THRESHOLD and keyword_orders == 0:
-                row["Bid"] = MIN_BID_VALUE
+            if keyword_clicks >= APEX_CLICK_NUM_THRESHOLD and keyword_orders == 0:
+                row["Bid"] = APEX_MIN_BID_VALUE
 
                 is_bid_updated = True
                 update_rules.append("Rule 1")
 
             # Rule 2: Decrease bid for high impressed but low CTR and sales keyword
-            if keyword_impressions >= IMPRESSION_NUM_THRESHOLD and \
-                    keyword_ctr < LOW_CTR_THRESHOLD and \
+            if keyword_impressions >= APEX_IMPRESSION_NUM_THRESHOLD and \
+                    keyword_ctr < APEX_LOW_CTR_THRESHOLD and \
                     keyword_orders == 0:
-                row["Bid"] = MIN_BID_VALUE
+                row["Bid"] = APEX_MIN_BID_VALUE
 
                 is_bid_updated = True
                 update_rules.append("Rule 2")
 
             # Rule 3: Increase low ACOS bid
-            if keyword_acos != 0 and keyword_acos < TARGET_ACOS_THRESHOLD:
+            if keyword_acos != 0 and keyword_acos < APEX_TARGET_ACOS_THRESHOLD:
                 if keyword_average_cpc > 0:
-                    row["Bid"] = round(keyword_average_cpc * INCREASE_RATIO, 2)
+                    row["Bid"] = round(keyword_average_cpc * APEX_INCREASE_BID_FACTOR, 2)
                 else:
-                    row["Bid"] = round(keyword_bid * INCREASE_RATIO, 2)
+                    row["Bid"] = round(keyword_bid * APEX_INCREASE_BID_FACTOR, 2)
 
                 is_bid_updated = True
                 update_rules.append("Rule 3 ACOS: {}".format(keyword_acos))
 
             # Rule 4: Decrease high ACOS bid
-            if keyword_acos > TARGET_ACOS_THRESHOLD:
-                row["Bid"] = round((TARGET_ACOS_THRESHOLD / keyword_acos) * keyword_average_cpc, 2)
+            if keyword_acos > APEX_TARGET_ACOS_THRESHOLD:
+                row["Bid"] = round((APEX_TARGET_ACOS_THRESHOLD / keyword_acos) * keyword_average_cpc, 2)
 
                 is_bid_updated = True
                 update_rules.append("Rule 4 ACOS: {}".format(keyword_acos))
