@@ -26,6 +26,15 @@ class ApexOptimizer:
         return self._data_sheet
 
     @staticmethod
+    def is_product(item):
+        """
+        Check whether entity type is a product
+        :param item:
+        :return:
+        """
+        return item["Entity"] == "Product Targeting"
+
+    @staticmethod
     def is_keyword(item):
         """
         Check whether entity type is keyword
@@ -142,9 +151,9 @@ class ApexOptimizer:
         :return:
         """
         for index, row in self._data_sheet.iterrows():
-            if self.is_keyword_enabled(row) and self.is_campaign_enabled(row) and self.is_ad_group_enabled(row):
-                # Optimize keywords' bid
-                if self.is_keyword(row):
+            if self.is_keyword(row) or self.is_product(row):
+                if self.is_keyword_enabled(row) and self.is_campaign_enabled(row) and self.is_ad_group_enabled(row):
+                    # Optimize keywords' bid
                     # Apply rule 1
                     row = self.low_click_zero_sale_rule(row)
                     if row["Operation"] == "update":
