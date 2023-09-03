@@ -57,66 +57,12 @@ def is_ad_group_enabled(item):
 def main():
     loader = AmzBulkSheetHandler(filename="data.xlsx")
     loader.read_data_file()
-    spc = loader.sponsored_prod_camp
 
-    for index, row in spc.iterrows():
-        # Optimize keywords' bid
-        if is_keyword(row) and \
-                is_keyword_enabled(row) and \
-                is_campaign_enabled(row) and \
-                is_ad_group_enabled(row):
-
-            is_bid_updated = False
-            update_rules = []
-
-            keyword_bid = float(row["Bid"])
-            keyword_acos = float(row["ACOS"])
-            keyword_impressions = int(row["Impressions"])
-            keyword_clicks = int(row["Clicks"])
-            keyword_spend = float(row["Spends"])
-            keyword_roas = float(row["ROAS"])
-            keyword_orders = int(row["Orders"])
-            keyword_sales = float(row["Sales"])
-            keyword_ctr = float(row["Click-through Rate"])
-            keyword_average_cpc = float(row["CPC"])
-
-            # Rule 1: Decrease bid for orderless clicked keyword
-            if keyword_clicks >= APEX_CLICK_NUM_THRESHOLD and keyword_orders == 0:
-                row["Bid"] = APEX_MIN_BID_VALUE
-                row["Operation"] = "update"
-                spc.loc[index] = row
-                continue
-
-            # Rule 2: Decrease bid for high impressed but low CTR and sales keyword
-            if keyword_impressions >= APEX_IMPRESSION_NUM_THRESHOLD and \
-                    keyword_ctr < APEX_LOW_CTR_THRESHOLD and \
-                    keyword_orders == 0:
-
-                row["Bid"] = APEX_MIN_BID_VALUE
-                row["Operation"] = "update"
-                spc.loc[index] = row
-                continue
-
-            # Rule 3: Increase low ACOS bid
-            if keyword_acos != 0 and keyword_acos < APEX_TARGET_ACOS_THRESHOLD:
-                if keyword_average_cpc > 0:
-                    row["Bid"] = round(keyword_average_cpc * APEX_INCREASE_BID_FACTOR, 2)
-                else:
-                    row["Bid"] = round(keyword_bid * APEX_INCREASE_BID_FACTOR, 2)
-
-                row["Operation"] = "update"
-                spc.loc[index] = row
-                continue
-
-            # Rule 4: Decrease high ACOS bid
-            if keyword_acos > APEX_TARGET_ACOS_THRESHOLD:
-                row["Bid"] = round((APEX_TARGET_ACOS_THRESHOLD / keyword_acos) * keyword_average_cpc, 2)
-                row["Operation"] = "update"
-                spc.loc[index] = row
-                continue
+    campaign_optimizer = ApexOptimizer(loader.sponsored_prod_camp)
+    campaign_optimizer.optimize_keywords()
 
     filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
-    loader.write_data_file(filename, spc, "Sponsored Products Campaigns")
+    loader.write_data_file(filename, campaign_optimizer.datasheet, "Sponsored Products Campaigns")
 
 
 if __name__ == "__main__":
