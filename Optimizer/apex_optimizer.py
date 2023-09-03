@@ -12,13 +12,22 @@ APEX_MAX_BID_VALUE = 2.0 * USD_TO_AED_FACTOR
 
 
 class ApexOptimizer:
+    """
+    APEX Optimizer
+    """
+
     _data = None
 
-    def __init__(self, data):
+    def __init__(self, data=None):
         self._data = data
 
     @staticmethod
     def low_click_zero_sale_rule(item):
+        """
+        Rule 1: Decrease bid for orderless clicked keyword
+        :param item:
+        :return:
+        """
         clicks = int(item["Clicks"])
         orders = int(item["Orders"])
 
@@ -30,6 +39,11 @@ class ApexOptimizer:
 
     @staticmethod
     def low_impression_low_ctr_low_sale_rule(item):
+        """
+        Rule 2: Decrease bid for high impressed but low CTR and sales keyword
+        :param item:
+        :return:
+        """
         impression = int(item["Impressions"])
         ctr = float(item["Click-through Rate"])
         orders = int(item["Orders"])
@@ -42,6 +56,11 @@ class ApexOptimizer:
 
     @staticmethod
     def profitable_acos_rule(item):
+        """
+        Rule 3: Increase low ACOS bid
+        :param item:
+        :return:
+        """
         acos = float(item["ACOS"])
         cpc = float(item["CPC"])
         bid = float(item["Bid"])
@@ -58,6 +77,11 @@ class ApexOptimizer:
 
     @staticmethod
     def unprofitable_acos_rule(item):
+        """
+        Rule 4: Decrease high ACOS bid
+        :param item:
+        :return:
+        """
         acos = float(item["ACOS"])
         cpc = float(item["CPC"])
         bid = float(item["Bid"])
@@ -71,3 +95,7 @@ class ApexOptimizer:
             item["Operation"] = "update"
 
         return item
+
+    @staticmethod
+    def run_apex_optimizer():
+        pass
