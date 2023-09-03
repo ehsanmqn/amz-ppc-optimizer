@@ -73,7 +73,7 @@ def main():
             keyword_acos = float(row["ACOS"])
             keyword_impressions = int(row["Impressions"])
             keyword_clicks = int(row["Clicks"])
-            keyword_spend = float(row["Clicks"])
+            keyword_spend = float(row["Spends"])
             keyword_roas = float(row["ROAS"])
             keyword_orders = int(row["Orders"])
             keyword_sales = float(row["Sales"])
@@ -83,18 +83,19 @@ def main():
             # Rule 1: Decrease bid for orderless clicked keyword
             if keyword_clicks >= APEX_CLICK_NUM_THRESHOLD and keyword_orders == 0:
                 row["Bid"] = APEX_MIN_BID_VALUE
-
-                is_bid_updated = True
-                update_rules.append("Rule 1")
+                row["Operation"] = "update"
+                spc.loc[index] = row
+                continue
 
             # Rule 2: Decrease bid for high impressed but low CTR and sales keyword
             if keyword_impressions >= APEX_IMPRESSION_NUM_THRESHOLD and \
                     keyword_ctr < APEX_LOW_CTR_THRESHOLD and \
                     keyword_orders == 0:
-                row["Bid"] = APEX_MIN_BID_VALUE
 
-                is_bid_updated = True
-                update_rules.append("Rule 2")
+                row["Bid"] = APEX_MIN_BID_VALUE
+                row["Operation"] = "update"
+                spc.loc[index] = row
+                continue
 
             # Rule 3: Increase low ACOS bid
             if keyword_acos != 0 and keyword_acos < APEX_TARGET_ACOS_THRESHOLD:
@@ -103,20 +104,16 @@ def main():
                 else:
                     row["Bid"] = round(keyword_bid * APEX_INCREASE_BID_FACTOR, 2)
 
-                is_bid_updated = True
-                update_rules.append("Rule 3 ACOS: {}".format(keyword_acos))
+                row["Operation"] = "update"
+                spc.loc[index] = row
+                continue
 
             # Rule 4: Decrease high ACOS bid
             if keyword_acos > APEX_TARGET_ACOS_THRESHOLD:
                 row["Bid"] = round((APEX_TARGET_ACOS_THRESHOLD / keyword_acos) * keyword_average_cpc, 2)
-
-                is_bid_updated = True
-                update_rules.append("Rule 4 ACOS: {}".format(keyword_acos))
-
-            if is_bid_updated:
                 row["Operation"] = "update"
                 spc.loc[index] = row
-                print(index, row["Keyword Text"], keyword_bid, row["Bid"], update_rules)
+                continue
 
     filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
     loader.write_data_file(filename, spc, "Sponsored Products Campaigns")
