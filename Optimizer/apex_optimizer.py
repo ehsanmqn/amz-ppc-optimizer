@@ -57,5 +57,17 @@ class ApexOptimizer:
         return item
 
     @staticmethod
-    def unprofitable_acos_rule(item, acos, target):
-        pass
+    def unprofitable_acos_rule(item):
+        acos = float(item["ACOS"])
+        cpc = float(item["CPC"])
+        bid = float(item["Bid"])
+
+        if acos != 0 and acos > APEX_TARGET_ACOS_THRESHOLD:
+            if cpc > 0:
+                item["Bid"] = round((APEX_TARGET_ACOS_THRESHOLD / acos) * cpc, 2)
+            else:
+                item["Bid"] = round(bid * APEX_INCREASE_BID_FACTOR, 2)
+
+            item["Operation"] = "update"
+
+        return item
