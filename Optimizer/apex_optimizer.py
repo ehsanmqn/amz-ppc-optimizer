@@ -18,7 +18,7 @@ class ApexOptimizer:
 
     _data = None
 
-    def __init__(self, data=None):
+    def __init__(self, data):
         self._data = data
 
     @staticmethod
@@ -132,6 +132,34 @@ class ApexOptimizer:
 
         return item
 
-    @staticmethod
-    def run_apex_optimizer():
-        pass
+    def optimize_keywords(self):
+        """
+        APEX optimizer method
+        :return:
+        """
+        for index, row in self._data.iterrows():
+            if self.is_keyword_enabled(row) and self.is_campaign_enabled(row) and self.is_ad_group_enabled(row):
+                # Optimize keywords' bid
+                if self.is_keyword(row):
+                    # Apply rule 1
+                    row = self.low_click_zero_sale_rule(row)
+                    if row["Operation"] == "update":
+                        self._data.loc[index] = row
+                        continue
+
+                    # Apply rule 2
+                    row = self.low_impression_low_ctr_low_sale_rule(row)
+                    if row["Operation"] == "update":
+                        self._data.loc[index] = row
+                        continue
+
+                    # Apply rule 3
+                    row = self.profitable_acos_rule(row)
+                    if row["Operation"] == "update":
+                        self._data.loc[index] = row
+                        continue
+
+                    # Apply rule 4
+                    row = self.unprofitable_acos_rule(row)
+                    if row["Operation"] == "update":
+                        self._data.loc[index] = row
