@@ -22,6 +22,42 @@ class ApexOptimizer:
         self._data = data
 
     @staticmethod
+    def is_keyword(item):
+        """
+        Check whether entity type is keyword
+        :param item:
+        :return:
+        """
+        return item["Entity"] == "Keyword"
+
+    @staticmethod
+    def is_keyword_enabled(item):
+        """
+        Check whether campaign is enabled
+        :param item:
+        :return:
+        """
+        return item["State"] == "enabled"
+
+    @staticmethod
+    def is_campaign_enabled(item):
+        """
+        Check whether campaign is enabled
+        :param item:
+        :return:
+        """
+        return item["Campaign State (Informational only)"] == "enabled"
+
+    @staticmethod
+    def is_ad_group_enabled(item):
+        """
+        Check whether the Ad group is enabled
+        :param item:
+        :return:
+        """
+        return item["Ad Group State (Informational only)"] == "enabled"
+
+    @staticmethod
     def low_click_zero_sale_rule(item):
         """
         Rule 1: Decrease bid for orderless clicked keyword
