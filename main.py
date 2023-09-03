@@ -1,7 +1,7 @@
 import datetime
 
 from sheet_loader.loader import SheetLoader
-from optimizer.ppc_optimizer import PpcOptimizer
+from optimizer.apex_optimizer import PpcOptimizer
 
 USD_TO_AED_FACTOR = 3.67
 AED_TO_USD_FACTOR = 0.27

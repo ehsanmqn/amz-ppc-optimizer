@@ -1,5 +1,5 @@
 
-class PpcOptimizer:
+class ApexOptimizer:
     _data = None
 
     def __init__(self, data):
