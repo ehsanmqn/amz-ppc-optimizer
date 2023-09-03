@@ -1,7 +1,7 @@
 import datetime
 
-from sheet_loader.loader import SheetLoader
-from optimizer.apex_optimizer import PpcOptimizer
+from SheetHandler.bulk_sheet_handler import AmzBulkSheetHandler
+from Optimizer.apex_optimizer import ApexOptimizer
 
 USD_TO_AED_FACTOR = 3.67
 AED_TO_USD_FACTOR = 0.27
@@ -55,7 +55,7 @@ def is_ad_group_enabled(item):
 
 
 def main():
-    loader = SheetLoader(filename="data.xlsx")
+    loader = AmzBulkSheetHandler(filename="data.xlsx")
     loader.read_data_file()
     spc = loader.sponsored_prod_camp
 
