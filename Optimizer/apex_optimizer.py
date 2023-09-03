@@ -16,10 +16,14 @@ class ApexOptimizer:
     APEX Optimizer
     """
 
-    _data = None
+    _data_sheet = None
 
     def __init__(self, data):
-        self._data = data
+        self._data_sheet = data
+
+    @property
+    def datasheet(self):
+        return self._data_sheet
 
     @staticmethod
     def is_keyword(item):
@@ -137,29 +141,29 @@ class ApexOptimizer:
         APEX optimizer method
         :return:
         """
-        for index, row in self._data.iterrows():
+        for index, row in self._data_sheet.iterrows():
             if self.is_keyword_enabled(row) and self.is_campaign_enabled(row) and self.is_ad_group_enabled(row):
                 # Optimize keywords' bid
                 if self.is_keyword(row):
                     # Apply rule 1
                     row = self.low_click_zero_sale_rule(row)
                     if row["Operation"] == "update":
-                        self._data.loc[index] = row
+                        self._data_sheet.loc[index] = row
                         continue
 
                     # Apply rule 2
                     row = self.low_impression_low_ctr_low_sale_rule(row)
                     if row["Operation"] == "update":
-                        self._data.loc[index] = row
+                        self._data_sheet.loc[index] = row
                         continue
 
                     # Apply rule 3
                     row = self.profitable_acos_rule(row)
                     if row["Operation"] == "update":
-                        self._data.loc[index] = row
+                        self._data_sheet.loc[index] = row
                         continue
 
                     # Apply rule 4
                     row = self.unprofitable_acos_rule(row)
                     if row["Operation"] == "update":
-                        self._data.loc[index] = row
+                        self._data_sheet.loc[index] = row
