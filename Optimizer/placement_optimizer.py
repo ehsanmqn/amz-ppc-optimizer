@@ -66,7 +66,10 @@ class PlacementOptimizer:
         :return:
         """
 
-        return self._data_sheet[self._data_sheet["entity"] == "Campaign" and self._data_sheet["Orders"] > order_count]
+        result = self._data_sheet[self._data_sheet["entity"] == "Campaign" and self._data_sheet["Orders"] > order_count]
+        result = result.sort_values(by=['Orders'], ascending=False)
+
+        return result
 
     def adjust_campaign(self, campaigns, strategy, adjust_first_page_factor=None, adjust_product_page_factor=None):
         """
