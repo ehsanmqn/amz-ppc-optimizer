@@ -60,7 +60,7 @@ class PlacementOptimizer:
         """
         return item["Campaign State (Informational only)"] == "enabled"
 
-    def bid_plus_optimize(self, campaigns, strategy, adjust_first_page_factor=None, adjust_product_page_factor=None):
+    def adjust_campaign(self, campaigns, strategy, adjust_first_page_factor=None, adjust_product_page_factor=None):
         """
         Bid+ optimizer method
         :return:
