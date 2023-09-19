@@ -122,6 +122,10 @@ class PlacementOptimizer:
         if adjust_product_page_factor is None:
             adjust_product_page_factor = self._adjust_product_page_factor
 
+        if strategy == "fixed":
+            adjust_first_page_factor = 0
+            adjust_product_page_factor = 0
+
         for index, row in self._data_sheet.iterrows():
             # Adjust campaign
             if self.is_campaign_enabled(row):
