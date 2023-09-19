@@ -60,7 +60,7 @@ class PlacementOptimizer:
         """
         return item["Campaign State (Informational only)"] == "enabled"
 
-    def order_profitable_campaigns(self, order_count=0):
+    def filter_campaigns_order(self, order_count=0):
         """
         Return profitable campaigns based on their number of orders
         :return:
@@ -68,6 +68,28 @@ class PlacementOptimizer:
 
         result = self._data_sheet[self._data_sheet["entity"] == "Campaign" and self._data_sheet["Orders"] > order_count]
         result = result.sort_values(by=['Orders'], ascending=False)
+
+        return result
+
+    def filter_campaigns_raos(self, threshold=0):
+        """
+        Return profitable campaigns based on their RAOS
+        :return:
+        """
+
+        result = self._data_sheet[self._data_sheet["entity"] == "Campaign" and self._data_sheet["ROAS"] > threshold]
+        result = result.sort_values(by=['ROAS'], ascending=False)
+
+        return result
+
+    def filter_campaigns_name(self, phrase):
+        """
+        Return profitable campaigns based on their RAOS
+        :return:
+        """
+
+        result = self._data_sheet[
+            self._data_sheet["entity"] == "Campaign" and phrase in self._data_sheet["Campaign Name"]]
 
         return result
 
