@@ -65,7 +65,7 @@ class PlacementOptimizer:
 
     def filter_campaigns_order(self, threshold=0):
         """
-        Return profitable campaigns based on their number of orders
+        Return filtered campaigns based on their number of orders
         :return:
         """
 
@@ -77,7 +77,7 @@ class PlacementOptimizer:
 
     def filter_campaigns_raos(self, threshold=0):
         """
-        Return profitable campaigns based on their RAOS
+        Return filtered campaigns based on their RAOS
         :return:
         """
 
@@ -89,12 +89,24 @@ class PlacementOptimizer:
 
     def filter_campaigns_name(self, phrase):
         """
-        Return profitable campaigns based on their RAOS
+        Return filtered campaigns based on their name
         :return:
         """
 
         campaigns = self.get_campaigns()
         result = campaigns[campaigns["Campaign Name"].str.contains(phrase, na=False)]
+
+        return result
+
+    def filter_campaigns_acos(self, threshold=0):
+        """
+        Return filtered campaigns based on their ACOS value
+        :return:
+        """
+
+        campaigns = self.get_campaigns()
+        result = campaigns[(campaigns["ACOS"] < threshold) & (campaigns["ACOS"] > 0)]
+        result = result.sort_values(by=['ACOS'], ascending=False)
 
         return result
 

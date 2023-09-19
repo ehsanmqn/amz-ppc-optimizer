@@ -60,7 +60,7 @@ def main():
     loader.read_data_file()
 
     placement_optimizer = PlacementOptimizer(loader.sponsored_prod_camp)
-    profitable_orders = placement_optimizer.filter_campaigns_name(phrase="short")
+    profitable_orders = placement_optimizer.filter_campaigns_acos(threshold=.3)
     print(profitable_orders)
 
     # keyword_optimizer = ApexOptimizer(loader.sponsored_prod_camp)
