@@ -60,13 +60,17 @@ class PlacementOptimizer:
         """
         return item["Campaign State (Informational only)"] == "enabled"
 
-    def filter_campaigns_order(self, order_count=0):
+    def get_campaigns(self):
+        return self._data_sheet[self._data_sheet["Entity"] == "Campaign"]
+
+    def filter_campaigns_order(self, threshold=0):
         """
         Return profitable campaigns based on their number of orders
         :return:
         """
 
-        result = self._data_sheet[self._data_sheet["entity"] == "Campaign" and self._data_sheet["Orders"] > order_count]
+        campaigns = self.get_campaigns()
+        result = campaigns[campaigns["Orders"] > threshold]
         result = result.sort_values(by=['Orders'], ascending=False)
 
         return result
@@ -77,7 +81,8 @@ class PlacementOptimizer:
         :return:
         """
 
-        result = self._data_sheet[self._data_sheet["entity"] == "Campaign" and self._data_sheet["ROAS"] > threshold]
+        campaigns = self.get_campaigns()
+        result = campaigns[campaigns["ROAS"] > threshold]
         result = result.sort_values(by=['ROAS'], ascending=False)
 
         return result
@@ -88,8 +93,8 @@ class PlacementOptimizer:
         :return:
         """
 
-        result = self._data_sheet[
-            self._data_sheet["entity"] == "Campaign" and phrase in self._data_sheet["Campaign Name"]]
+        campaigns = self.get_campaigns()
+        result = campaigns[campaigns["Campaign Name"].str.contains(phrase, na=False)]
 
         return result
 

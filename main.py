@@ -2,6 +2,7 @@ import datetime
 
 from SheetHandler.bulk_sheet_handler import AmzBulkSheetHandler
 from Optimizer.apex_optimizer import ApexOptimizer
+from Optimizer.placement_optimizer import PlacementOptimizer
 
 USD_TO_AED_FACTOR = 3.67
 AED_TO_USD_FACTOR = 0.27
@@ -58,11 +59,15 @@ def main():
     loader = AmzBulkSheetHandler(filename="data.xlsx")
     loader.read_data_file()
 
-    campaign_optimizer = ApexOptimizer(loader.sponsored_prod_camp)
-    campaign_optimizer.optimize_keywords()
+    placement_optimizer = PlacementOptimizer(loader.sponsored_prod_camp)
+    profitable_orders = placement_optimizer.filter_campaigns_name(phrase="short")
+    print(profitable_orders)
 
-    filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
-    loader.write_data_file(filename, campaign_optimizer.datasheet, "Sponsored Products Campaigns")
+    # keyword_optimizer = ApexOptimizer(loader.sponsored_prod_camp)
+    # keyword_optimizer.optimize_keywords()
+    #
+    # filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
+    # loader.write_data_file(filename, keyword_optimizer.datasheet, "Sponsored Products Campaigns")
 
 
 if __name__ == "__main__":
