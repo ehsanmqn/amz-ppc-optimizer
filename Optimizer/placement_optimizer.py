@@ -60,6 +60,13 @@ class PlacementOptimizer:
         """
         return item["Campaign State (Informational only)"] == "enabled"
 
+    def order_profitable_campaigns(self):
+        """
+        Return profitable campaigns based on their number of orders
+        :return:
+        """
+        pass
+
     def adjust_campaign(self, campaigns, strategy, adjust_first_page_factor=None, adjust_product_page_factor=None):
         """
         Bid+ optimizer method
