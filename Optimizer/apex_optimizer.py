@@ -147,7 +147,10 @@ class ApexOptimizer:
 
         return item
 
-    def optimize_keywords(self, exclude_dynamics=True):
+    def get_campaigns(self):
+        return self._data_sheet[self._data_sheet["Entity"] == "Campaign"]
+
+    def optimize_keywords(self, exclude_dynamic_bids=True):
         """
         APEX optimizer method
         :return:
