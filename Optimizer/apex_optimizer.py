@@ -19,13 +19,23 @@ class ApexOptimizer:
     """
 
     _data_sheet = None
+    _campaigns = []
+    _enabled_campaigns = []
+    _archived_campaigns = []
+    _fixed_bid_campaigns = []
+    _dynamic_bidding_campaigns = []
 
     def __init__(self, data):
         self._data_sheet = data
+        self._campaigns = self.get_campaigns()
+        self._dynamic_bidding_campaigns = self.get_dynamic_bidding_campaigns()
 
     @property
     def datasheet(self):
         return self._data_sheet
+
+    def is_dynamic_bidding(self, item):
+        return item["Campaign Name (Informational only)"] in self._dynamic_bidding_campaigns
 
     @staticmethod
     def is_product(item):
@@ -150,14 +160,27 @@ class ApexOptimizer:
     def get_campaigns(self):
         return self._data_sheet[self._data_sheet["Entity"] == "Campaign"]
 
+    def get_dynamic_bidding_campaigns(self):
+        return self._data_sheet[
+            (self._data_sheet["Entity"] == "Campaign") & (self._data_sheet["Bidding Strategy"] != "Fixed bid")]
+
     def optimize_keywords(self, exclude_dynamic_bids=True):
         """
         APEX optimizer method
         :return:
         """
+
+        excluded_campaigns = []
+        if exclude_dynamic_bids:
+            excluded_campaigns += self._dynamic_bidding_campaigns
+
         for index, row in self._data_sheet.iterrows():
             if self.is_keyword(row) or self.is_product(row):
-                if self.is_keyword_enabled(row) and self.is_campaign_enabled(row) and self.is_ad_group_enabled(row):
+                if self.is_keyword_enabled(row) and \
+                        self.is_campaign_enabled(row) and \
+                        self.is_ad_group_enabled(row) and \
+                        row["Campaign Name (Informational only)"] not in excluded_campaigns:
+
                     # Optimize keywords' bid
                     # Apply rule 1
                     row = self.low_click_zero_sale_rule(row)
