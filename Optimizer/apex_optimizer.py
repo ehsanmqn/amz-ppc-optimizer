@@ -147,7 +147,7 @@ class ApexOptimizer:
 
         return item
 
-    def optimize_keywords(self):
+    def optimize_keywords(self, exclude_dynamics=True):
         """
         APEX optimizer method
         :return:
