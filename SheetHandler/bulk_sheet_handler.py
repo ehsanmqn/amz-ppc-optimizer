@@ -33,6 +33,69 @@ class AmzBulkSheetHandler:
     def sp_search_term_report(self):
         return self._sp_search_term_report
 
+    @staticmethod
+    def is_product(item):
+        """
+        Check whether entity type is a product
+        :param item: Sheet row
+        :return: Boolean
+        """
+        return item["Entity"] == "Product Targeting"
+
+    @staticmethod
+    def is_keyword(item):
+        """
+        Check whether entity type is keyword
+        :param item: Sheet row
+        :return: Boolean
+        """
+        return item["Entity"] == "Keyword"
+
+    @staticmethod
+    def is_keyword_enabled(item):
+        """
+        Check whether campaign is enabled
+        :param item: Sheet row
+        :return: Boolean
+        """
+        return item["State"] == "enabled"
+
+    @staticmethod
+    def is_campaign_enabled(item):
+        """
+        Check whether campaign is enabled
+        :param item: Sheet row
+        :return: Boolean
+        """
+        return item["Campaign State (Informational only)"] == "enabled"
+
+    @staticmethod
+    def is_ad_group_enabled(item):
+        """
+        Check whether the Ad group is enabled
+        :param item: Sheet row
+        :return: Boolean
+        """
+        return item["Ad Group State (Informational only)"] == "enabled"
+
+    @staticmethod
+    def is_campaign(item):
+        """
+        Check whether entity type is a campaign
+        :param item:
+        :return:
+        """
+        return item["Entity"] == "Campaign"
+
+    @staticmethod
+    def is_bidding_adjustment(item):
+        """
+        Check whether entity type is a Bidding Adjustment
+        :param item:
+        :return:
+        """
+        return item["Entity"] == "Bidding Adjustment"
+
     def read_data_file(self):
         sheet_dataframes = pandas.read_excel(self._filename, engine="openpyxl", sheet_name=None)
 
