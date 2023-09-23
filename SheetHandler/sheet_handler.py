@@ -2,7 +2,7 @@ import pandas
 import openpyxl
 
 
-class AmzBulkSheetHandler:
+class AmzSheetHandler:
     _filename = None
     _portfolios = None
     _sponsored_prod_camp = None

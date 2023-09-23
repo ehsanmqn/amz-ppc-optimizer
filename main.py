@@ -1,6 +1,6 @@
 import datetime
 
-from SheetHandler.bulk_sheet_handler import AmzBulkSheetHandler
+from SheetHandler.sheet_handler import AmzSheetHandler
 from Optimizer.apex_optimizer import ApexOptimizer
 from Optimizer.placement_optimizer import PlacementOptimizer
 
@@ -9,7 +9,7 @@ EXCLUDE_AD_GROUPS = []
 
 
 def main():
-    loader = AmzBulkSheetHandler(filename="data.xlsx")
+    loader = AmzSheetHandler(filename="data.xlsx")
     loader.read_data_file()
 
     # placement_optimizer = PlacementOptimizer(loader.sponsored_prod_camp)
