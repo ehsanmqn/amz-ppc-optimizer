@@ -18,7 +18,7 @@ class SearchTermOptimizer:
         :return:
         """
 
-        search_terms = self._data_sheet
+        search_terms = self._data_sheet[self._data_sheet["Match Type"].isin(["EXACT", "PHRASE", "BROAD"])]
         result = search_terms[(search_terms["Total Advertising Cost of Sales (ACOS) "] < desired_acos) & (
                 search_terms["Total Advertising Cost of Sales (ACOS) "] > 0)]
         result = result.sort_values(by=["Total Advertising Cost of Sales (ACOS) "], ascending=False)
@@ -32,7 +32,7 @@ class SearchTermOptimizer:
         :return:
         """
 
-        search_terms = self._data_sheet
+        search_terms = self._data_sheet[self._data_sheet["Match Type"].isin(["EXACT", "PHRASE", "BROAD"])]
         result = search_terms[(search_terms["Total Advertising Cost of Sales (ACOS) "] > desired_acos)]
         result = result.sort_values(by=["Total Advertising Cost of Sales (ACOS) "], ascending=False)
 
@@ -40,5 +40,12 @@ class SearchTermOptimizer:
 
         pass
 
-    def add_search_terms(self, search_terms, exact_match_campaign, phrase_match_campaign, broad_match_campaign):
+    def add_search_terms(self, search_terms,
+                         impact_factor,
+                         exact_match_campaign,
+                         phrase_match_campaign,
+                         broad_match_campaign):
+
+        for index, row in search_terms.iterrows():
+            print(row["Targeting"])
         pass

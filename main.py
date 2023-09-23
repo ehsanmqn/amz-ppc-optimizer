@@ -26,8 +26,7 @@ def main():
     search_terms_optimizer = SearchTermOptimizer(search_terms_sheet.sponsored_product_search_terms)
     profitable_st = search_terms_optimizer.find_profitable_search_terms(desired_acos=0.3)
     unprofitable_st = search_terms_optimizer.find_unprofitable_search_terms(desired_acos=0.3)
-    print(profitable_st["Total Advertising Cost of Sales (ACOS) "])
-    print(unprofitable_st["Total Advertising Cost of Sales (ACOS) "])
+    search_terms_optimizer.add_search_terms(profitable_st, 1, "", "", "")
 
     # filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
     # campaigns_bulk_sheet.write_data_file(filename, keyword_optimizer.datasheet, "Sponsored Products Campaigns")
