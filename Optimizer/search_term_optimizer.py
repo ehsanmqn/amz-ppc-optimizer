@@ -11,3 +11,6 @@ class SearchTermOptimizer:
     @property
     def datasheet(self):
         return self._data_sheet
+
+    def add_search_terms(self, exact_match_campaign, phrase_match_campaign, broad_match_campaign):
+        pass
