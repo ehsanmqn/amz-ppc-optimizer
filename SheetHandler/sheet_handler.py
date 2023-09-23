@@ -101,6 +101,18 @@ class AmzSheetHandler:
         """
         return item["Entity"] == "Bidding Adjustment"
 
+    @staticmethod
+    def get_exact_match_keywords(data_sheet):
+        return data_sheet[data_sheet["Match Type"].str.eq("Exact")]
+
+    @staticmethod
+    def get_phrase_match_keywords(data_sheet):
+        return data_sheet[data_sheet["Match Type"].str.eq("Phrase")]
+
+    @staticmethod
+    def get_broad_match_keywords(data_sheet):
+        return data_sheet[data_sheet["Match Type"].str.eq("Broad")]
+
     def read_data_file(self, sheet_type="campaigns"):
         sheet_dataframes = pandas.read_excel(self._filename, engine="openpyxl", sheet_name=None)
 
