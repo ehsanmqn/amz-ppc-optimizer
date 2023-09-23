@@ -17,7 +17,7 @@ def main():
     # print(profitable_orders["Campaign Name"])
 
     keyword_optimizer = ApexOptimizer(loader.sponsored_prod_camp)
-    keyword_optimizer.optimize_keywords()
+    keyword_optimizer.optimize_keywords(exclude_dynamic_bids=True)
 
     filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
     loader.write_data_file(filename, keyword_optimizer.datasheet, "Sponsored Products Campaigns")
