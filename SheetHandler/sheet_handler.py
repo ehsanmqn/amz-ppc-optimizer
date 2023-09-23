@@ -9,6 +9,7 @@ class AmzSheetHandler:
     _sponsored_brand_camp = None
     _sponsored_disp_camp = None
     _sp_search_term_report = None
+    _sponsored_product_search_term_r = None
 
     def __init__(self, filename):
         self._filename = filename
@@ -32,6 +33,10 @@ class AmzSheetHandler:
     @property
     def sp_search_term_report(self):
         return self._sp_search_term_report
+
+    @property
+    def sponsored_product_search_terms(self):
+        return self._sponsored_product_search_term_r
 
     @staticmethod
     def is_product(item):
@@ -96,17 +101,17 @@ class AmzSheetHandler:
         """
         return item["Entity"] == "Bidding Adjustment"
 
-    def read_data_file(self, sheet_type="ppc"):
+    def read_data_file(self, sheet_type="campaigns"):
         sheet_dataframes = pandas.read_excel(self._filename, engine="openpyxl", sheet_name=None)
 
-        if sheet_type == "ppc":
+        if sheet_type == "campaigns":
             self._portfolios = sheet_dataframes['Portfolios']
             self._sponsored_prod_camp = sheet_dataframes['Sponsored Products Campaigns']
             self._sponsored_brand_camp = sheet_dataframes['Sponsored Brands Campaigns']
             self._sponsored_disp_camp = sheet_dataframes['Sponsored Display Campaigns']
             self._sp_search_term_report = sheet_dataframes['SP Search Term Report']
         elif sheet_type == "terms":
-            self._sp_search_term_report = sheet_dataframes['SP Search Term Report']
+            self._sponsored_product_search_term_r = sheet_dataframes['Sponsored Product Search Term R']
         else:
             raise ValueError("Sheet not supported!")
 
