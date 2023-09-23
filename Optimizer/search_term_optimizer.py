@@ -40,17 +40,22 @@ class SearchTermOptimizer:
 
         pass
 
-    @classmethod
-    def add_search_terms(cls, search_terms,
-                         campaign_bulk_sheet,
-                         impact_factor,
-                         exact_match_campaign,
-                         phrase_match_campaign,
-                         broad_match_campaign):
+    @staticmethod
+    def add_search_terms(search_terms, impact_factor,
+                         exact_match_campaigns, exact_match_nominated,
+                         phrase_match_campaigns, phrase_match_add_nominated,
+                         broad_match_campaigns, broad_match_nominated):
 
+        # Iterate over search terms
         for index, row in search_terms.iterrows():
-            print(row["Targeting"])
-            if (campaign_bulk_sheet["Keyword Text"].eq(row["Targeting"])).any():
+            # If not exists in exact match campaigns add it
+            if (exact_match_campaigns["Keyword Text"].eq(row["Targeting"])).any():
                 continue
-            print(row["Targeting"])
-        pass
+
+            # If not exists in phrase match campaigns add it
+            if (phrase_match_campaigns["Keyword Text"].eq(row["Targeting"])).any():
+                continue
+
+            # If not exists in broad match campaigns add it
+            if (broad_match_campaigns["Keyword Text"].eq(row["Targeting"])).any():
+                continue
