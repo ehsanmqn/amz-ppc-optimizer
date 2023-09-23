@@ -164,7 +164,7 @@ class ApexOptimizer:
         return self._data_sheet[
             (self._data_sheet["Entity"] == "Campaign") & (self._data_sheet["Bidding Strategy"] != "Fixed bid")]
 
-    def optimize_keywords(self, exclude_dynamic_bids=True):
+    def optimize_spa_keywords(self, exclude_dynamic_bids=True):
         """
         APEX optimizer method
         :return:

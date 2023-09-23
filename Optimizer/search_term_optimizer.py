@@ -40,12 +40,17 @@ class SearchTermOptimizer:
 
         pass
 
-    def add_search_terms(self, search_terms,
+    @classmethod
+    def add_search_terms(cls, search_terms,
+                         campaign_bulk_sheet,
                          impact_factor,
                          exact_match_campaign,
                          phrase_match_campaign,
                          broad_match_campaign):
 
         for index, row in search_terms.iterrows():
+            print(row["Targeting"])
+            if (campaign_bulk_sheet["Keyword Text"].eq(row["Targeting"])).any():
+                continue
             print(row["Targeting"])
         pass
