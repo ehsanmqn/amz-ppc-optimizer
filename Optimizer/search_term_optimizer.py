@@ -18,5 +18,5 @@ class SearchTermOptimizer:
     def find_unprofitable_search_terms(self):
         pass
 
-    def add_search_terms(self, exact_match_campaign, phrase_match_campaign, broad_match_campaign):
+    def add_search_terms(self, search_terms, exact_match_campaign, phrase_match_campaign, broad_match_campaign):
         pass
