@@ -96,14 +96,19 @@ class AmzSheetHandler:
         """
         return item["Entity"] == "Bidding Adjustment"
 
-    def read_data_file(self):
+    def read_data_file(self, sheet_type="ppc"):
         sheet_dataframes = pandas.read_excel(self._filename, engine="openpyxl", sheet_name=None)
 
-        self._portfolios = sheet_dataframes['Portfolios']
-        self._sponsored_prod_camp = sheet_dataframes['Sponsored Products Campaigns']
-        self._sponsored_brand_camp = sheet_dataframes['Sponsored Brands Campaigns']
-        self._sponsored_disp_camp = sheet_dataframes['Sponsored Display Campaigns']
-        self._sp_search_term_report = sheet_dataframes['SP Search Term Report']
+        if sheet_type == "ppc":
+            self._portfolios = sheet_dataframes['Portfolios']
+            self._sponsored_prod_camp = sheet_dataframes['Sponsored Products Campaigns']
+            self._sponsored_brand_camp = sheet_dataframes['Sponsored Brands Campaigns']
+            self._sponsored_disp_camp = sheet_dataframes['Sponsored Display Campaigns']
+            self._sp_search_term_report = sheet_dataframes['SP Search Term Report']
+        elif sheet_type == "terms":
+            self._sp_search_term_report = sheet_dataframes['SP Search Term Report']
+        else:
+            raise ValueError("Sheet not supported!")
 
     @staticmethod
     def write_data_file(filename, data, sheet_name):
