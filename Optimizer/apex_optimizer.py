@@ -172,7 +172,8 @@ class ApexOptimizer:
 
         excluded_campaigns = []
         if exclude_dynamic_bids:
-            excluded_campaigns += self._dynamic_bidding_campaigns
+            print("[ INFO ] Dynamic bid campaigns excluded from optimization process.")
+            excluded_campaigns += self._dynamic_bidding_campaigns["Campaign Name (Informational only)"].values.tolist()
 
         for index, row in self._data_sheet.iterrows():
             if self.is_keyword(row) or self.is_product(row):
