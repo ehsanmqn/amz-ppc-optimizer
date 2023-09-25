@@ -114,6 +114,23 @@ class AmzSheetHandler:
         return data_sheet[(data_sheet["Entity"] == "Campaign") & (data_sheet["State"] == "archived")]
 
     @staticmethod
+    def filter_fixed_bid_campaigns(data_sheet):
+        return data_sheet[(data_sheet["Entity"] == "Campaign") & (data_sheet["Bidding Strategy"] == "Fixed bid")]
+
+    @staticmethod
+    def filter_dynamic_bid_campaigns(data_sheet):
+        return data_sheet[(data_sheet["Entity"] == "Campaign") & (data_sheet["Bidding Strategy"] != "Fixed bid")]
+
+    @staticmethod
+    def filter_dynamic_up_down_campaigns(data_sheet):
+        return data_sheet[(data_sheet["Entity"] == "Campaign") & (data_sheet["Bidding Strategy"] == "Dynamic bids - up and down")]
+
+    @staticmethod
+    def filter_dynamic_down_campaigns(data_sheet):
+        return data_sheet[
+            (data_sheet["Entity"] == "Campaign") & (data_sheet["Bidding Strategy"] == "Dynamic bids - down only")]
+
+    @staticmethod
     def filter_exact_match_keywords(data_sheet):
         return data_sheet[data_sheet["Match Type"].str.eq("Exact")]
 
