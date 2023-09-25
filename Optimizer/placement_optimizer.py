@@ -1,6 +1,10 @@
 class PlacementOptimizer:
     """
     Placement Optimizer
+    Usage:
+        placement_optimizer = PlacementOptimizer(loader.sponsored_prod_camp)
+        profitable_orders = placement_optimizer.filter_campaigns_acos(threshold=.3)
+        print(profitable_orders["Campaign Name"])
     """
 
     _data_sheet = None
