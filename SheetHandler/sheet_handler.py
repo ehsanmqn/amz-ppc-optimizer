@@ -102,6 +102,18 @@ class AmzSheetHandler:
         return item["Entity"] == "Bidding Adjustment"
 
     @staticmethod
+    def filter_enabled_campaigns(data_sheet):
+        return data_sheet[(data_sheet["Entity"] == "Campaign") & (data_sheet["State"] == "enabled")]
+
+    @staticmethod
+    def filter_paused_campaigns(data_sheet):
+        return data_sheet[(data_sheet["Entity"] == "Campaign") & (data_sheet["State"] == "paused")]
+
+    @staticmethod
+    def filter_archived_campaigns(data_sheet):
+        return data_sheet[(data_sheet["Entity"] == "Campaign") & (data_sheet["State"] == "archived")]
+
+    @staticmethod
     def filter_exact_match_keywords(data_sheet):
         return data_sheet[data_sheet["Match Type"].str.eq("Exact")]
 
