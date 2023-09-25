@@ -10,24 +10,24 @@ EXCLUDE_AD_GROUPS = []
 
 
 def main():
-    campaigns_bulk_sheet = AmzSheetHandler(filename="data.xlsx")
-    campaigns_bulk_sheet.read_data_file(sheet_type="campaigns")
+    sheet_handler = AmzSheetHandler()
+    sheet_handler.read_bulk_sheet_report(filename="data.xlsx")
 
-    # placement_optimizer = PlacementOptimizer(loader.sponsored_prod_camp)
-    # profitable_orders = placement_optimizer.filter_campaigns_acos(threshold=.3)
-    # print(profitable_orders["Campaign Name"])
-
-    # keyword_optimizer = ApexOptimizer(campaigns_bulk_sheet.sponsored_prod_camp)
+    # keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp)
     # keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=True)
 
-    search_terms_sheet = AmzSheetHandler(filename="Sponsored Products Search term report.xlsx")
-    search_terms_sheet.read_data_file(sheet_type="terms")
+    sheet_handler.read_bulk_sheet_report(filename="Sponsored Products Search term report.xlsx")
 
-    search_terms_optimizer = SearchTermOptimizer(search_terms_sheet.sponsored_product_search_terms)
+    search_terms_optimizer = SearchTermOptimizer(sheet_handler.sponsored_product_search_terms)
+
+    # Get profitable and unprofitable search terms based on ACOS value
     profitable_st = search_terms_optimizer.filter_profitable_search_terms(desired_acos=0.3)
     unprofitable_st = search_terms_optimizer.filter_unprofitable_search_terms(desired_acos=0.3)
 
     # Add profitable search terms to campaigns
+    search_terms_optimizer.add_exact_search_terms(profitable_st, 1, "Loofah - Exact - AmzSuggested - 20")
+    search_terms_optimizer.add_phrase_search_terms(profitable_st, 1, "Loofah - Phrase - AmzSuggested - 20")
+    search_terms_optimizer.add_broad_search_terms(profitable_st, 1, "Loofah - Broad - AmzSuggested - 20")
 
     # filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
     # campaigns_bulk_sheet.write_data_file(filename, keyword_optimizer.datasheet, "Sponsored Products Campaigns")

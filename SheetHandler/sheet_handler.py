@@ -11,7 +11,7 @@ class AmzSheetHandler:
     _sp_search_term_report = None
     _sponsored_product_search_term_r = None
 
-    def __init__(self, filename):
+    def __init__(self, filename=None):
         self._filename = filename
 
     @property
@@ -102,30 +102,30 @@ class AmzSheetHandler:
         return item["Entity"] == "Bidding Adjustment"
 
     @staticmethod
-    def get_exact_match_keywords(data_sheet):
+    def filter_exact_match_keywords(data_sheet):
         return data_sheet[data_sheet["Match Type"].str.eq("Exact")]
 
     @staticmethod
-    def get_phrase_match_keywords(data_sheet):
+    def filter_phrase_match_keywords(data_sheet):
         return data_sheet[data_sheet["Match Type"].str.eq("Phrase")]
 
     @staticmethod
-    def get_broad_match_keywords(data_sheet):
+    def filter_broad_match_keywords(data_sheet):
         return data_sheet[data_sheet["Match Type"].str.eq("Broad")]
 
-    def read_data_file(self, sheet_type="campaigns"):
-        sheet_dataframes = pandas.read_excel(self._filename, engine="openpyxl", sheet_name=None)
+    def read_bulk_sheet_report(self, filename):
+        sheet_dataframes = pandas.read_excel(filename, engine="openpyxl", sheet_name=None)
+        self._portfolios = sheet_dataframes['Portfolios']
+        self._sponsored_prod_camp = sheet_dataframes['Sponsored Products Campaigns']
+        self._sponsored_brand_camp = sheet_dataframes['Sponsored Brands Campaigns']
+        self._sponsored_disp_camp = sheet_dataframes['Sponsored Display Campaigns']
+        self._sp_search_term_report = sheet_dataframes['SP Search Term Report']
 
-        if sheet_type == "campaigns":
-            self._portfolios = sheet_dataframes['Portfolios']
-            self._sponsored_prod_camp = sheet_dataframes['Sponsored Products Campaigns']
-            self._sponsored_brand_camp = sheet_dataframes['Sponsored Brands Campaigns']
-            self._sponsored_disp_camp = sheet_dataframes['Sponsored Display Campaigns']
-            self._sp_search_term_report = sheet_dataframes['SP Search Term Report']
-        elif sheet_type == "terms":
-            self._sponsored_product_search_term_r = sheet_dataframes['Sponsored Product Search Term R']
-        else:
-            raise ValueError("Sheet not supported!")
+    def read_search_terms_report(self, filename):
+        sheet_dataframes = pandas.read_excel(filename, engine="openpyxl", sheet_name=None)
+        self._sponsored_product_search_term_r = sheet_dataframes['Sponsored Product Search Term R']
+
+        return self._sponsored_product_search_term_r
 
     @staticmethod
     def write_data_file(filename, data, sheet_name):

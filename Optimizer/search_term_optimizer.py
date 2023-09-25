@@ -41,7 +41,7 @@ class SearchTermOptimizer:
         pass
 
     @staticmethod
-    def add_exact_search_terms(search_terms, impact_factor, campaign):
+    def add_exact_search_terms(search_terms, impact_factor, campaign_name):
 
         exact_match_campaigns = None
         print(search_terms["Targeting"])
@@ -52,7 +52,7 @@ class SearchTermOptimizer:
                 continue
 
     @staticmethod
-    def add_phrase_search_terms(search_terms, impact_factor, campaign):
+    def add_phrase_search_terms(search_terms, impact_factor, campaign_name):
 
         phrase_match_campaigns = None
         print(search_terms["Targeting"])
@@ -63,7 +63,7 @@ class SearchTermOptimizer:
                 continue
 
     @staticmethod
-    def add_broad_search_terms(search_terms, impact_factor, campaign):
+    def add_broad_search_terms(search_terms, impact_factor, campaign_name):
 
         broad_match_campaigns = None
         print(search_terms["Targeting"])
