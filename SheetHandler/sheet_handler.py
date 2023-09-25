@@ -123,7 +123,8 @@ class AmzSheetHandler:
 
     @staticmethod
     def filter_dynamic_up_down_campaigns(data_sheet):
-        return data_sheet[(data_sheet["Entity"] == "Campaign") & (data_sheet["Bidding Strategy"] == "Dynamic bids - up and down")]
+        return data_sheet[
+            (data_sheet["Entity"] == "Campaign") & (data_sheet["Bidding Strategy"] == "Dynamic bids - up and down")]
 
     @staticmethod
     def filter_dynamic_down_campaigns(data_sheet):
@@ -175,3 +176,58 @@ class AmzSheetHandler:
     def read_sponsored_display_campaigns(self):
         self._sponsored_display_campaigns = pandas.read_excel(self._filename, sheet_name='SP Search Term Report')
         return self._sponsored_display_campaigns
+
+    @staticmethod
+    def create_spa_campaign(campaign_name, targeting="Manual", budget=10, bidding_strategy="Fixed bid"):
+        d = {
+            "data": [{
+                "Product": "Sponsored Products",
+                "Entity": "Campaign",
+                "Operation": "Create",
+                "Campaign ID": campaign_name,
+                "Ad Group ID": "",
+                "Portfolio ID": "",
+                "Ad ID": "",
+                "Keyword ID": "",
+                "Product Targeting ID": "",
+                "Campaign Name": campaign_name,
+                "Ad Group Name": "",
+                "Campaign Name (Informational only)": campaign_name,
+                "Ad Group Name (Informational only)": "",
+                "Portfolio Name (Informational only)": "",
+                "Start Date": "20230819",
+                "End Date": "",
+                "Targeting Type": targeting,
+                "State": "enabled",
+                "Campaign State (Informational only)": "enabled",
+                "Ad Group State (Informational only)": "enabled",
+                "Daily Budget": budget,
+                "SKU": "",
+                "ASIN (Informational only)": "",
+                "Eligibility Status (Informational only)": "",
+                "Reason for Ineligibility (Informational only)": "",
+                "Ad Group Default Bid": bidding_strategy,
+                "Ad Group Default Bid (Informational only)": "",
+                "Bid": "",
+                "Keyword Text": "",
+                "Match Type": "",
+                "Bidding Strategy": "",
+                "Placement": "",
+                "Percentage": "",
+                "Product Targeting Expression": "",
+                "Resolved Product Targeting Expression (Informational only)": "",
+                "Impressions": "",
+                "Clicks": "",
+                "Click-through Rate": "",
+                "Spend": "",
+                "Sales": "",
+                "Orders": "",
+                "Units": "",
+                "Conversion Rate": "",
+                "ACOS": "",
+                "CPC": "",
+                "ROAS": ""
+            }]
+        }
+
+        return pandas.DataFrame(d['data'])

@@ -1,3 +1,6 @@
+import pandas
+
+
 class SearchTermOptimizer:
     """
     Placement Optimizer
@@ -11,6 +14,9 @@ class SearchTermOptimizer:
     @property
     def datasheet(self):
         return self._data_sheet
+
+    def create_exact_keyword(self, campaign_name):
+        pass
 
     def filter_profitable_search_terms(self, desired_acos):
         """

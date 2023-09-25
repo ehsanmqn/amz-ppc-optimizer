@@ -13,9 +13,12 @@ def main():
     sheet_handler = AmzSheetHandler()
     sheet_handler.read_bulk_sheet_report(filename="data.xlsx")
 
-    # keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp)
-    # keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=True)
-    print(sheet_handler.sponsored_prod_camp)
+    camp = sheet_handler.create_spa_campaign("Radium10 - SearchTerms")
+    print(camp)
+    return
+    keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp)
+    keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=True)
+
     sheet_handler.read_bulk_sheet_report(filename="Sponsored Products Search term report.xlsx")
 
     search_terms_optimizer = SearchTermOptimizer(sheet_handler.sponsored_product_search_terms)
