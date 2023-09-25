@@ -12,7 +12,7 @@ class SearchTermOptimizer:
     def datasheet(self):
         return self._data_sheet
 
-    def find_profitable_search_terms(self, desired_acos):
+    def filter_profitable_search_terms(self, desired_acos):
         """
         Return search terms that have ACOS lower than desired ACOS
         :return:
@@ -25,7 +25,7 @@ class SearchTermOptimizer:
 
         return result
 
-    def find_unprofitable_search_terms(self, desired_acos):
+    def filter_unprofitable_search_terms(self, desired_acos):
         """
         Return search terms that have ACOS higher than desired ACOS
         :param desired_acos:
@@ -41,21 +41,38 @@ class SearchTermOptimizer:
         pass
 
     @staticmethod
-    def add_search_terms(search_terms, impact_factor,
-                         exact_match_campaigns, exact_match_nominated,
-                         phrase_match_campaigns, phrase_match_add_nominated,
-                         broad_match_campaigns, broad_match_nominated):
+    def add_exact_search_terms(search_terms, impact_factor, campaign):
 
+        exact_match_campaigns = None
+        print(search_terms["Targeting"])
         # Iterate over search terms
         for index, row in search_terms.iterrows():
             # If not exists in exact match campaigns add it
             if (exact_match_campaigns["Keyword Text"].eq(row["Targeting"])).any():
                 continue
 
-            # If not exists in phrase match campaigns add it
+    @staticmethod
+    def add_phrase_search_terms(search_terms, impact_factor, campaign):
+
+        phrase_match_campaigns = None
+        print(search_terms["Targeting"])
+        # Iterate over search terms
+        for index, row in search_terms.iterrows():
+            # If not exists in exact match campaigns add it
             if (phrase_match_campaigns["Keyword Text"].eq(row["Targeting"])).any():
                 continue
 
-            # If not exists in broad match campaigns add it
+    @staticmethod
+    def add_broad_search_terms(search_terms, impact_factor, campaign):
+
+        broad_match_campaigns = None
+        print(search_terms["Targeting"])
+        # Iterate over search terms
+        for index, row in search_terms.iterrows():
+            # If not exists in exact match campaigns add it
             if (broad_match_campaigns["Keyword Text"].eq(row["Targeting"])).any():
                 continue
+
+    @staticmethod
+    def add_search_terms(search_terms):
+        pass

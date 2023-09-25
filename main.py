@@ -24,9 +24,10 @@ def main():
     search_terms_sheet.read_data_file(sheet_type="terms")
 
     search_terms_optimizer = SearchTermOptimizer(search_terms_sheet.sponsored_product_search_terms)
-    profitable_st = search_terms_optimizer.find_profitable_search_terms(desired_acos=0.3)
-    unprofitable_st = search_terms_optimizer.find_unprofitable_search_terms(desired_acos=0.3)
-    search_terms_optimizer.add_search_terms(profitable_st, campaigns_bulk_sheet.sponsored_prod_camp, 1, "", "", "")
+    profitable_st = search_terms_optimizer.filter_profitable_search_terms(desired_acos=0.3)
+    unprofitable_st = search_terms_optimizer.filter_unprofitable_search_terms(desired_acos=0.3)
+
+    # Add profitable search terms to campaigns
 
     # filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
     # campaigns_bulk_sheet.write_data_file(filename, keyword_optimizer.datasheet, "Sponsored Products Campaigns")
