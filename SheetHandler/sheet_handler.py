@@ -5,9 +5,9 @@ import openpyxl
 class AmzSheetHandler:
     _filename = None
     _portfolios = None
-    _sponsored_prod_camp = None
-    _sponsored_brand_camp = None
-    _sponsored_disp_camp = None
+    _sponsored_product_campaigns = None
+    _sponsored_brand_campaigns = None
+    _sponsored_display_campaigns = None
     _sp_search_term_report = None
     _sponsored_product_search_term_r = None
 
@@ -20,15 +20,15 @@ class AmzSheetHandler:
 
     @property
     def sponsored_prod_camp(self):
-        return self._sponsored_prod_camp
+        return self._sponsored_product_campaigns
 
     @property
     def sponsored_brand_camp(self):
-        return self._sponsored_brand_camp
+        return self._sponsored_brand_campaigns
 
     @property
     def sponsored_disp_camp(self):
-        return self._sponsored_disp_camp
+        return self._sponsored_display_campaigns
 
     @property
     def sp_search_term_report(self):
@@ -145,9 +145,9 @@ class AmzSheetHandler:
     def read_bulk_sheet_report(self, filename):
         sheet_dataframes = pandas.read_excel(filename, engine="openpyxl", sheet_name=None)
         self._portfolios = sheet_dataframes['Portfolios']
-        self._sponsored_prod_camp = sheet_dataframes['Sponsored Products Campaigns']
-        self._sponsored_brand_camp = sheet_dataframes['Sponsored Brands Campaigns']
-        self._sponsored_disp_camp = sheet_dataframes['Sponsored Display Campaigns']
+        self._sponsored_product_campaigns = sheet_dataframes['Sponsored Products Campaigns']
+        self._sponsored_brand_campaigns = sheet_dataframes['Sponsored Brands Campaigns']
+        self._sponsored_display_campaigns = sheet_dataframes['Sponsored Display Campaigns']
         self._sp_search_term_report = sheet_dataframes['SP Search Term Report']
 
     def read_search_terms_report(self, filename):
@@ -165,13 +165,13 @@ class AmzSheetHandler:
         return self._portfolios
 
     def read_sponsored_products_campaigns(self):
-        self._sponsored_prod_camp = pandas.read_excel(self._filename, sheet_name='Sponsored Products Campaigns')
-        return self._sponsored_prod_camp
+        self._sponsored_product_campaigns = pandas.read_excel(self._filename, sheet_name='Sponsored Products Campaigns')
+        return self._sponsored_product_campaigns
 
     def read_sponsored_brands_campaigns(self):
-        self._sponsored_brand_camp = pandas.read_excel(self._filename, sheet_name='Sponsored Brands Campaigns')
-        return self._sponsored_brand_camp
+        self._sponsored_brand_campaigns = pandas.read_excel(self._filename, sheet_name='Sponsored Brands Campaigns')
+        return self._sponsored_brand_campaigns
 
     def read_sponsored_display_campaigns(self):
-        self._sponsored_disp_camp = pandas.read_excel(self._filename, sheet_name='SP Search Term Report')
-        return self._sponsored_disp_camp
+        self._sponsored_display_campaigns = pandas.read_excel(self._filename, sheet_name='SP Search Term Report')
+        return self._sponsored_display_campaigns

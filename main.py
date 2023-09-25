@@ -15,7 +15,7 @@ def main():
 
     # keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp)
     # keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=True)
-
+    print(sheet_handler.sponsored_prod_camp)
     sheet_handler.read_bulk_sheet_report(filename="Sponsored Products Search term report.xlsx")
 
     search_terms_optimizer = SearchTermOptimizer(sheet_handler.sponsored_product_search_terms)
