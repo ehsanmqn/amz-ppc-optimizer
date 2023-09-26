@@ -483,8 +483,7 @@ class AmzSheetHandler:
         result = cls.create_spa_keyword(campaign, ad_group, keyword, bid)
         return result
 
-    @staticmethod
-    def add_campaign_to_sheet(sheet, campaign):
+    def add_campaign_to_spa(self, campaign):
         pass
 
     @staticmethod
