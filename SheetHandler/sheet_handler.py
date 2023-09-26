@@ -1,6 +1,8 @@
 import pandas
 import datetime
 
+import settings
+
 
 class AmzSheetHandler:
     _filename = None
@@ -458,3 +460,19 @@ class AmzSheetHandler:
         }
 
         return pandas.DataFrame(d['data'])
+
+    @staticmethod
+    def is_default_exact_campaign_exists(datagram):
+        print(settings.DEFAULT_EXACT_ST_CAMPAIGN_NAME)
+        result = datagram[(datagram["Entity"] == "Campaign") & (
+                    datagram["Campaign Name"] == settings.DEFAULT_EXACT_ST_CAMPAIGN_NAME)]
+        print(result)
+        if len(result) == 0:
+            return False
+        return True
+
+    def is_default_phrase_campaign_exists(self):
+        pass
+
+    def is_default_broad_campaign_exists(self):
+        pass
