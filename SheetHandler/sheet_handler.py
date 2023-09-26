@@ -462,6 +462,19 @@ class AmzSheetHandler:
 
         return pandas.DataFrame(d['data'])
 
+    @classmethod
+    def create_full_campaign(cls, campaign, ad_group, sku, asin, keyword, bid):
+        camp = cls.create_spa_campaign(campaign)
+        adjustment_top = cls.create_spa_bidding_adjustment(campaign, placement="Placement Top")
+        adjustment_product_page = cls.create_spa_bidding_adjustment(campaign, placement="Placement Product Page")
+        ad_group = cls.create_spa_ad_group(campaign, ad_group)
+        product_ad = cls.create_spa_product_ad(campaign, ad_group, sku, asin)
+        keyword_row = cls.create_spa_keyword(campaign, ad_group, keyword, bid)
+
+        result = [camp, adjustment_top, adjustment_product_page, ad_group, product_ad, keyword_row]
+
+        return result
+
     @staticmethod
     def is_campaign_exists(datagram, campaign_name):
         result = datagram[(datagram["Entity"] == "Campaign") & (
