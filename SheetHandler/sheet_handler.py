@@ -484,6 +484,10 @@ class AmzSheetHandler:
         return result
 
     @staticmethod
+    def add_campaign_to_sheet(sheet, campaign):
+        pass
+
+    @staticmethod
     def is_campaign_exists(datagram, campaign_name):
         result = datagram[(datagram["Entity"] == "Campaign") & (
                 datagram["Campaign Name"] == campaign_name)]

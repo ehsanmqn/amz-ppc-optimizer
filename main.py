@@ -29,11 +29,9 @@ def main():
     # Add profitable search terms to exact campaigns
     camp_name = settings.DEFAULT_EXACT_ST_CAMPAIGN_NAME
     if sheet_handler.is_campaign_exists(camp_name) is False:
-        search_terms_optimizer.add_exact_search_terms(profitable_st, 1, camp_name)
-    else:
-        sku = ""
-        asin = ""
-        sheet_handler.create_full_campaign(camp_name, camp_name, sku, asin)
+        sheet_handler.create_full_campaign(campaign=camp_name, ad_group=camp_name)
+
+    search_terms_optimizer.add_exact_search_terms(profitable_st, 1, camp_name)
 
     # Add profitable search terms to phrase campaigns
     camp_name = settings.DEFAULT_PHRASE_ST_CAMPAIGN_NAME
