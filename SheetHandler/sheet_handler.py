@@ -241,7 +241,8 @@ class AmzSheetHandler:
         return pandas.DataFrame(d['data'])
 
     @staticmethod
-    def create_spa_bidding_adjustment(campaign_name, bidding_strategy="Fixed bid", placement="Placement Top", percentage=0):
+    def create_spa_bidding_adjustment(campaign_name, bidding_strategy="Fixed bid", placement="Placement Top",
+                                      percentage=0):
 
         d = {
             "data": [{
@@ -463,16 +464,27 @@ class AmzSheetHandler:
 
     @staticmethod
     def is_default_exact_campaign_exists(datagram):
-        print(settings.DEFAULT_EXACT_ST_CAMPAIGN_NAME)
         result = datagram[(datagram["Entity"] == "Campaign") & (
-                    datagram["Campaign Name"] == settings.DEFAULT_EXACT_ST_CAMPAIGN_NAME)]
-        print(result)
+                datagram["Campaign Name"] == settings.DEFAULT_EXACT_ST_CAMPAIGN_NAME)]
+
         if len(result) == 0:
             return False
         return True
 
-    def is_default_phrase_campaign_exists(self):
-        pass
+    @staticmethod
+    def is_default_phrase_campaign_exists(datagram):
+        result = datagram[(datagram["Entity"] == "Campaign") & (
+                datagram["Campaign Name"] == settings.DEFAULT_PHRASE_ST_CAMPAIGN_NAME)]
 
-    def is_default_broad_campaign_exists(self):
-        pass
+        if len(result) == 0:
+            return False
+        return True
+
+    @staticmethod
+    def is_default_broad_campaign_exists(datagram):
+        result = datagram[(datagram["Entity"] == "Campaign") & (
+                datagram["Campaign Name"] == settings.DEFAULT_BROAD_ST_CAMPAIGN_NAME)]
+
+        if len(result) == 0:
+            return False
+        return True
