@@ -463,6 +463,15 @@ class AmzSheetHandler:
         return pandas.DataFrame(d['data'])
 
     @staticmethod
+    def is_campaign_exists(datagram, campaign_name):
+        result = datagram[(datagram["Entity"] == "Campaign") & (
+                datagram["Campaign Name"] == campaign_name)]
+
+        if len(result) == 0:
+            return False
+        return True
+
+    @staticmethod
     def is_default_exact_campaign_exists(datagram):
         result = datagram[(datagram["Entity"] == "Campaign") & (
                 datagram["Campaign Name"] == settings.DEFAULT_EXACT_ST_CAMPAIGN_NAME)]

@@ -2,6 +2,7 @@ import datetime
 
 import pandas
 
+import settings
 from SheetHandler.sheet_handler import AmzSheetHandler
 from Optimizer.apex_optimizer import ApexOptimizer
 from Optimizer.search_term_optimizer import SearchTermOptimizer
@@ -14,8 +15,7 @@ EXCLUDE_AD_GROUPS = []
 def main():
     sheet_handler = AmzSheetHandler()
     sheet_handler.read_bulk_sheet_report(filename="data.xlsx")
-    print(sheet_handler.is_default_exact_campaign_exists(sheet_handler.sponsored_prod_camp))
-    return
+
     # keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp)
     # keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=True)
 
@@ -27,9 +27,17 @@ def main():
     unprofitable_st = search_terms_optimizer.filter_unprofitable_search_terms(desired_acos=0.3)
 
     # Add profitable search terms to campaigns
-    search_terms_optimizer.add_exact_search_terms(profitable_st, 1, "Loofah - Exact - AmzSuggested - 20")
-    search_terms_optimizer.add_phrase_search_terms(profitable_st, 1, "Loofah - Phrase - AmzSuggested - 20")
-    search_terms_optimizer.add_broad_search_terms(profitable_st, 1, "Loofah - Broad - AmzSuggested - 20")
+    camp_name = settings.DEFAULT_EXACT_ST_CAMPAIGN_NAME
+    if sheet_handler.is_campaign_exists(camp_name) is False:
+        search_terms_optimizer.add_exact_search_terms(profitable_st, 1, camp_name)
+
+    camp_name = settings.DEFAULT_PHRASE_ST_CAMPAIGN_NAME
+    if sheet_handler.is_campaign_exists(camp_name) is False:
+        search_terms_optimizer.add_phrase_search_terms(profitable_st, 1, camp_name)
+
+    camp_name = settings.DEFAULT_BROAD_ST_CAMPAIGN_NAME
+    if sheet_handler.is_campaign_exists(camp_name) is False:
+        search_terms_optimizer.add_broad_search_terms(profitable_st, 1, camp_name)
 
     # Create campaign example
     camp = sheet_handler.create_spa_campaign("Radium10 - SearchTerms")
