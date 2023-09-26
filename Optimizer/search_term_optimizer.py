@@ -1,5 +1,7 @@
 import pandas
 
+import settings
+
 
 class SearchTermOptimizer:
     """
@@ -47,7 +49,11 @@ class SearchTermOptimizer:
         pass
 
     @staticmethod
-    def add_exact_search_terms(search_terms, impact_factor, campaign_name):
+    def add_exact_search_terms(search_terms, impact_factor, campaign_name=None):
+
+        if campaign_name is None:
+            #Create campaign
+            pass
 
         exact_match_campaigns = None
         print(search_terms["Targeting"])
