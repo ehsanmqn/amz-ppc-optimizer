@@ -475,6 +475,11 @@ class AmzSheetHandler:
 
         return result
 
+    @classmethod
+    def add_keyword_to_campaign(cls, campaign, ad_group, keyword, bid):
+        result = cls.create_spa_keyword(campaign, ad_group, keyword, bid)
+        return result
+
     @staticmethod
     def is_campaign_exists(datagram, campaign_name):
         result = datagram[(datagram["Entity"] == "Campaign") & (
