@@ -293,7 +293,7 @@ class AmzSheetHandler:
         d = {
             "data": [{
                 "Product": "Sponsored Products",
-                "Entity": "BAd Group",
+                "Entity": "Ad Group",
                 "Operation": "Create",
                 "Campaign ID": campaign_name,
                 "Ad Group ID": ad_group_name,
@@ -318,6 +318,61 @@ class AmzSheetHandler:
                 "Eligibility Status (Informational only)": "",
                 "Reason for Ineligibility (Informational only)": "",
                 "Ad Group Default Bid": default_bid,
+                "Ad Group Default Bid (Informational only)": "",
+                "Bid": "",
+                "Keyword Text": "",
+                "Match Type": "",
+                "Bidding Strategy": "",
+                "Placement": "",
+                "Percentage": "",
+                "Product Targeting Expression": "",
+                "Resolved Product Targeting Expression (Informational only)": "",
+                "Impressions": "",
+                "Clicks": "",
+                "Click-through Rate": "",
+                "Spend": "",
+                "Sales": "",
+                "Orders": "",
+                "Units": "",
+                "Conversion Rate": "",
+                "ACOS": "",
+                "CPC": "",
+                "ROAS": ""
+            }]
+        }
+
+        return pandas.DataFrame(d['data'])
+
+    @staticmethod
+    def create_spa_product_ad(campaign_name, ad_group_name, sku, asin):
+        d = {
+            "data": [{
+                "Product": "Sponsored Products",
+                "Entity": "Product Ad",
+                "Operation": "Create",
+                "Campaign ID": campaign_name,
+                "Ad Group ID": ad_group_name,
+                "Portfolio ID": "",
+                "Ad ID": "",
+                "Keyword ID": "",
+                "Product Targeting ID": "",
+                "Campaign Name": "",
+                "Ad Group Name": ad_group_name,
+                "Campaign Name (Informational only)": campaign_name,
+                "Ad Group Name (Informational only)": ad_group_name,
+                "Portfolio Name (Informational only)": "",
+                "Start Date": "",
+                "End Date": "",
+                "Targeting Type": "",
+                "State": "enabled",
+                "Campaign State (Informational only)": "",
+                "Ad Group State (Informational only)": "",
+                "Daily Budget": "",
+                "SKU": sku,
+                "ASIN (Informational only)": asin,
+                "Eligibility Status (Informational only)": "",
+                "Reason for Ineligibility (Informational only)": "",
+                "Ad Group Default Bid": "",
                 "Ad Group Default Bid (Informational only)": "",
                 "Bid": "",
                 "Keyword Text": "",
