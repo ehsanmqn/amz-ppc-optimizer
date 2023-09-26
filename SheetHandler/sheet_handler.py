@@ -1,5 +1,5 @@
 import pandas
-import openpyxl
+import datetime
 
 
 class AmzSheetHandler:
@@ -179,6 +179,12 @@ class AmzSheetHandler:
 
     @staticmethod
     def create_spa_campaign(campaign_name, targeting="Manual", budget=10, bidding_strategy="Fixed bid"):
+        # Create a datetime object for the desired date
+        date = datetime.datetime.now()
+
+        # Format the date as a string in the "YYYYMMDD" format
+        formatted_date = date.strftime("%Y%m%d")
+
         d = {
             "data": [{
                 "Product": "Sponsored Products",
@@ -195,12 +201,12 @@ class AmzSheetHandler:
                 "Campaign Name (Informational only)": campaign_name,
                 "Ad Group Name (Informational only)": "",
                 "Portfolio Name (Informational only)": "",
-                "Start Date": "20230819",
+                "Start Date": formatted_date,
                 "End Date": "",
                 "Targeting Type": targeting,
                 "State": "enabled",
-                "Campaign State (Informational only)": "enabled",
-                "Ad Group State (Informational only)": "enabled",
+                "Campaign State (Informational only)": "",
+                "Ad Group State (Informational only)": "",
                 "Daily Budget": budget,
                 "SKU": "",
                 "ASIN (Informational only)": "",
@@ -344,7 +350,7 @@ class AmzSheetHandler:
         return pandas.DataFrame(d['data'])
 
     @staticmethod
-    def create_spa_product_ad(campaign_name, ad_group_name, sku, asin):
+    def create_spa_product_ad(campaign_name, ad_group_name, sku):
         d = {
             "data": [{
                 "Product": "Sponsored Products",
@@ -357,7 +363,7 @@ class AmzSheetHandler:
                 "Keyword ID": "",
                 "Product Targeting ID": "",
                 "Campaign Name": "",
-                "Ad Group Name": ad_group_name,
+                "Ad Group Name": "",
                 "Campaign Name (Informational only)": campaign_name,
                 "Ad Group Name (Informational only)": ad_group_name,
                 "Portfolio Name (Informational only)": "",
@@ -369,7 +375,7 @@ class AmzSheetHandler:
                 "Ad Group State (Informational only)": "",
                 "Daily Budget": "",
                 "SKU": sku,
-                "ASIN (Informational only)": asin,
+                "ASIN (Informational only)": "",
                 "Eligibility Status (Informational only)": "",
                 "Reason for Ineligibility (Informational only)": "",
                 "Ad Group Default Bid": "",
@@ -420,8 +426,8 @@ class AmzSheetHandler:
                 "End Date": "",
                 "Targeting Type": "",
                 "State": "enabled",
-                "Campaign State (Informational only)": "enabled",
-                "Ad Group State (Informational only)": "enabled",
+                "Campaign State (Informational only)": "",
+                "Ad Group State (Informational only)": "",
                 "Daily Budget": "",
                 "SKU": "",
                 "ASIN (Informational only)": "",
