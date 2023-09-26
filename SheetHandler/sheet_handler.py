@@ -397,3 +397,58 @@ class AmzSheetHandler:
         }
 
         return pandas.DataFrame(d['data'])
+
+    @staticmethod
+    def create_spa_keyword(campaign_name, ad_group_name, keyword, bid, match_type="Exact"):
+        d = {
+            "data": [{
+                "Product": "Sponsored Products",
+                "Entity": "Keyword",
+                "Operation": "Create",
+                "Campaign ID": campaign_name,
+                "Ad Group ID": ad_group_name,
+                "Portfolio ID": "",
+                "Ad ID": "",
+                "Keyword ID": "",
+                "Product Targeting ID": "",
+                "Campaign Name": "",
+                "Ad Group Name": "",
+                "Campaign Name (Informational only)": campaign_name,
+                "Ad Group Name (Informational only)": ad_group_name,
+                "Portfolio Name (Informational only)": "",
+                "Start Date": "",
+                "End Date": "",
+                "Targeting Type": "",
+                "State": "enabled",
+                "Campaign State (Informational only)": "enabled",
+                "Ad Group State (Informational only)": "enabled",
+                "Daily Budget": "",
+                "SKU": "",
+                "ASIN (Informational only)": "",
+                "Eligibility Status (Informational only)": "",
+                "Reason for Ineligibility (Informational only)": "",
+                "Ad Group Default Bid": "",
+                "Ad Group Default Bid (Informational only)": "",
+                "Bid": bid,
+                "Keyword Text": keyword,
+                "Match Type": match_type,
+                "Bidding Strategy": "",
+                "Placement": "",
+                "Percentage": "",
+                "Product Targeting Expression": "",
+                "Resolved Product Targeting Expression (Informational only)": "",
+                "Impressions": "",
+                "Clicks": "",
+                "Click-through Rate": "",
+                "Spend": "",
+                "Sales": "",
+                "Orders": "",
+                "Units": "",
+                "Conversion Rate": "",
+                "ACOS": "",
+                "CPC": "",
+                "ROAS": ""
+            }]
+        }
+
+        return pandas.DataFrame(d['data'])
