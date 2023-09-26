@@ -350,7 +350,7 @@ class AmzSheetHandler:
         return pandas.DataFrame(d['data'])
 
     @staticmethod
-    def create_spa_product_ad(campaign_name, ad_group_name, sku):
+    def create_spa_product_ad(campaign_name, ad_group_name, sku="", asin=""):
         d = {
             "data": [{
                 "Product": "Sponsored Products",
@@ -375,7 +375,7 @@ class AmzSheetHandler:
                 "Ad Group State (Informational only)": "",
                 "Daily Budget": "",
                 "SKU": sku,
-                "ASIN (Informational only)": "",
+                "ASIN (Informational only)": asin,
                 "Eligibility Status (Informational only)": "",
                 "Reason for Ineligibility (Informational only)": "",
                 "Ad Group Default Bid": "",
