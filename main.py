@@ -1,7 +1,7 @@
 import datetime
 
 import settings
-from amz_sheet_handler import AmzSheetHandler
+from amz_sheet_handler.amz_sheet_handler import AmzSheetHandler
 from Optimizer.apex_optimizer import ApexOptimizer
 from Optimizer.search_term_optimizer import SearchTermOptimizer
 
