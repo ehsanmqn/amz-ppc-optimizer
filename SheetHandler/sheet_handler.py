@@ -463,7 +463,7 @@ class AmzSheetHandler:
         return pandas.DataFrame(d['data'])
 
     @classmethod
-    def create_full_campaign(cls, campaign, ad_group):
+    def create_campaign(cls, campaign, ad_group):
         camp = cls.create_spa_campaign(campaign)
         adjustment_top = cls.create_spa_bidding_adjustment(campaign, placement="Placement Top")
         adjustment_product_page = cls.create_spa_bidding_adjustment(campaign, placement="Placement Product Page")
@@ -474,17 +474,24 @@ class AmzSheetHandler:
         return result
 
     @classmethod
-    def add_product_add_to_campaign(cls, campaign, ad_group, sku, asin):
-        result = cls.create_spa_product_ad(campaign, ad_group, sku, asin)
+    def add_product_ad(cls, datagram, campaign, ad_group, sku, asin):
+        product_ad = cls.create_spa_product_ad(campaign, ad_group, sku, asin)
+        frames = [datagram, product_ad]
+        result = pandas.concat(frames)
+
         return result
 
     @classmethod
-    def add_keyword_to_campaign(cls, campaign, ad_group, keyword, bid):
-        result = cls.create_spa_keyword(campaign, ad_group, keyword, bid)
+    def add_keyword(cls, datagram, campaign, ad_group, keyword, bid):
+        keyword = cls.create_spa_keyword(campaign, ad_group, keyword, bid)
+        frames = [datagram, keyword]
+        result = pandas.concat(frames)
+
         return result
 
-    @staticmethod
-    def add_campaign(datagram, campaign):
+    @classmethod
+    def add_campaign(cls, datagram, campaign, ad_group):
+        campaign = cls.create_campaign(campaign=campaign, ad_group=ad_group)
         frames = [datagram, campaign]
         result = pandas.concat(frames)
 
