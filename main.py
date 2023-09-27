@@ -31,10 +31,10 @@ def add_search_terms(datagram, search_terms, bid_factor):
         keyword = row["Customer Search Term"]
         if AmzSheetHandler.is_keyword_exists(datagram, keyword, "Exact") is False:
             bid = float(row["Cost Per Click (CPC)"])
-            datagram = AmzSheetHandler.add_keyword(datagram, exact_camp_name, exact_camp_name, keyword, bid * bid_factor)
-            datagram = AmzSheetHandler.add_keyword(datagram, phrase_camp_name, phrase_camp_name, keyword, bid * bid_factor)
-            datagram = AmzSheetHandler.add_keyword(datagram, broad_camp_name, broad_camp_name, keyword, bid * bid_factor)
-            print(">>>>> {} added".format(keyword))
+            datagram = AmzSheetHandler.add_keyword(datagram, exact_camp_name, exact_camp_name, keyword, bid * bid_factor, "Exact")
+            datagram = AmzSheetHandler.add_keyword(datagram, phrase_camp_name, phrase_camp_name, keyword, bid * bid_factor, "Phrase")
+            datagram = AmzSheetHandler.add_keyword(datagram, broad_camp_name, broad_camp_name, keyword, bid * bid_factor, "Broad")
+            print("##### {} added".format(keyword))
         else:
             print(">>>>> {} exists".format(keyword))
     return datagram
@@ -42,10 +42,10 @@ def add_search_terms(datagram, search_terms, bid_factor):
 
 def main():
     sheet_handler = AmzSheetHandler()
-    sheet_handler.read_bulk_sheet_report(filename="data.xlsx")
+    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20230828-20230829-1693310953861.xlsx")
 
-    # keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp)
-    # keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=True)
+    keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp)
+    keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=True)
 
     sheet_handler.read_search_terms_report(filename="Sponsored Products Search term report.xlsx")
     search_terms_optimizer = SearchTermOptimizer(sheet_handler.sponsored_product_search_terms)
@@ -55,12 +55,12 @@ def main():
     unprofitable_st = search_terms_optimizer.filter_unprofitable_search_terms(desired_acos=0.3)
 
     # Add profitable search terms to exact campaigns
-    datagram = sheet_handler.sponsored_prod_camp
+    datagram = keyword_optimizer.datasheet
     datagram = add_search_terms(datagram, profitable_st, 1)
     datagram = add_search_terms(datagram, unprofitable_st, 0.6)
 
-    # filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
-    # campaigns_bulk_sheet.write_data_file(filename, keyword_optimizer.datasheet, "Sponsored Products Campaigns")
+    filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
+    sheet_handler.write_data_file(filename, datagram, "Sponsored Products Campaigns")
 
 
 if __name__ == "__main__":

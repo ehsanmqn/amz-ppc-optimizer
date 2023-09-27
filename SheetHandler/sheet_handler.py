@@ -483,8 +483,8 @@ class AmzSheetHandler:
         return result
 
     @classmethod
-    def add_keyword(cls, datagram, campaign, ad_group, keyword, bid):
-        keyword = cls.create_spa_keyword(campaign, ad_group, keyword, bid)
+    def add_keyword(cls, datagram, campaign, ad_group, keyword, bid, match_type):
+        keyword = cls.create_spa_keyword(campaign, ad_group, keyword, bid, match_type)
         frames = [datagram, keyword]
         result = pandas.concat(frames)
 
