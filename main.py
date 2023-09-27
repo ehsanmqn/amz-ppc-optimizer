@@ -34,9 +34,7 @@ def add_search_terms(datagram, search_terms, bid_factor):
             datagram = AmzSheetHandler.add_keyword(datagram, exact_camp_name, exact_camp_name, keyword, bid * bid_factor, "Exact")
             datagram = AmzSheetHandler.add_keyword(datagram, phrase_camp_name, phrase_camp_name, keyword, bid * bid_factor, "Phrase")
             datagram = AmzSheetHandler.add_keyword(datagram, broad_camp_name, broad_camp_name, keyword, bid * bid_factor, "Broad")
-            print("##### {} added".format(keyword))
-        else:
-            print(">>>>> {} exists".format(keyword))
+
     return datagram
 
 
