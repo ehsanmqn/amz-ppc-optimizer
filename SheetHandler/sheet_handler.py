@@ -483,8 +483,12 @@ class AmzSheetHandler:
         result = cls.create_spa_keyword(campaign, ad_group, keyword, bid)
         return result
 
-    def add_campaign_to_spa(self, campaign):
-        pass
+    @staticmethod
+    def add_campaign(datagram, campaign):
+        frames = [datagram, campaign]
+        result = pandas.concat(frames)
+
+        return result
 
     @staticmethod
     def is_campaign_exists(datagram, campaign_name):
