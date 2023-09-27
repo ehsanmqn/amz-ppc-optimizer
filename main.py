@@ -1,12 +1,9 @@
 import datetime
 
-import pandas
-
 import settings
-from SheetHandler.sheet_handler import AmzSheetHandler
+from amz_sheet_handler import AmzSheetHandler
 from Optimizer.apex_optimizer import ApexOptimizer
 from Optimizer.search_term_optimizer import SearchTermOptimizer
-from Optimizer.placement_optimizer import PlacementOptimizer
 
 EXCLUDE_AD_GROUPS = []
 
