@@ -463,13 +463,14 @@ class AmzSheetHandler:
         return pandas.DataFrame(d['data'])
 
     @classmethod
-    def create_campaign(cls, campaign, ad_group):
+    def create_full_spa_campaign(cls, campaign, ad_group):
         camp = cls.create_spa_campaign(campaign)
         adjustment_top = cls.create_spa_bidding_adjustment(campaign, placement="Placement Top")
         adjustment_product_page = cls.create_spa_bidding_adjustment(campaign, placement="Placement Product Page")
         ad_group = cls.create_spa_ad_group(campaign, ad_group)
 
-        result = [camp, adjustment_top, adjustment_product_page, ad_group]
+        frames = [camp, adjustment_top, adjustment_product_page, ad_group]
+        result = pandas.concat(frames)
 
         return result
 
@@ -491,7 +492,7 @@ class AmzSheetHandler:
 
     @classmethod
     def add_campaign(cls, datagram, campaign, ad_group):
-        campaign = cls.create_campaign(campaign=campaign, ad_group=ad_group)
+        campaign = cls.create_full_spa_campaign(campaign=campaign, ad_group=ad_group)
         frames = [datagram, campaign]
         result = pandas.concat(frames)
 
@@ -501,6 +502,19 @@ class AmzSheetHandler:
     def is_campaign_exists(datagram, campaign_name):
         result = datagram[(datagram["Entity"] == "Campaign") & (
                 datagram["Campaign Name"] == campaign_name)]
+
+        if len(result) == 0:
+            return False
+        return True
+
+    @staticmethod
+    def is_keyword_exists(datagram, keyword, match_type=None):
+        if match_type is None:
+            result = datagram[(datagram["Entity"] == "Keyword") & (
+                    datagram["Keyword Text"] == keyword)]
+        else:
+            result = datagram[(datagram["Entity"] == "Keyword") & (
+                    datagram["Keyword Text"] == keyword) & (datagram["Match Type"] == match_type)]
 
         if len(result) == 0:
             return False
