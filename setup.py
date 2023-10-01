@@ -9,6 +9,5 @@ setup(
     packages=find_packages(),
     install_requires=[
         'pandas',
-        'amz-sheet-handler'
     ],
 )
