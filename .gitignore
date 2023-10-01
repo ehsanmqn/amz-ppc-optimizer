@@ -3,3 +3,5 @@ venv
 *.xlsx
 .idea/*
 __pycache__
+*.egg-info/
+dist/
