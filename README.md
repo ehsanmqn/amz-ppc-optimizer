@@ -12,7 +12,7 @@ Before running the script, make sure you have the following prerequisites instal
 You can install the required packages by running:
 
 ```bash
-pip install -r requirements.txt
+pip install amz-ppc-optimizer
 ```
 
 ## Usage
