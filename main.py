@@ -1,7 +1,6 @@
 import datetime
 
-from amz_sheet_handler.amz_sheet_handler import AmzSheetHandler
-
+from core.amz_sheet_handler import AmzSheetHandler
 from core.apex_optimizer import ApexOptimizer
 from core.search_term_optimizer import SearchTermOptimizer
 from utils import add_search_terms
@@ -9,7 +8,7 @@ from utils import add_search_terms
 
 def main():
     sheet_handler = AmzSheetHandler()
-    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20230828-20230829-1693310953861.xlsx")
+    sheet_handler.read_bulk_sheet_report(filename="data.xlsx")
 
     keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp)
     keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=True)
