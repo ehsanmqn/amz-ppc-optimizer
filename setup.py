@@ -2,13 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='amz-ppc-optimizer',
-    version='0.1.4',
+    version='0.1.5',
     description='Python package for optimizing Amazon advertising campaigns',
     author='Ehsan Maiqani',
     author_email='ehsan.maiqani@gmail.com',
     packages=find_packages(),
     install_requires=[
-        'pandas==2.0.3',
+        'pandas==2.0.4',
     ],
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
