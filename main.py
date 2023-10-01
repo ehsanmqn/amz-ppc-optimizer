@@ -3,7 +3,6 @@ import datetime
 from amz_ppc_optimizer import AmzSheetHandler
 from amz_ppc_optimizer import ApexOptimizer
 from amz_ppc_optimizer import SearchTermOptimizer
-from utils import add_search_terms
 
 
 def main():
@@ -22,8 +21,8 @@ def main():
 
     # Add profitable search terms to exact campaigns
     datagram = keyword_optimizer.datasheet
-    datagram = add_search_terms(datagram, profitable_st, 1)
-    datagram = add_search_terms(datagram, unprofitable_st, 0.6)
+    datagram = search_terms_optimizer.add_search_terms(datagram, profitable_st, 1)
+    datagram = search_terms_optimizer.add_search_terms(datagram, unprofitable_st, 0.6)
 
     filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
     sheet_handler.write_data_file(filename, datagram, "Sponsored Products Campaigns")

@@ -1,7 +1,7 @@
 import pandas
 import datetime
 
-import settings
+from amz_ppc_optimizer import settings
 
 
 class AmzSheetHandler:
