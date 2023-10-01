@@ -1,8 +1,8 @@
 import datetime
 
-from core import AmzSheetHandler
-from core import ApexOptimizer
-from core import SearchTermOptimizer
+from amz_ppc_optimizer import AmzSheetHandler
+from amz_ppc_optimizer import ApexOptimizer
+from amz_ppc_optimizer import SearchTermOptimizer
 from utils import add_search_terms
 
 

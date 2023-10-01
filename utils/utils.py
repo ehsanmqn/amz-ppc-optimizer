@@ -1,5 +1,5 @@
 import settings
-from core.amz_sheet_handler import AmzSheetHandler
+from amz_ppc_optimizer import AmzSheetHandler
 
 
 def add_search_terms(datagram, search_terms, bid_factor):
