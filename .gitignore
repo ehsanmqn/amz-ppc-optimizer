@@ -2,3 +2,4 @@
 venv
 *.xlsx
 .idea/*
+__pycache__
