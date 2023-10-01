@@ -7,7 +7,7 @@ from amz_ppc_optimizer import SearchTermOptimizer
 
 def main():
     sheet_handler = AmzSheetHandler()
-    sheet_handler.read_bulk_sheet_report(filename="data.xlsx")
+    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20230918-20230919-1695106960509.xlsx")
 
     keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp, 30)
     keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=True)
