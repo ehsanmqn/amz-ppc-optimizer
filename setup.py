@@ -8,6 +8,14 @@ setup(
     author_email='ehsan.maiqani@gmail.com',
     packages=find_packages(),
     install_requires=[
-        'pandas',
+        'pandas==2.0.3',
+    ],
+    long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
+    url='https://github.com/ehsanmqn/amz-ppc-optimizer',
+    classifiers=[
+        'Programming Language :: Python :: 3',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
     ],
 )
