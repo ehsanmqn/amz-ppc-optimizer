@@ -9,7 +9,7 @@ def main():
     sheet_handler = AmzSheetHandler()
     sheet_handler.read_bulk_sheet_report(filename="data.xlsx")
 
-    keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp)
+    keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp, 30)
     keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=True)
 
     sheet_handler.read_search_terms_report(filename="Sponsored Products Search term report.xlsx")

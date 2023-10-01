@@ -4,13 +4,9 @@ AED_TO_USD_FACTOR = 0.27
 APEX_CLICK_NUM_THRESHOLD = 11
 APEX_IMPRESSION_NUM_THRESHOLD = 1000
 APEX_TARGET_ACOS_THRESHOLD = 0.3
-APEX_HIGH_ACOS = 0.30
-APEX_MID_ACOS = 0.25
 APEX_LOW_CTR_THRESHOLD = 0.15
 APEX_INCREASE_BID_FACTOR = 1.2
-APEX_DECREASE_BID_FACTOR = 0.8
 APEX_MIN_BID_VALUE = 0.2 * USD_TO_AED_FACTOR
-APEX_MAX_BID_VALUE = 2.0 * USD_TO_AED_FACTOR
 
 
 class ApexOptimizer:
@@ -24,11 +20,17 @@ class ApexOptimizer:
     _archived_campaigns = []
     _fixed_bid_campaigns = []
     _dynamic_bidding_campaigns = []
+    _target_acos_thr = APEX_TARGET_ACOS_THRESHOLD
+    _increase_bid_factor = APEX_INCREASE_BID_FACTOR
+    _min_bid_value = APEX_MIN_BID_VALUE
 
-    def __init__(self, data):
+    def __init__(self, data, desired_acos, change_factor=0.2, min_bid=0.2):
         self._data_sheet = data
         self._campaigns = self.get_campaigns()
         self._dynamic_bidding_campaigns = self.get_dynamic_bidding_campaigns()
+        self._target_acos_thr = desired_acos
+        self._increase_bid_factor = 1 + change_factor
+        self._min_bid_value = min_bid
 
     @property
     def datasheet(self):
@@ -82,8 +84,7 @@ class ApexOptimizer:
         """
         return item["Ad Group State (Informational only)"] == "enabled"
 
-    @staticmethod
-    def low_click_zero_sale_rule(item):
+    def low_click_zero_sale_rule(self, item):
         """
         Rule 1: Decrease bid for orderless clicked keyword
         :param item:
@@ -93,13 +94,12 @@ class ApexOptimizer:
         orders = int(item["Orders"])
 
         if clicks >= APEX_CLICK_NUM_THRESHOLD and orders == 0:
-            item["Bid"] = APEX_MIN_BID_VALUE
+            item["Bid"] = self._min_bid_value
             item["Operation"] = "update"
 
         return item
 
-    @staticmethod
-    def low_impression_low_ctr_low_sale_rule(item):
+    def low_impression_low_ctr_low_sale_rule(self, item):
         """
         Rule 2: Decrease bid for high impressed but low CTR and sales keyword
         :param item:
@@ -110,13 +110,12 @@ class ApexOptimizer:
         orders = int(item["Orders"])
 
         if impression >= APEX_IMPRESSION_NUM_THRESHOLD and ctr < APEX_LOW_CTR_THRESHOLD and orders == 0:
-            item["Bid"] = APEX_MIN_BID_VALUE
+            item["Bid"] = self._min_bid_value
             item["Operation"] = "update"
 
         return item
 
-    @staticmethod
-    def profitable_acos_rule(item):
+    def profitable_acos_rule(self, item):
         """
         Rule 3: Increase low ACOS bid
         :param item:
@@ -126,18 +125,17 @@ class ApexOptimizer:
         cpc = float(item["CPC"])
         bid = float(item["Bid"])
 
-        if acos != 0 and acos < APEX_TARGET_ACOS_THRESHOLD:
+        if acos != 0 and acos < self._target_acos_thr:
             if cpc > 0:
-                item["Bid"] = round(cpc * APEX_INCREASE_BID_FACTOR, 2)
+                item["Bid"] = round(cpc * self._increase_bid_factor, 2)
             else:
-                item["Bid"] = round(bid * APEX_INCREASE_BID_FACTOR, 2)
+                item["Bid"] = round(bid * self._increase_bid_factor, 2)
 
             item["Operation"] = "update"
 
         return item
 
-    @staticmethod
-    def unprofitable_acos_rule(item):
+    def unprofitable_acos_rule(self, item):
         """
         Rule 4: Decrease high ACOS bid
         :param item:
@@ -147,11 +145,11 @@ class ApexOptimizer:
         cpc = float(item["CPC"])
         bid = float(item["Bid"])
 
-        if acos != 0 and acos > APEX_TARGET_ACOS_THRESHOLD:
+        if acos != 0 and acos > self._target_acos_thr:
             if cpc > 0:
-                item["Bid"] = round((APEX_TARGET_ACOS_THRESHOLD / acos) * cpc, 2)
+                item["Bid"] = round((self._target_acos_thr / acos) * cpc, 2)
             else:
-                item["Bid"] = round(bid * APEX_INCREASE_BID_FACTOR, 2)
+                item["Bid"] = round(bid * self._increase_bid_factor, 2)
 
             item["Operation"] = "update"
 
