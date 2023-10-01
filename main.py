@@ -2,8 +2,8 @@ import datetime
 
 import settings
 from amz_sheet_handler.amz_sheet_handler import AmzSheetHandler
-from Optimizer.apex_optimizer import ApexOptimizer
-from Optimizer.search_term_optimizer import SearchTermOptimizer
+from core.apex_optimizer import ApexOptimizer
+from core.search_term_optimizer import SearchTermOptimizer
 
 EXCLUDE_AD_GROUPS = []
 

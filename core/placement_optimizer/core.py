@@ -1,6 +1,6 @@
 class PlacementOptimizer:
     """
-    Placement Optimizer
+    Placement core
     Usage:
         placement_optimizer = PlacementOptimizer(loader.sponsored_prod_camp)
         profitable_orders = placement_optimizer.filter_campaigns_acos(threshold=.3)
@@ -116,7 +116,7 @@ class PlacementOptimizer:
 
     def adjust_campaign(self, campaigns, strategy, adjust_first_page_factor=None, adjust_product_page_factor=None):
         """
-        Bid+ optimizer method
+        Bid+ core method
         :return:
         """
 

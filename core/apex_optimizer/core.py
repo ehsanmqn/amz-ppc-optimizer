@@ -15,7 +15,7 @@ APEX_MAX_BID_VALUE = 2.0 * USD_TO_AED_FACTOR
 
 class ApexOptimizer:
     """
-    APEX Optimizer
+    APEX core
     """
 
     _data_sheet = None
@@ -166,7 +166,7 @@ class ApexOptimizer:
 
     def optimize_spa_keywords(self, exclude_dynamic_bids=True):
         """
-        APEX optimizer method
+        APEX core method
         :return:
         """
 

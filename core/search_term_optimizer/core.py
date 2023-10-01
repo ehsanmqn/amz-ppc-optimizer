@@ -2,7 +2,7 @@
 
 class SearchTermOptimizer:
     """
-    Placement Optimizer
+    Placement core
     """
 
     _data_sheet = None
