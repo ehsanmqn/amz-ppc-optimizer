@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='Amazon PPC Optimizer',
+    name='amz-ppc-optimizer',
     version='0.1.0',
     description='Python package for optimizing Amazon advertising campaigns',
     author='Ehsan Maiqani',
