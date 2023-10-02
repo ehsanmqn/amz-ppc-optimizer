@@ -23,22 +23,24 @@ Data Preparation
 Sample usage
 ```python
     sheet_handler = AmzSheetHandler()
-    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20230918-20230919-1695106960509.xlsx")
+    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20230801-20230921-1695454573621.xlsx")
 
-    keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp, 30)
+    keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp, 0.3)
     keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=True)
 
-    sheet_handler.read_search_terms_report(filename="Sponsored Products Search term report.xlsx")
-    search_terms_optimizer = SearchTermOptimizer(sheet_handler.sponsored_product_search_terms)
-
-    # Get profitable and unprofitable search terms based on ACOS value
-    profitable_st = search_terms_optimizer.filter_profitable_search_terms(desired_acos=0.3)
-    unprofitable_st = search_terms_optimizer.filter_unprofitable_search_terms(desired_acos=0.3)
-
-    # Add profitable search terms to exact campaigns
     datagram = keyword_optimizer.datasheet
-    datagram = search_terms_optimizer.add_search_terms(datagram, profitable_st, 1)
-    datagram = search_terms_optimizer.add_search_terms(datagram, unprofitable_st, 0.6)
+
+    if optimize_search_terms is True:
+        sheet_handler.read_search_terms_report(filename="Sponsored Products Search term report.xlsx")
+        search_terms_optimizer = SearchTermOptimizer(sheet_handler.sponsored_product_search_terms)
+
+        # Get profitable and unprofitable search terms based on ACOS value
+        profitable_st = search_terms_optimizer.filter_profitable_search_terms(desired_acos=0.3)
+        unprofitable_st = search_terms_optimizer.filter_unprofitable_search_terms(desired_acos=0.3)
+
+        # Add profitable search terms to exact campaigns
+        datagram = search_terms_optimizer.add_search_terms(datagram, profitable_st, 1)
+        datagram = search_terms_optimizer.add_search_terms(datagram, unprofitable_st, 0.6)
 
     filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
     sheet_handler.write_data_file(filename, datagram, "Sponsored Products Campaigns")
