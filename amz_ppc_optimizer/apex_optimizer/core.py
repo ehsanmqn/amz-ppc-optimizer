@@ -203,3 +203,5 @@ class ApexOptimizer:
                     row = self.unprofitable_acos_rule(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
+
+        return self._data_sheet
