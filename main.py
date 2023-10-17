@@ -9,13 +9,14 @@ optimize_search_terms = False
 
 def main():
     sheet_handler = AmzSheetHandler()
-    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20230902-20231002-1696397226654.xlsx")
+    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20230818-20231015-1697524149157.xlsx")
 
     keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp, desired_acos=0.3, min_bid=0.734)
     keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=False)
 
     datagram = keyword_optimizer.datasheet
 
+    search_termed = ""
     if optimize_search_terms is True:
         sheet_handler.read_search_terms_report(filename="Sponsored Products Search term report.xlsx")
         search_terms_optimizer = SearchTermOptimizer(sheet_handler.sponsored_product_search_terms)
@@ -28,7 +29,9 @@ def main():
         datagram = search_terms_optimizer.add_search_terms(datagram, profitable_st, 1)
         datagram = search_terms_optimizer.add_search_terms(datagram, unprofitable_st, 0.6)
 
-    filename = "Sponsored Products Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
+        search_termed = "ST_"
+
+    filename = "Sponsored_Products_Campaigns_" + search_termed + str(datetime.datetime.utcnow().date()) + ".xlsx"
     sheet_handler.write_data_file(filename, datagram, "Sponsored Products Campaigns")
 
 
