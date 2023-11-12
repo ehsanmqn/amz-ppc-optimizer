@@ -262,10 +262,12 @@ class AmzSheetHandler:
         return data_sheet[data_sheet["Match Type"].str.eq("Broad")]
 
     @staticmethod
-    def get_product_ad_by_campaign(data_sheet, campaign):
+    def get_product_ad_by_campaign(data_sheet, campaign, ad_group):
 
         return data_sheet[
-            (data_sheet["Entity"] == "Product Ad") & (data_sheet["Campaign Name (Informational only)"] == campaign)]
+            (data_sheet["Entity"] == "Product Ad") &
+            (data_sheet["Campaign Name (Informational only)"] == campaign) &
+            (data_sheet["Ad Group Name (Informational only)"] == ad_group)]
 
     def read_bulk_sheet_report(self, filename):
         """
@@ -800,17 +802,12 @@ class AmzSheetHandler:
         return True
 
     @staticmethod
-    def is_product_ad_exists(datagram, sku):
-        """
-        Check if a keyword exists in the provided DataFrame, optionally filtered by match type
+    def is_product_ad_exists(datagram, campaign, ad_group, sku):
 
-        :param datagram: DataFrame containing keyword data.
-        :param sku: The SKU to search for.
-        :return: True if the keyword (with optional match type) exists, False otherwise.
-        """
-
-        result = datagram[(datagram["Entity"] == "Product Ad") & (
-                datagram["SKU"] == sku)]
+        result = datagram[(datagram["Entity"] == "Product Ad") &
+                          (datagram["Campaign Name (Informational only)"] == campaign) &
+                          (datagram["Ad Group Name (Informational only)"] == ad_group) &
+                          (datagram["SKU"] == sku)]
 
         if len(result) == 0:
             return False
