@@ -4,12 +4,12 @@ from amz_ppc_optimizer import AmzSheetHandler
 from amz_ppc_optimizer import ApexOptimizer
 from amz_ppc_optimizer import SearchTermOptimizer
 
-optimize_search_terms = False
+optimize_search_terms = True
 
 
 def main():
     sheet_handler = AmzSheetHandler()
-    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20230901-20231023-1698220688482.xlsx")
+    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20230905-20231102-1699083057501.xlsx")
 
     keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp, desired_acos=0.3, min_bid=0.734)
     keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=False)

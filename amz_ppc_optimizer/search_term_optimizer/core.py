@@ -98,7 +98,15 @@ class SearchTermOptimizer:
 
         for index, row in search_terms.iterrows():
             keyword = row["Customer Search Term"]
+            product_ad = AmzSheetHandler.get_product_ad_by_campaign(datagram, row["Campaign Name"], row["Ad Group Name"])
+            product_sku = product_ad["SKU"]
+
             if AmzSheetHandler.is_keyword_exists(datagram, keyword, "Exact") is False:
+                if AmzSheetHandler.is_product_ad_exists(datagram, exact_camp_name, exact_camp_name, product_sku) is False:
+                    AmzSheetHandler.add_product_ad(datagram, exact_camp_name, exact_camp_name, product_sku)
+                    AmzSheetHandler.add_product_ad(datagram, phrase_camp_name, phrase_camp_name, product_sku)
+                    AmzSheetHandler.add_product_ad(datagram, broad_camp_name, broad_camp_name, product_sku)
+
                 bid = float(row["Cost Per Click (CPC)"])
                 datagram = AmzSheetHandler.add_keyword(datagram, exact_camp_name, exact_camp_name, keyword,
                                                        bid * bid_factor, "Exact")
