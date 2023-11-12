@@ -261,6 +261,12 @@ class AmzSheetHandler:
 
         return data_sheet[data_sheet["Match Type"].str.eq("Broad")]
 
+    @staticmethod
+    def get_product_ad_by_campaign(data_sheet, campaign):
+
+        return data_sheet[
+            (data_sheet["Entity"] == "Product Ad") & (data_sheet["Campaign Name (Informational only)"] == campaign)]
+
     def read_bulk_sheet_report(self, filename):
         """
         Read data from bulk sheet report Excel file and store it in class variables
@@ -688,7 +694,6 @@ class AmzSheetHandler:
         adjustment_top = cls.create_spa_bidding_adjustment(campaign, placement="Placement Top")
         adjustment_product_page = cls.create_spa_bidding_adjustment(campaign, placement="Placement Product Page")
         ad_group = cls.create_spa_ad_group(campaign, ad_group)
-        product_ad = cls.create_spa_product_ad(campaign, ad_group, )
 
         frames = [camp, adjustment_top, adjustment_product_page, ad_group]
         result = pandas.concat(frames)
