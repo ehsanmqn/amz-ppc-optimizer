@@ -688,6 +688,7 @@ class AmzSheetHandler:
         adjustment_top = cls.create_spa_bidding_adjustment(campaign, placement="Placement Top")
         adjustment_product_page = cls.create_spa_bidding_adjustment(campaign, placement="Placement Product Page")
         ad_group = cls.create_spa_ad_group(campaign, ad_group)
+        product_ad = cls.create_spa_product_ad(campaign, ad_group, )
 
         frames = [camp, adjustment_top, adjustment_product_page, ad_group]
         result = pandas.concat(frames)
@@ -788,6 +789,23 @@ class AmzSheetHandler:
         else:
             result = datagram[(datagram["Entity"] == "Keyword") & (
                     datagram["Keyword Text"] == keyword) & (datagram["Match Type"] == match_type)]
+
+        if len(result) == 0:
+            return False
+        return True
+
+    @staticmethod
+    def is_product_ad_exists(datagram, sku):
+        """
+        Check if a keyword exists in the provided DataFrame, optionally filtered by match type
+
+        :param datagram: DataFrame containing keyword data.
+        :param sku: The SKU to search for.
+        :return: True if the keyword (with optional match type) exists, False otherwise.
+        """
+
+        result = datagram[(datagram["Entity"] == "Product Ad") & (
+                datagram["SKU"] == sku)]
 
         if len(result) == 0:
             return False
