@@ -703,7 +703,7 @@ class AmzSheetHandler:
         return result
 
     @classmethod
-    def add_product_ad(cls, datagram, campaign, ad_group, sku, asin):
+    def add_product_ad(cls, datagram, campaign, ad_group, sku, asin=""):
         """
         Add a new product ad and its related components to the provided DataFrame.
 

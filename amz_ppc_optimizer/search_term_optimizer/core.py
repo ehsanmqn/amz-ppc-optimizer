@@ -99,7 +99,7 @@ class SearchTermOptimizer:
         for index, row in search_terms.iterrows():
             keyword = row["Customer Search Term"]
             product_ad = AmzSheetHandler.get_product_ad_by_campaign(datagram, row["Campaign Name"], row["Ad Group Name"])
-            product_sku = product_ad["SKU"]
+            product_sku = product_ad["SKU"].str
 
             if AmzSheetHandler.is_keyword_exists(datagram, keyword, "Exact") is False:
                 if AmzSheetHandler.is_product_ad_exists(datagram, exact_camp_name, exact_camp_name, product_sku) is False:
