@@ -8,7 +8,7 @@ setup(
     author_email='ehsan.maiqani@gmail.com',
     packages=find_packages(),
     install_requires=[
-        'pandas==2.0.4',
+        'pandas==2.0.3',
     ],
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
