@@ -350,6 +350,26 @@ class AmzSheetHandler:
         return self._sponsored_display_campaigns
 
     @staticmethod
+    def calculate_statistics(datagram):
+        """
+        Read Sponsored Product campaigns data and returns statistics.
+
+        :return: avg_acos, avg_raos, avg_conversion_rate, sales, orders, spends, clicks, impressions
+        """
+        datagram = datagram[datagram['Entity'] == 'Keyword']
+
+        avg_acos = datagram[datagram['ACOS'] > 0].loc[:, 'ACOS'].mean() * 100
+        avg_raos = datagram[datagram['ROAS'] > 0].loc[:, 'ROAS'].mean()
+        avg_conversion_rate = datagram[datagram['Conversion Rate'] > 0].loc[:, 'Conversion Rate'].mean() * 100
+        sales = datagram.loc[:, 'Sales'].sum()
+        orders = datagram.loc[:, 'Units'].sum()
+        spends = datagram.loc[:, 'Spend'].sum()
+        clicks = datagram.loc[:, 'Clicks'].sum()
+        impressions = datagram.loc[:, 'Impressions'].sum()
+
+        return avg_acos, avg_raos, avg_conversion_rate, sales, orders, spends, clicks, impressions
+
+    @staticmethod
     def create_spa_campaign(campaign_name, targeting="Manual", budget=10, bidding_strategy="Fixed bid"):
         """
         Create a Sponsored Products campaign along with its related components and return it as a DataFrame.
