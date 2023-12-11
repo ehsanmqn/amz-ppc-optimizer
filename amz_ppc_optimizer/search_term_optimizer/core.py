@@ -50,7 +50,6 @@ class SearchTermOptimizer:
     def add_exact_search_terms(search_terms, impact_factor, campaign_name=None):
 
         exact_match_campaigns = None
-        print(search_terms["Targeting"])
         # Iterate over search terms
         for index, row in search_terms.iterrows():
             # If not exists in exact match campaigns add it
@@ -61,7 +60,6 @@ class SearchTermOptimizer:
     def add_phrase_search_terms(search_terms, impact_factor, campaign_name):
 
         phrase_match_campaigns = None
-        print(search_terms["Targeting"])
         # Iterate over search terms
         for index, row in search_terms.iterrows():
             # If not exists in exact match campaigns add it
@@ -72,7 +70,6 @@ class SearchTermOptimizer:
     def add_broad_search_terms(search_terms, impact_factor, campaign_name):
 
         broad_match_campaigns = None
-        print(search_terms["Targeting"])
         # Iterate over search terms
         for index, row in search_terms.iterrows():
             # If not exists in exact match campaigns add it

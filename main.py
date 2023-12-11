@@ -11,7 +11,7 @@ def main():
     sheet_handler = AmzSheetHandler()
     sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20231109-20231209-1702279898205.xlsx")
 
-    keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp, desired_acos=0.3, min_bid=0.734)
+    keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp, desired_acos=0.4, min_bid=1.54)
     keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=False)
 
     datagram = keyword_optimizer.datasheet
