@@ -791,8 +791,7 @@ class AmzSheetHandler:
         :return: True if a campaign with the specified name exists, False otherwise.
         """
 
-        result = datagram[(datagram["Entity"] == "Campaign") & (
-                datagram["Campaign Name"] == campaign_name)]
+        result = datagram[(datagram["Entity"] == "Campaign") & (datagram["Campaign Name"] == campaign_name)]
 
         if len(result) == 0:
             return False

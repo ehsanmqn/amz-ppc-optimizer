@@ -77,21 +77,10 @@ class SearchTermOptimizer:
                 continue
 
     @staticmethod
-    def add_search_terms(datagram, search_terms, bid_factor):
+    def add_search_terms(datagram, search_terms, bid_factor, campaign, ad_group):
         # Add profitable search terms to exact campaigns
-        exact_camp_name = settings.DEFAULT_EXACT_ST_CAMPAIGN_NAME
-        if AmzSheetHandler.is_campaign_exists(datagram, exact_camp_name) is False:
-            datagram = AmzSheetHandler.add_campaign(datagram, exact_camp_name, exact_camp_name)
-
-        # Add profitable search terms to phrase campaigns
-        phrase_camp_name = settings.DEFAULT_PHRASE_ST_CAMPAIGN_NAME
-        if AmzSheetHandler.is_campaign_exists(datagram, phrase_camp_name) is False:
-            datagram = AmzSheetHandler.add_campaign(datagram, phrase_camp_name, phrase_camp_name)
-
-        # Add profitable search terms to broad campaigns
-        broad_camp_name = settings.DEFAULT_BROAD_ST_CAMPAIGN_NAME
-        if AmzSheetHandler.is_campaign_exists(datagram, broad_camp_name) is False:
-            datagram = AmzSheetHandler.add_campaign(datagram, broad_camp_name, broad_camp_name)
+        if AmzSheetHandler.is_campaign_exists(datagram, campaign) is False:
+            raise ValueError("Campaign not found!")
 
         for index, row in search_terms.iterrows():
             keyword = row["Customer Search Term"]
@@ -99,10 +88,10 @@ class SearchTermOptimizer:
             product_sku = product_ad["SKU"].str
 
             if AmzSheetHandler.is_keyword_exists(datagram, keyword, "Exact") is False:
-                if AmzSheetHandler.is_product_ad_exists(datagram, exact_camp_name, exact_camp_name, product_sku) is False:
-                    AmzSheetHandler.add_product_ad(datagram, exact_camp_name, exact_camp_name, product_sku)
-                    AmzSheetHandler.add_product_ad(datagram, phrase_camp_name, phrase_camp_name, product_sku)
-                    AmzSheetHandler.add_product_ad(datagram, broad_camp_name, broad_camp_name, product_sku)
+                if AmzSheetHandler.is_product_ad_exists(datagram, campaign, ad_group, product_sku) is False:
+                    AmzSheetHandler.add_product_ad(datagram, campaign, ad_group, product_sku)
+                    AmzSheetHandler.add_product_ad(datagram, campaign, ad_group, product_sku)
+                    AmzSheetHandler.add_product_ad(datagram, campaign, ad_group, product_sku)
 
                 bid = float(row["Cost Per Click (CPC)"])
                 datagram = AmzSheetHandler.add_keyword(datagram, exact_camp_name, exact_camp_name, keyword,
