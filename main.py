@@ -4,10 +4,16 @@ from amz_ppc_optimizer import AmzSheetHandler
 from amz_ppc_optimizer import ApexOptimizer
 from amz_ppc_optimizer import SearchTermOptimizer
 
-optimize_search_terms = False
+optimize_search_terms = True
 
 product_portfolio = {
     "Loofah": {
+        "search_terms_campaign": "Radium10 - ST",
+        "search_terms_campaign_id": "336556679584265",
+        "search_terms_ad_group": "Loofah - ST - 30",
+        "search_terms_ad_group_id": "411028292540877"
+    },
+    "Loofah Campaigns": {
         "search_terms_campaign": "Radium10 - ST",
         "search_terms_campaign_id": "336556679584265",
         "search_terms_ad_group": "Loofah - ST - 30",
@@ -41,8 +47,8 @@ def main():
         unprofitable_st = search_terms_optimizer.filter_unprofitable_search_terms(desired_acos=0.3)
 
         # Add profitable search terms to exact campaigns
-        datagram = search_terms_optimizer.add_search_terms(datagram, profitable_st, 1)
-        datagram = search_terms_optimizer.add_search_terms(datagram, unprofitable_st, 0.6)
+        datagram = search_terms_optimizer.add_search_terms(datagram, profitable_st, 1, product_portfolio)
+        datagram = search_terms_optimizer.add_search_terms(datagram, unprofitable_st, 0.6, product_portfolio)
 
         search_termed = "ST_"
 
