@@ -270,9 +270,20 @@ class AmzSheetHandler:
             (data_sheet["Ad Group Name (Informational only)"] == ad_group)]
 
     @staticmethod
-    def get_search_term_portfolio(item):
+    def get_search_term_targeting_portfolio(item):
         return item["Portfolio name"]
 
+    @staticmethod
+    def get_search_term_targeting_campaign(item):
+        return item["Campaign Name"]
+
+    @staticmethod
+    def get_search_term_targeting_ad_group(item):
+        return item["Ad Group Name"]
+
+    @staticmethod
+    def get_search_term_targeting_keyword(item):
+        return item["Targeting"]
 
     def read_bulk_sheet_report(self, filename):
         """
