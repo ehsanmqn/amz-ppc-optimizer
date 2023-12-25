@@ -79,22 +79,22 @@ class SearchTermOptimizer:
     @staticmethod
     def add_search_terms(datagram, search_terms, bid_factor, products_portfolio):
         for index, row in search_terms.iterrows():
-            customer_search_term = row["Customer Search Term"]
-            product_ad = AmzSheetHandler.get_product_ad_by_campaign(datagram, row["Campaign Name"], row["Ad Group Name"])
-            product_sku = product_ad["SKU"].str
+            customer_st = AmzSheetHandler.get_customer_search_term(row)
+            st_product = AmzSheetHandler.get_search_term_targeting_portfolio(row)
+            st_bid = float(AmzSheetHandler.get_search_term_cpc(row))
 
-            if AmzSheetHandler.is_keyword_exists(datagram, customer_search_term, "Exact") is False:
-                if AmzSheetHandler.is_product_ad_exists(datagram, campaign, ad_group, product_sku) is False:
-                    AmzSheetHandler.add_product_ad(datagram, campaign, ad_group, product_sku)
-                    AmzSheetHandler.add_product_ad(datagram, campaign, ad_group, product_sku)
-                    AmzSheetHandler.add_product_ad(datagram, campaign, ad_group, product_sku)
+            add_campaign = products_portfolio[st_product]["search_terms_campaign"]
+            add_ad_group = products_portfolio[st_product]["search_terms_ad_group"]
+            add_campaign_id = products_portfolio[st_product]["search_terms_campaign_id"]
+            add_ad_group_id = products_portfolio[st_product]["search_terms_ad_group_id"]
 
-                bid = float(row["Cost Per Click (CPC)"])
-                datagram = AmzSheetHandler.add_keyword(datagram, exact_camp_name, exact_camp_name, customer_search_term,
-                                                       bid * bid_factor, "Exact")
-                datagram = AmzSheetHandler.add_keyword(datagram, phrase_camp_name, phrase_camp_name, customer_search_term,
-                                                       bid * bid_factor, "Phrase")
-                datagram = AmzSheetHandler.add_keyword(datagram, broad_camp_name, broad_camp_name, customer_search_term,
-                                                       bid * bid_factor, "Broad")
+            if AmzSheetHandler.is_keyword_exists(datagram, customer_st, "Exact") is False:
+                datagram = AmzSheetHandler.add_keyword(datagram, add_campaign_id, add_ad_group_id, customer_st, st_bid * bid_factor, "Exact")
+
+            if AmzSheetHandler.is_keyword_exists(datagram, customer_st, "Phrase") is False:
+                datagram = AmzSheetHandler.add_keyword(datagram, add_campaign_id, add_ad_group_id, customer_st, st_bid * bid_factor, "Phrase")
+
+            if AmzSheetHandler.is_keyword_exists(datagram, customer_st, "Broad") is False:
+                datagram = AmzSheetHandler.add_keyword(datagram, add_campaign_id, add_ad_group_id, customer_st, st_bid * bid_factor, "Broad")
 
         return datagram

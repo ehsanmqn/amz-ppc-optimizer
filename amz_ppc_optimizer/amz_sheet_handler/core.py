@@ -285,6 +285,14 @@ class AmzSheetHandler:
     def get_search_term_targeting_keyword(item):
         return item["Targeting"]
 
+    @staticmethod
+    def get_customer_search_term(item):
+        return item["Customer Search Term"]
+
+    @staticmethod
+    def get_search_term_cpc(item):
+        return item["Cost Per Click (CPC)"]
+
     def read_bulk_sheet_report(self, filename):
         """
         Read data from bulk sheet report Excel file and store it in class variables
@@ -652,12 +660,12 @@ class AmzSheetHandler:
         return pandas.DataFrame(d['data'])
 
     @staticmethod
-    def create_spa_keyword(campaign_name, ad_group_name, keyword, bid, match_type="Exact"):
+    def create_spa_keyword(campaign_id, ad_group_id, keyword, bid, match_type="Exact", campaign_name=None, ad_group_name=None):
         """
         Create a Sponsored Products keyword along with its related components and return it as a DataFrame.
 
-        :param campaign_name: The name of the campaign where the keyword should be added.
-        :param ad_group_name: The name of the ad group associated with the keyword.
+        :param campaign_id: The name of the campaign where the keyword should be added.
+        :param ad_group_id: The name of the ad group associated with the keyword.
         :param keyword: The keyword text.
         :param bid: The bid amount for the keyword.
         :param match_type: The match type of the keyword (default is "Exact").
@@ -669,8 +677,8 @@ class AmzSheetHandler:
                 "Product": "Sponsored Products",
                 "Entity": "Keyword",
                 "Operation": "Create",
-                "Campaign ID": campaign_name,
-                "Ad Group ID": ad_group_name,
+                "Campaign ID": campaign_id,
+                "Ad Group ID": ad_group_id,
                 "Portfolio ID": "",
                 "Ad ID": "",
                 "Keyword ID": "",
