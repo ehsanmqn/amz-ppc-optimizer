@@ -50,9 +50,9 @@ def main():
         datagram = search_terms_optimizer.add_search_terms(datagram, profitable_st, 1, product_portfolio)
         datagram = search_terms_optimizer.add_search_terms(datagram, unprofitable_st, 0.6, product_portfolio)
 
-        search_termed = "ST_"
+        search_termed = "_ST"
 
-    filename = "Sponsored_Products_Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
+    filename = "Sponsored_Products_Campaigns_" + str(datetime.datetime.utcnow().date()) + search_termed + ".xlsx"
     sheet_handler.write_data_file(filename, datagram, "Sponsored Products Campaigns")
 
 
