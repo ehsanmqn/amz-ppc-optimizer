@@ -77,28 +77,24 @@ class SearchTermOptimizer:
                 continue
 
     @staticmethod
-    def add_search_terms(datagram, search_terms, bid_factor, campaign, ad_group):
-        # Add profitable search terms to exact campaigns
-        if AmzSheetHandler.is_campaign_exists(datagram, campaign) is False:
-            raise ValueError("Campaign not found!")
-
+    def add_search_terms(datagram, search_terms, bid_factor, products_portfolio):
         for index, row in search_terms.iterrows():
-            keyword = row["Customer Search Term"]
+            customer_search_term = row["Customer Search Term"]
             product_ad = AmzSheetHandler.get_product_ad_by_campaign(datagram, row["Campaign Name"], row["Ad Group Name"])
             product_sku = product_ad["SKU"].str
 
-            if AmzSheetHandler.is_keyword_exists(datagram, keyword, "Exact") is False:
+            if AmzSheetHandler.is_keyword_exists(datagram, customer_search_term, "Exact") is False:
                 if AmzSheetHandler.is_product_ad_exists(datagram, campaign, ad_group, product_sku) is False:
                     AmzSheetHandler.add_product_ad(datagram, campaign, ad_group, product_sku)
                     AmzSheetHandler.add_product_ad(datagram, campaign, ad_group, product_sku)
                     AmzSheetHandler.add_product_ad(datagram, campaign, ad_group, product_sku)
 
                 bid = float(row["Cost Per Click (CPC)"])
-                datagram = AmzSheetHandler.add_keyword(datagram, exact_camp_name, exact_camp_name, keyword,
+                datagram = AmzSheetHandler.add_keyword(datagram, exact_camp_name, exact_camp_name, customer_search_term,
                                                        bid * bid_factor, "Exact")
-                datagram = AmzSheetHandler.add_keyword(datagram, phrase_camp_name, phrase_camp_name, keyword,
+                datagram = AmzSheetHandler.add_keyword(datagram, phrase_camp_name, phrase_camp_name, customer_search_term,
                                                        bid * bid_factor, "Phrase")
-                datagram = AmzSheetHandler.add_keyword(datagram, broad_camp_name, broad_camp_name, keyword,
+                datagram = AmzSheetHandler.add_keyword(datagram, broad_camp_name, broad_camp_name, customer_search_term,
                                                        bid * bid_factor, "Broad")
 
         return datagram

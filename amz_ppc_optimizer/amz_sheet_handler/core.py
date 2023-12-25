@@ -269,6 +269,11 @@ class AmzSheetHandler:
             (data_sheet["Campaign Name (Informational only)"] == campaign) &
             (data_sheet["Ad Group Name (Informational only)"] == ad_group)]
 
+    @staticmethod
+    def get_search_term_portfolio(item):
+        return item["Portfolio name"]
+
+
     def read_bulk_sheet_report(self, filename):
         """
         Read data from bulk sheet report Excel file and store it in class variables
