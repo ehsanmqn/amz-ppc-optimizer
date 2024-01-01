@@ -4,7 +4,9 @@ from amz_ppc_optimizer import AmzSheetHandler
 from amz_ppc_optimizer import ApexOptimizer
 from amz_ppc_optimizer import SearchTermOptimizer
 
-optimize_search_terms = True
+OPTIMIZE_SEARCH_TERMS = False
+DESIRED_ACOS = 0.3
+MINIMUM_BID_VALUE = 0.734
 
 product_portfolio = {
     "Loofah": {
@@ -30,21 +32,21 @@ product_portfolio = {
 
 def main():
     sheet_handler = AmzSheetHandler()
-    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20231026-20231223-1703487340563.xlsx")
+    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20231201-20231231-1704088467841.xlsx")
 
-    keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp, desired_acos=0.4, min_bid=1.13)
+    keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp, desired_acos=DESIRED_ACOS, min_bid=MINIMUM_BID_VALUE)
     keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=False)
 
     datagram = keyword_optimizer.datasheet
 
     search_termed = ""
-    if optimize_search_terms is True:
+    if OPTIMIZE_SEARCH_TERMS is True:
         sheet_handler.read_search_terms_report(filename="Sponsored Products Search term report.xlsx")
         search_terms_optimizer = SearchTermOptimizer(sheet_handler.sponsored_product_search_terms)
 
         # Get profitable and unprofitable search terms based on ACOS value
-        profitable_st = search_terms_optimizer.filter_profitable_search_terms(desired_acos=0.3)
-        unprofitable_st = search_terms_optimizer.filter_unprofitable_search_terms(desired_acos=0.3)
+        profitable_st = search_terms_optimizer.filter_profitable_search_terms(desired_acos=DESIRED_ACOS)
+        unprofitable_st = search_terms_optimizer.filter_unprofitable_search_terms(desired_acos=DESIRED_ACOS)
 
         # Add profitable search terms to exact campaigns
         datagram = search_terms_optimizer.add_search_terms(datagram, profitable_st, 1, product_portfolio)
