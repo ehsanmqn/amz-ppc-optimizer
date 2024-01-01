@@ -81,7 +81,7 @@ class ApexOptimizer:
         """
         return item["Ad Group State (Informational only)"] == "enabled"
 
-    def low_click_zero_sale_rule(self, item):
+    def low_conversion_rate_optimization(self, item):
         """
         Rule 1: Decrease bid for orderless clicked keyword
         :param item:
@@ -96,7 +96,7 @@ class ApexOptimizer:
 
         return item
 
-    def low_impression_low_ctr_low_sale_rule(self, item):
+    def orderless_low_ctr_optimization(self, item):
         """
         Rule 2: Decrease bid for high impressed but low CTR and sales keyword
         :param item:
@@ -112,7 +112,7 @@ class ApexOptimizer:
 
         return item
 
-    def profitable_acos_rule(self, item):
+    def profitable_acos_optimization(self, item):
         """
         Rule 3: Increase low ACOS bid
         :param item:
@@ -132,7 +132,7 @@ class ApexOptimizer:
 
         return item
 
-    def unprofitable_acos_rule(self, item):
+    def unprofitable_acos_optimization(self, item):
         """
         Rule 4: Decrease high ACOS bid
         :param item:
@@ -179,25 +179,25 @@ class ApexOptimizer:
 
                     # Optimize keywords' bid
                     # Apply rule 1
-                    row = self.low_click_zero_sale_rule(row)
+                    row = self.low_conversion_rate_optimization(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
                         continue
 
                     # Apply rule 2
-                    row = self.low_impression_low_ctr_low_sale_rule(row)
+                    row = self.orderless_low_ctr_optimization(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
                         continue
 
                     # Apply rule 3
-                    row = self.profitable_acos_rule(row)
+                    row = self.profitable_acos_optimization(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
                         continue
 
                     # Apply rule 4
-                    row = self.unprofitable_acos_rule(row)
+                    row = self.unprofitable_acos_optimization(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
 
