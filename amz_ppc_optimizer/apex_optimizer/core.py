@@ -17,8 +17,9 @@ class ApexOptimizer:
     _archived_campaigns = []
     _fixed_bid_campaigns = []
     _dynamic_bidding_campaigns = []
+
     _target_acos_thr = APEX_TARGET_ACOS_THRESHOLD
-    _increase_bid_factor = APEX_INCREASE_BID_FACTOR
+    _increase_bid_by = APEX_INCREASE_BID_FACTOR
     _min_bid_value = APEX_MIN_BID_VALUE
 
     def __init__(self, data, desired_acos, change_factor=0.2, min_bid=0.2):
@@ -26,7 +27,7 @@ class ApexOptimizer:
         self._campaigns = self.get_campaigns()
         self._dynamic_bidding_campaigns = self.get_dynamic_bidding_campaigns()
         self._target_acos_thr = desired_acos
-        self._increase_bid_factor = 1 + change_factor
+        self._increase_bid_by = 1 + change_factor
         self._min_bid_value = min_bid
 
     @property
@@ -124,9 +125,9 @@ class ApexOptimizer:
 
         if acos != 0 and acos < self._target_acos_thr:
             if cpc > 0:
-                item["Bid"] = round(cpc * self._increase_bid_factor, 2)
+                item["Bid"] = round(cpc * self._increase_bid_by, 2)
             else:
-                item["Bid"] = round(bid * self._increase_bid_factor, 2)
+                item["Bid"] = round(bid * self._increase_bid_by, 2)
 
             item["Operation"] = "update"
 
@@ -146,7 +147,7 @@ class ApexOptimizer:
             if cpc > 0:
                 item["Bid"] = round((self._target_acos_thr / acos) * cpc, 2)
             else:
-                item["Bid"] = round(bid * self._increase_bid_factor, 2)
+                item["Bid"] = round(bid * self._increase_bid_by, 2)
 
             item["Operation"] = "update"
 
