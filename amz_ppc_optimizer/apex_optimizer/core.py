@@ -1,9 +1,15 @@
-APEX_CLICK_NUM_THRESHOLD = 11
-APEX_IMPRESSION_NUM_THRESHOLD = 1000
-APEX_TARGET_ACOS_THRESHOLD = 0.3
 APEX_LOW_CTR_THRESHOLD = 0.15
-APEX_INCREASE_BID_FACTOR = 1.2
+
+APEX_TARGET_ACOS = 0.3
+APEX_INCREASE_BID_BY = 1.2
+APEX_DECREASE_BID_BY = 0.9
 APEX_MIN_BID_VALUE = 0.2
+APEX_MAX_BID_VALUE = 4.0
+APEX_HIGH_ACOS_THR = 0.3
+APEX_MID_ACOS_THR = 0.25
+APEX_CLICK_THR = 11
+APEX_IMPRESSION_THR = 1000
+APEX_STEP_UP = 0.04
 
 
 class ApexOptimizer:
@@ -18,9 +24,16 @@ class ApexOptimizer:
     _fixed_bid_campaigns = []
     _dynamic_bidding_campaigns = []
 
-    _target_acos_thr = APEX_TARGET_ACOS_THRESHOLD
-    _increase_bid_by = APEX_INCREASE_BID_FACTOR
+    _target_acos_thr = APEX_TARGET_ACOS
+    _increase_bid_by = APEX_INCREASE_BID_BY
+    _decrease_bid_by = APEX_DECREASE_BID_BY
     _min_bid_value = APEX_MIN_BID_VALUE
+    _max_bid_value = APEX_MAX_BID_VALUE
+    _high_acos = APEX_HIGH_ACOS_THR
+    _mid_acos = APEX_MID_ACOS_THR
+    _click_thr = APEX_CLICK_THR
+    _impression_thr = APEX_IMPRESSION_THR
+    _step_up = APEX_STEP_UP
 
     def __init__(self, data, desired_acos, change_factor=0.2, min_bid=0.2):
         self._data_sheet = data
@@ -91,7 +104,7 @@ class ApexOptimizer:
         clicks = int(item["Clicks"])
         orders = int(item["Orders"])
 
-        if clicks >= APEX_CLICK_NUM_THRESHOLD and orders == 0:
+        if clicks >= APEX_CLICK_THR and orders == 0:
             item["Bid"] = self._min_bid_value
             item["Operation"] = "update"
 
@@ -107,7 +120,7 @@ class ApexOptimizer:
         ctr = float(item["Click-through Rate"])
         orders = int(item["Orders"])
 
-        if impression >= APEX_IMPRESSION_NUM_THRESHOLD and ctr < APEX_LOW_CTR_THRESHOLD and orders == 0:
+        if impression >= APEX_IMPRESSION_THR and ctr < APEX_LOW_CTR_THRESHOLD and orders == 0:
             item["Bid"] = self._min_bid_value
             item["Operation"] = "update"
 
