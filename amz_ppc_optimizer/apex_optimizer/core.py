@@ -35,13 +35,23 @@ class ApexOptimizer:
     _impression_thr = APEX_IMPRESSION_THR
     _step_up = APEX_STEP_UP
 
-    def __init__(self, data, desired_acos, change_factor=0.2, min_bid=0.2):
+    def __init__(self, data, desired_acos, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2, high_acos=0.3,
+                 mid_acos=0.25, click_limit=11, impression_limit=300, step_up=0.04):
+
         self._data_sheet = data
         self._campaigns = self.get_campaigns()
         self._dynamic_bidding_campaigns = self.get_dynamic_bidding_campaigns()
+
         self._target_acos_thr = desired_acos
-        self._increase_bid_by = 1 + change_factor
+        self._increase_bid_by = 1 + increase_by
+        self._decrease_bid_by = 1 - decrease_by
+        self._max_bid_value = max_bid
         self._min_bid_value = min_bid
+        self._high_acos = high_acos
+        self._mid_acos = mid_acos
+        self._click_thr = click_limit
+        self._impression_thr = impression_limit
+        self._step_up = step_up
 
     @property
     def datasheet(self):
@@ -103,9 +113,10 @@ class ApexOptimizer:
         """
         clicks = int(item["Clicks"])
         orders = int(item["Orders"])
+        bid = float(item["Bid"])
 
-        if clicks >= APEX_CLICK_THR and orders == 0:
-            item["Bid"] = self._min_bid_value
+        if clicks >= self._click_thr and orders == 0:
+            item["Bid"] = bid * self._decrease_bid_by
             item["Operation"] = "update"
 
         return item
