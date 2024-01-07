@@ -107,7 +107,7 @@ class ApexOptimizer:
 
     def low_conversion_rate_optimization(self, item):
         """
-        Rule 1: Decrease bid for orderless clicked keyword
+        Rule 1: Decrease bid for low conversion rate bids
         :param item:
         :return:
         """
@@ -115,25 +115,39 @@ class ApexOptimizer:
         orders = int(item["Orders"])
         bid = float(item["Bid"])
 
-        if clicks >= self._click_thr and orders == 0:
-            item["Bid"] = bid * self._decrease_bid_by
+        if orders == 0 and clicks >= self._click_thr:
+            item["Bid"] = max(self._min_bid_value, bid * self._decrease_bid_by)
             item["Operation"] = "update"
 
         return item
 
-    def orderless_low_ctr_optimization(self, item):
+    def low_impression_optimization(self, item):
         """
-        Rule 2: Decrease bid for high impressed but low CTR and sales keyword
+        Rule 2: Increase bid for low impression bids
         :param item:
         :return:
         """
         impression = int(item["Impressions"])
-        ctr = float(item["Click-through Rate"])
+        orders = int(item["Orders"])
+        bid = float(item["Bid"])
+
+        if orders == 0 and impression <= self._impression_thr:
+            item["Bid"] = min(self._max_bid_value, bid + self._step_up)
+            item["Operation"] = "update"
+
+        return item
+
+    def low_ctr_optimization(self, item):
+        """
+        Rule 3: Remain bid for low ctr bids
+        :param item:
+        :return:
+        """
+        clicks = int(item["Clicks"])
         orders = int(item["Orders"])
 
-        if impression >= APEX_IMPRESSION_THR and ctr < APEX_LOW_CTR_THRESHOLD and orders == 0:
-            item["Bid"] = self._min_bid_value
-            item["Operation"] = "update"
+        if orders == 0 and clicks < self._click_thr:
+            pass
 
         return item
 
@@ -145,14 +159,9 @@ class ApexOptimizer:
         """
         acos = float(item["ACOS"])
         cpc = float(item["CPC"])
-        bid = float(item["Bid"])
 
-        if acos != 0 and acos < self._target_acos_thr:
-            if cpc > 0:
-                item["Bid"] = round(cpc * self._increase_bid_by, 2)
-            else:
-                item["Bid"] = round(bid * self._increase_bid_by, 2)
-
+        if cpc != 0 and 0 < acos < self._mid_acos:
+            item["Bid"] = min(self._max_bid_value, round(cpc * self._increase_bid_by, 2))
             item["Operation"] = "update"
 
         return item
@@ -165,14 +174,9 @@ class ApexOptimizer:
         """
         acos = float(item["ACOS"])
         cpc = float(item["CPC"])
-        bid = float(item["Bid"])
 
-        if acos != 0 and acos > self._target_acos_thr:
-            if cpc > 0:
-                item["Bid"] = round((self._target_acos_thr / acos) * cpc, 2)
-            else:
-                item["Bid"] = round(bid * self._increase_bid_by, 2)
-
+        if cpc != 0 and acos != 0 and acos > self._high_acos:
+            item["Bid"] = max(self._min_bid_value, round((self._target_acos_thr / acos) * cpc, 2))
             item["Operation"] = "update"
 
         return item
@@ -210,18 +214,24 @@ class ApexOptimizer:
                         continue
 
                     # Apply rule 2
-                    row = self.orderless_low_ctr_optimization(row)
+                    row = self.low_impression_optimization(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
                         continue
 
                     # Apply rule 3
-                    row = self.profitable_acos_optimization(row)
+                    row = self.low_ctr_optimization(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
                         continue
 
                     # Apply rule 4
+                    row = self.profitable_acos_optimization(row)
+                    if row["Operation"] == "update":
+                        self._data_sheet.loc[index] = row
+                        continue
+
+                    # Apply rule 5
                     row = self.unprofitable_acos_optimization(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
