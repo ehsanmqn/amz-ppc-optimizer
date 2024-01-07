@@ -28,6 +28,22 @@ product_portfolio = {
 }
 
 
+excluded_campaigns = [
+    "Loofah - Long2- Exact - 30",
+    "Loofah - Long8 - Exact - 30",
+    "Loofah - Long10 - Exact - 30",
+    "Loofah - Long3- Exact - 30",
+    "Loofah - Long11 - Exact - 30",
+    "Loofah - Long1- Exact - 30",
+    "Loofah - Long4- Exact - 30",
+    "Loofah - Long6- Exact - 30",
+    "Loofah - Long7 - Exact - 30",
+    "Loofah - Long9 - Exact - 30",
+    "Loofah - Long5- Exact - 30",
+]
+
+excluded_portfolios = []
+
 def main():
     sheet_handler = AmzSheetHandler()
     sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20231229-20240104-1704543339045.xlsx")
