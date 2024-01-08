@@ -27,7 +27,6 @@ product_portfolio = {
     }
 }
 
-
 excluded_campaigns = [
     "Loofah - Long2- Exact - 30",
     "Loofah - Long8 - Exact - 30",
@@ -43,6 +42,7 @@ excluded_campaigns = [
 ]
 
 excluded_portfolios = []
+
 
 def main():
     sheet_handler = AmzSheetHandler()

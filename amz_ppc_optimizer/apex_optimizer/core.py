@@ -36,7 +36,8 @@ class ApexOptimizer:
     _step_up = APEX_STEP_UP
 
     def __init__(self, data, desired_acos, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2, high_acos=0.3,
-                 mid_acos=0.25, click_limit=11, impression_limit=300, step_up=0.04):
+                 mid_acos=0.25, click_limit=11, impression_limit=300, step_up=0.04,
+                 excluded_campaigns=[], excluded_portfolios=[]):
 
         self._data_sheet = data
         self._campaigns = self.get_campaigns()
