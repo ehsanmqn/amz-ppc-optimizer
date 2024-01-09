@@ -43,7 +43,7 @@ class ApexOptimizer:
 
         self._data_sheet = data
         self._campaigns = self.get_campaigns()
-        self._dynamic_bidding_campaigns = self.get_dynamic_bidding_campaigns()
+        self._dynamic_bidding_campaigns = handler.get_dynamic_bidding_campaigns(self._data_sheet)
 
         self._target_acos_thr = desired_acos
         self._increase_bid_by = 1 + increase_by
@@ -141,13 +141,6 @@ class ApexOptimizer:
             item["Operation"] = "update"
 
         return item
-
-    def get_campaigns(self):
-        return self._data_sheet[self._data_sheet["Entity"] == "Campaign"]
-
-    def get_dynamic_bidding_campaigns(self):
-        return self._data_sheet[
-            (self._data_sheet["Entity"] == "Campaign") & (self._data_sheet["Bidding Strategy"] != "Fixed bid")]
 
     def optimize_spa_keywords(self, exclude_dynamic_bids=True):
         """

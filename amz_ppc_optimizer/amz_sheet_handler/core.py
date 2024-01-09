@@ -168,6 +168,10 @@ class AmzSheetHandler:
         return item["Entity"] == "Bidding Adjustment"
 
     @staticmethod
+    def get_campaigns(data_sheet):
+        return data_sheet[data_sheet["Entity"] == "Campaign"]
+
+    @staticmethod
     def get_dynamic_bidding_campaigns(data_sheet):
         return data_sheet[(data_sheet["Entity"] == "Campaign") & (data_sheet["Bidding Strategy"] != "Fixed bid")]
 
