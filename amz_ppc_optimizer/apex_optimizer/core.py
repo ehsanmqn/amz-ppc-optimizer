@@ -34,6 +34,8 @@ class ApexOptimizer:
     _click_thr = APEX_CLICK_THR
     _impression_thr = APEX_IMPRESSION_THR
     _step_up = APEX_STEP_UP
+    _excluded_campaigns = []
+    _excluded_portfolios = []
 
     def __init__(self, data, desired_acos, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2, high_acos=0.3,
                  mid_acos=0.25, click_limit=11, impression_limit=300, step_up=0.04,
@@ -53,6 +55,9 @@ class ApexOptimizer:
         self._click_thr = click_limit
         self._impression_thr = impression_limit
         self._step_up = step_up
+
+        self._excluded_campaigns = excluded_campaigns
+        self._excluded_portfolios = excluded_portfolios
 
     @property
     def datasheet(self):
@@ -224,6 +229,12 @@ class ApexOptimizer:
                         self.is_campaign_enabled(row) and \
                         self.is_ad_group_enabled(row) and \
                         row["Campaign Name (Informational only)"] not in excluded_campaigns:
+
+                    if self.get_campaign_name(row) in self._excluded_campaigns:
+                        continue
+
+                    if self.get_portfolio_name(row) in self._excluded_portfolios:
+                        continue
 
                     # Optimize keywords' bid
                     # Apply rule 1
