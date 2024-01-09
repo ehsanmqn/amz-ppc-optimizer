@@ -1,4 +1,4 @@
-APEX_LOW_CTR_THRESHOLD = 0.15
+from amz_ppc_optimizer import AmzSheetHandler as handler
 
 APEX_TARGET_ACOS = 0.3
 APEX_INCREASE_BID_BY = 1.2
@@ -65,15 +65,6 @@ class ApexOptimizer:
 
     def is_dynamic_bidding(self, item):
         return item["Campaign Name (Informational only)"] in self._dynamic_bidding_campaigns
-
-    @staticmethod
-    def is_product(item):
-        """
-        Check whether entity type is a product
-        :param item:
-        :return:
-        """
-        return item["Entity"] == "Product Targeting"
 
     @staticmethod
     def is_keyword(item):
@@ -224,7 +215,7 @@ class ApexOptimizer:
             excluded_campaigns += self._dynamic_bidding_campaigns["Campaign Name (Informational only)"].values.tolist()
 
         for index, row in self._data_sheet.iterrows():
-            if self.is_keyword(row) or self.is_product(row):
+            if self.is_keyword(row) or handler.is_product(row):
                 if self.is_keyword_enabled(row) and \
                         self.is_campaign_enabled(row) and \
                         self.is_ad_group_enabled(row) and \
