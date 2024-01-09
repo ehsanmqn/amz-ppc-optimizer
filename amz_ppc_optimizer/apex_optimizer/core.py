@@ -106,6 +106,15 @@ class ApexOptimizer:
         """
         return item["Ad Group State (Informational only)"] == "enabled"
 
+    @staticmethod
+    def get_campaign_name(item):
+        """
+        Check whether the Ad group is enabled
+        :param item:
+        :return:
+        """
+        return item["Campaign Name (Informational only)"]
+
     def low_conversion_rate_optimization(self, item):
         """
         Rule 1: Decrease bid for low conversion rate bids
