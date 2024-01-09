@@ -109,11 +109,20 @@ class ApexOptimizer:
     @staticmethod
     def get_campaign_name(item):
         """
-        Check whether the Ad group is enabled
+        Get row campaign name
         :param item:
         :return:
         """
         return item["Campaign Name (Informational only)"]
+
+    @staticmethod
+    def get_portfolio_name(item):
+        """
+        Get row portfolio name
+        :param item:
+        :return:
+        """
+        return item["Portfolio Name (Informational only)"]
 
     def low_conversion_rate_optimization(self, item):
         """
