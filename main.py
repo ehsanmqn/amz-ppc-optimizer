@@ -49,16 +49,17 @@ def main():
     sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20231229-20240104-1704543339045.xlsx")
 
     keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp,
-                                      desired_acos=0.3,
-                                      increase_by=0.2,
-                                      decrease_by=0.1,
-                                      max_bid=6,
-                                      min_bid=0.734,
-                                      high_acos=0.3,
-                                      mid_acos=0.25,
-                                      click_limit=11,
-                                      impression_limit=300,
-                                      step_up=0.05)
+                                      desired_acos=0.3,         # x100 %
+                                      increase_by=0.2,          # x100 %
+                                      decrease_by=0.1,          # x100 %
+                                      max_bid=6,                # Currency
+                                      min_bid=0.734,            # Currency
+                                      high_acos=0.3,            # x100 %
+                                      mid_acos=0.25,            # x100 %
+                                      click_limit=11,           # Count
+                                      impression_limit=300,     # Count
+                                      step_up=0.05              # Currency
+                                      )
 
     keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=False)
 
