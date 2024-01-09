@@ -14,7 +14,7 @@ APEX_STEP_UP = 0.04
 
 class ApexOptimizer:
     """
-    APEX core
+    APEX Optimization Class for optimizing PPC campaigns
     """
 
     _data_sheet = None
@@ -39,10 +39,16 @@ class ApexOptimizer:
 
     def __init__(self, data, desired_acos, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2, high_acos=0.3,
                  mid_acos=0.25, click_limit=11, impression_limit=300, step_up=0.04,
-                 excluded_campaigns=[], excluded_portfolios=[]):
+                 excluded_campaigns=None, excluded_portfolios=None):
+
+        if excluded_portfolios is None:
+            excluded_portfolios = []
+
+        if excluded_campaigns is None:
+            excluded_campaigns = []
 
         self._data_sheet = data
-        self._campaigns = self.get_campaigns()
+        self._campaigns = handler.get_campaigns(self._data_sheet)
         self._dynamic_bidding_campaigns = handler.get_dynamic_bidding_campaigns(self._data_sheet)
 
         self._target_acos_thr = desired_acos
