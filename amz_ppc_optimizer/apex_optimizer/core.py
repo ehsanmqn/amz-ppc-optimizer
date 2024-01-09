@@ -67,15 +67,6 @@ class ApexOptimizer:
         return item["Campaign Name (Informational only)"] in self._dynamic_bidding_campaigns
 
     @staticmethod
-    def is_keyword_enabled(item):
-        """
-        Check whether campaign is enabled
-        :param item:
-        :return:
-        """
-        return item["State"] == "enabled"
-
-    @staticmethod
     def is_campaign_enabled(item):
         """
         Check whether campaign is enabled
@@ -207,7 +198,7 @@ class ApexOptimizer:
 
         for index, row in self._data_sheet.iterrows():
             if handler.is_keyword(row) or handler.is_product(row):
-                if self.is_keyword_enabled(row) and \
+                if handler.is_keyword_enabled(row) and \
                         self.is_campaign_enabled(row) and \
                         self.is_ad_group_enabled(row) and \
                         row["Campaign Name (Informational only)"] not in excluded_campaigns:
