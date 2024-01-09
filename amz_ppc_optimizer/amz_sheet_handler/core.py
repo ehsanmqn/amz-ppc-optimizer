@@ -131,6 +131,24 @@ class AmzSheetHandler:
         return item["Ad Group State (Informational only)"] == "enabled"
 
     @staticmethod
+    def get_campaign_name(item):
+        """
+        Get row campaign name
+        :param item:
+        :return:
+        """
+        return item["Campaign Name (Informational only)"]
+
+    @staticmethod
+    def get_portfolio_name(item):
+        """
+        Get row portfolio name
+        :param item:
+        :return:
+        """
+        return item["Portfolio Name (Informational only)"]
+
+    @staticmethod
     def is_campaign(item):
         """
         Check whether entity type is a campaign
@@ -148,6 +166,10 @@ class AmzSheetHandler:
         """
 
         return item["Entity"] == "Bidding Adjustment"
+
+    @staticmethod
+    def get_dynamic_bidding_campaigns(data_sheet):
+        return data_sheet[(data_sheet["Entity"] == "Campaign") & (data_sheet["Bidding Strategy"] != "Fixed bid")]
 
     @staticmethod
     def filter_enabled_campaigns(data_sheet):

@@ -66,33 +66,6 @@ class ApexOptimizer:
     def is_dynamic_bidding(self, item):
         return item["Campaign Name (Informational only)"] in self._dynamic_bidding_campaigns
 
-    @staticmethod
-    def is_ad_group_enabled(item):
-        """
-        Check whether the Ad group is enabled
-        :param item:
-        :return:
-        """
-        return item["Ad Group State (Informational only)"] == "enabled"
-
-    @staticmethod
-    def get_campaign_name(item):
-        """
-        Get row campaign name
-        :param item:
-        :return:
-        """
-        return item["Campaign Name (Informational only)"]
-
-    @staticmethod
-    def get_portfolio_name(item):
-        """
-        Get row portfolio name
-        :param item:
-        :return:
-        """
-        return item["Portfolio Name (Informational only)"]
-
     def low_conversion_rate_optimization(self, item):
         """
         Rule 1: Decrease bid for low conversion rate bids
@@ -191,13 +164,13 @@ class ApexOptimizer:
             if handler.is_keyword(row) or handler.is_product(row):
                 if handler.is_keyword_enabled(row) and \
                         handler.is_campaign_enabled(row) and \
-                        self.is_ad_group_enabled(row) and \
+                        handler.is_ad_group_enabled(row) and \
                         row["Campaign Name (Informational only)"] not in excluded_campaigns:
 
-                    if self.get_campaign_name(row) in self._excluded_campaigns:
+                    if handler.get_campaign_name(row) in self._excluded_campaigns:
                         continue
 
-                    if self.get_portfolio_name(row) in self._excluded_portfolios:
+                    if handler.get_portfolio_name(row) in self._excluded_portfolios:
                         continue
 
                     # Optimize keywords' bid
