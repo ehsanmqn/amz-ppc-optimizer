@@ -160,44 +160,41 @@ class ApexOptimizer:
             excluded_campaigns += self._dynamic_bidding_campaigns["Campaign Name (Informational only)"].values.tolist()
 
         for index, row in self._data_sheet.iterrows():
-            if handler.is_keyword(row) or handler.is_product(row):
-                if handler.is_keyword_enabled(row) and \
-                        handler.is_campaign_enabled(row) and \
-                        handler.is_ad_group_enabled(row) and \
-                        row["Campaign Name (Informational only)"] not in excluded_campaigns:
-
-                    if handler.get_campaign_name(row) in self._excluded_campaigns:
-                        continue
+            if handler.is_keyword_or_product(row):
+                if handler.is_enabled(row) and handler.is_campaign_enabled(row) and handler.is_ad_group_enabled(row):
 
                     if handler.get_portfolio_name(row) in self._excluded_portfolios:
                         continue
 
-                    # Optimize keywords' bid
-                    # Apply rule 1
+                    if handler.get_campaign_name(row) in self._excluded_campaigns:
+                        continue
+
+                    # Optimize low conversion rate keywords by decreasing bid
                     row = self.low_conversion_rate_optimization(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
                         continue
 
-                    # Apply rule 2
+                    # Optimize low impression keywords by stepping up bid
                     row = self.low_impression_optimization(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
                         continue
 
-                    # Apply rule 3
+                    # Do nothing for low clicked keywords
+                    # This can be removed
                     row = self.low_ctr_optimization(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
                         continue
 
-                    # Apply rule 4
+                    # Increase bid for low ACOS keywords
                     row = self.profitable_acos_optimization(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
                         continue
 
-                    # Apply rule 5
+                    # Decrease bid for high ACOS keywords
                     row = self.unprofitable_acos_optimization(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
