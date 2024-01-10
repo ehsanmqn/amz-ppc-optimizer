@@ -113,7 +113,7 @@ class AmzSheetHandler:
         return item["Entity"] == "Keyword" or item["Entity"] == "Product Targeting"
 
     @staticmethod
-    def is_keyword_enabled(item):
+    def is_enabled(item):
         """
         Check whether campaign is enabled
         :param item: Sheet row
