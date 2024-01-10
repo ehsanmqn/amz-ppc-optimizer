@@ -154,10 +154,10 @@ class ApexOptimizer:
         :return:
         """
 
-        excluded_campaigns = []
         if exclude_dynamic_bids:
             print("[ INFO ] Dynamic bid campaigns excluded from optimization process.")
-            excluded_campaigns += self._dynamic_bidding_campaigns["Campaign Name (Informational only)"].values.tolist()
+            dynamic_bid_campaigns = self._dynamic_bidding_campaigns["Campaign Name (Informational only)"].values.tolist()
+            self._excluded_campaigns += dynamic_bid_campaigns
 
         for index, row in self._data_sheet.iterrows():
             if handler.is_keyword_or_product(row):
