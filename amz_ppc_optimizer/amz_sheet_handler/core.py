@@ -104,6 +104,15 @@ class AmzSheetHandler:
         return item["Entity"] == "Keyword"
 
     @staticmethod
+    def is_keyword_or_product(item):
+        """
+        Check whether entity type is keyword or an ASIN
+        :param item: Sheet row
+        :return: Boolean
+        """
+        return item["Entity"] == "Keyword" or item["Entity"] == "Product Targeting"
+
+    @staticmethod
     def is_keyword_enabled(item):
         """
         Check whether campaign is enabled
