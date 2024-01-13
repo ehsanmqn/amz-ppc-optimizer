@@ -39,6 +39,11 @@ excluded_campaigns = [
     "Loofah - Long7 - Exact - 30",
     "Loofah - Long9 - Exact - 30",
     "Loofah - Long5- Exact - 30",
+    "CatchAll - Auto",
+    "CatchAll - ASIN - Manual",
+    "CatchAll - Keyword - Manual",
+    "L'Evesque - Brand Defense - ASIN",
+    "L'Evesque - Brand Defense - Phrase"
 ]
 
 excluded_portfolios = []
@@ -46,7 +51,7 @@ excluded_portfolios = []
 
 def main():
     sheet_handler = AmzSheetHandler()
-    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20231229-20240104-1704543339045.xlsx")
+    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20240101-20240111-1705135743795.xlsx")
 
     keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp,
                                       desired_acos=0.3,         # x100 %
@@ -58,8 +63,9 @@ def main():
                                       mid_acos=0.25,            # x100 %
                                       click_limit=11,           # Count
                                       impression_limit=300,     # Count
-                                      step_up=0.05              # Currency
-                                      )
+                                      step_up=0.05,              # Currency
+                                      excluded_portfolios=excluded_portfolios,
+                                      excluded_campaigns=excluded_campaigns)
 
     keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=False)
 
