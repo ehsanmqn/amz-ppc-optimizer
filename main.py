@@ -43,7 +43,9 @@ excluded_campaigns = [
     "CatchAll - ASIN - Manual",
     "CatchAll - Keyword - Manual",
     "L'Evesque - Brand Defense - ASIN",
-    "L'Evesque - Brand Defense - Phrase"
+    "L'Evesque - Brand Defense - Phrase",
+    "HairBrush - Pink - Exact",
+    "HairBrush - Purple - Exact"
 ]
 
 excluded_portfolios = []
