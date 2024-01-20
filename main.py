@@ -53,7 +53,7 @@ excluded_portfolios = []
 
 def main():
     sheet_handler = AmzSheetHandler()
-    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20240101-20240111-1705135743795.xlsx")
+    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20240101-20240118-1705740623578.xlsx")
 
     keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp,
                                       desired_acos=0.3,         # x100 %
@@ -65,7 +65,7 @@ def main():
                                       mid_acos=0.25,            # x100 %
                                       click_limit=11,           # Count
                                       impression_limit=300,     # Count
-                                      step_up=0.05,              # Currency
+                                      step_up=0.05,             # Currency
                                       excluded_portfolios=excluded_portfolios,
                                       excluded_campaigns=excluded_campaigns)
 
