@@ -44,6 +44,32 @@ ae_excluded_portfolios = [
 
 ]
 
+ae_presets = {
+    "desired_acos": 0.3,        # x100 %
+    "increase_by": 0.2,         # x100 %
+    "decrease_by": 0.1,         # x100 %
+    "max_bid": 6,               # Currency
+    "min_bid": 0.734,           # Currency
+    "high_acos": 0.3,           # x100 %
+    "mid_acos": 0.25,           # x100 %
+    "click_limit": 11,          # Count
+    "impression_limit": 300,    # Count
+    "step_up": 0.05,            # Currency
+}
+
+us_presets = {
+    "desired_acos": 0.3,        # x100 %
+    "increase_by": 0.2,         # x100 %
+    "decrease_by": 0.1,         # x100 %
+    "max_bid": 2,               # Currency
+    "min_bid": 0.05,           # Currency
+    "high_acos": 0.3,           # x100 %
+    "mid_acos": 0.25,           # x100 %
+    "click_limit": 11,          # Count
+    "impression_limit": 300,    # Count
+    "step_up": 0.05,            # Currency
+}
+
 us_excluded_campaigns = [
 
 ]
