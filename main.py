@@ -4,26 +4,47 @@ import presets
 from amz_ppc_optimizer import AmzSheetHandler
 from amz_ppc_optimizer import ApexOptimizer
 
-OPTIMIZE_SEARCH_TERMS = False
+MARKET_PLACE = 'AE'
 
 
 def main():
     sheet_handler = AmzSheetHandler()
     sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20240101-20240118-1705740623578.xlsx")
 
-    keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp,
-                                      desired_acos=0.3,         # x100 %
-                                      increase_by=0.2,          # x100 %
-                                      decrease_by=0.1,          # x100 %
-                                      max_bid=6,                # Currency
-                                      min_bid=0.734,            # Currency
-                                      high_acos=0.3,            # x100 %
-                                      mid_acos=0.25,            # x100 %
-                                      click_limit=11,           # Count
-                                      impression_limit=300,     # Count
-                                      step_up=0.05,             # Currency
-                                      excluded_portfolios=presets.ae_excluded_portfolios,
-                                      excluded_campaigns=presets.ae_excluded_campaigns)
+    keyword_optimizer = None
+
+    if MARKET_PLACE == "AE":
+        keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp,
+                                          desired_acos=presets.ae_presets["desired_acos"],
+                                          increase_by=presets.ae_presets["increase_by"],
+                                          decrease_by=presets.ae_presets["decrease_by"],
+                                          max_bid=presets.ae_presets["max_bid"],
+                                          min_bid=presets.ae_presets["min_bid"],
+                                          high_acos=presets.ae_presets["high_acos"],
+                                          mid_acos=presets.ae_presets["mid_acos"],
+                                          click_limit=presets.ae_presets["click_limit"],
+                                          impression_limit=presets.ae_presets["impression_limit"],
+                                          step_up=presets.ae_presets["step_up"],
+                                          excluded_portfolios=presets.ae_excluded_portfolios,
+                                          excluded_campaigns=presets.ae_excluded_campaigns)
+    elif MARKET_PLACE == "US":
+        keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp,
+                                          desired_acos=presets.us_presets["desired_acos"],
+                                          increase_by=presets.us_presets["increase_by"],
+                                          decrease_by=presets.us_presets["decrease_by"],
+                                          max_bid=presets.us_presets["max_bid"],
+                                          min_bid=presets.us_presets["min_bid"],
+                                          high_acos=presets.us_presets["high_acos"],
+                                          mid_acos=presets.us_presets["mid_acos"],
+                                          click_limit=presets.us_presets["click_limit"],
+                                          impression_limit=presets.us_presets["impression_limit"],
+                                          step_up=presets.us_presets["step_up"],
+                                          excluded_portfolios=presets.us_excluded_portfolios,
+                                          excluded_campaigns=presets.us_excluded_campaigns)
+
+    else:
+        print("Marketplace is invalid!")
+        exit()
 
     keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=False)
 
