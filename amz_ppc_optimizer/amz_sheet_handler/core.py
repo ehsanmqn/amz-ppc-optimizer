@@ -339,9 +339,9 @@ class AmzSheetHandler:
         sheet_dataframes = pandas.read_excel(filename, engine="openpyxl", sheet_name=None)
         self._portfolios = sheet_dataframes['Portfolios']
         self._sponsored_product_campaigns = sheet_dataframes['Sponsored Products Campaigns']
-        self._sponsored_brand_campaigns = sheet_dataframes['Sponsored Brands Campaigns']
-        self._sponsored_display_campaigns = sheet_dataframes['Sponsored Display Campaigns']
-        self._sp_search_term_report = sheet_dataframes['SP Search Term Report']
+        # self._sponsored_brand_campaigns = sheet_dataframes['Sponsored Brands Campaigns']
+        # self._sponsored_display_campaigns = sheet_dataframes['Sponsored Display Campaigns']
+        # self._sp_search_term_report = sheet_dataframes['SP Search Term Report']
 
     def read_search_terms_report(self, filename):
         """
