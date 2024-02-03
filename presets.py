@@ -71,9 +71,11 @@ us_presets = {
 }
 
 us_excluded_campaigns = [
-
+    "CatchAll - Auto",
+    "CatchAll - ASIN",
+    "CatchAll - Broad"
 ]
 
 us_excluded_portfolios = [
-
+    "SuperBrush"
 ]
