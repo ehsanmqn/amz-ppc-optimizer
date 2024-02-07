@@ -13,6 +13,7 @@ def main():
 
     keyword_optimizer = None
 
+    market_place_filler = ''
     if MARKET_PLACE == "AE":
         keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp,
                                           desired_acos=presets.ae_presets["desired_acos"],
@@ -27,6 +28,7 @@ def main():
                                           step_up=presets.ae_presets["step_up"],
                                           excluded_portfolios=presets.ae_excluded_portfolios,
                                           excluded_campaigns=presets.ae_excluded_campaigns)
+        market_place_filler = "AE_"
     elif MARKET_PLACE == "US":
         keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp,
                                           desired_acos=presets.us_presets["desired_acos"],
@@ -41,7 +43,7 @@ def main():
                                           step_up=presets.us_presets["step_up"],
                                           excluded_portfolios=presets.us_excluded_portfolios,
                                           excluded_campaigns=presets.us_excluded_campaigns)
-
+        market_place_filler = "US_"
     else:
         print("Marketplace is invalid!")
         exit()
@@ -50,7 +52,7 @@ def main():
 
     datagram = keyword_optimizer.datasheet
 
-    filename = "Sponsored_Products_Campaigns_" + str(datetime.datetime.utcnow().date()) + ".xlsx"
+    filename = "Sponsored_Products_Campaigns_" + market_place_filler + str(datetime.datetime.utcnow().date()) + ".xlsx"
     sheet_handler.write_data_file(filename, datagram, "Sponsored Products Campaigns")
 
 
