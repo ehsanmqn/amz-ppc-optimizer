@@ -4,12 +4,12 @@ import presets
 from amz_ppc_optimizer import AmzSheetHandler
 from amz_ppc_optimizer import ApexOptimizer
 
-MARKET_PLACE = 'AE'
+MARKET_PLACE = 'US'
 
 
 def main():
     sheet_handler = AmzSheetHandler()
-    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20240101-20240131-1706958910856.xlsx")
+    sheet_handler.read_bulk_sheet_report(filename="bulk-a3xo34lx9b4xu-20240124-20240205-1707312909710.xlsx")
 
     keyword_optimizer = None
 

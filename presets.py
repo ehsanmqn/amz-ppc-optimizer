@@ -59,9 +59,9 @@ ae_presets = {
 
 us_presets = {
     "desired_acos": 0.3,        # x100 %
-    "increase_by": 0.2,         # x100 %
+    "increase_by": 0.1,         # x100 %
     "decrease_by": 0.1,         # x100 %
-    "max_bid": 2,               # Currency
+    "max_bid": 3,               # Currency
     "min_bid": 0.05,           # Currency
     "high_acos": 0.3,           # x100 %
     "mid_acos": 0.25,           # x100 %
