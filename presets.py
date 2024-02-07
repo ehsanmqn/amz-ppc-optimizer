@@ -46,7 +46,7 @@ ae_excluded_portfolios = [
 
 ae_presets = {
     "desired_acos": 0.3,        # x100 %
-    "increase_by": 0.2,         # x100 %
+    "increase_by": 0.1,         # x100 %
     "decrease_by": 0.1,         # x100 %
     "max_bid": 6,               # Currency
     "min_bid": 0.734,           # Currency
