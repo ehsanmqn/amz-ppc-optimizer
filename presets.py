@@ -49,7 +49,7 @@ ae_presets = {
     "increase_by": 0.2,         # x100 %
     "decrease_by": 0.2,         # x100 %
     "max_bid": 6,               # Currency
-    "min_bid": 0.734,           # Currency
+    "min_bid": 0.234,           # Currency
     "high_acos": 0.3,           # x100 %
     "mid_acos": 0.25,           # x100 %
     "click_limit": 11,          # Count
