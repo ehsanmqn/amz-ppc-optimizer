@@ -38,7 +38,7 @@ class ApexOptimizer:
     _excluded_portfolios = []
 
     def __init__(self, data, desired_acos, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2, high_acos=0.3,
-                 mid_acos=0.25, click_limit=11, impression_limit=300, step_up=0.04,
+                 mid_acos=0.25, click_limit=11, impression_limit=300, step_up=0.04, step_up_limit=0.35,
                  excluded_campaigns=None, excluded_portfolios=None):
 
         if excluded_portfolios is None:
@@ -61,6 +61,7 @@ class ApexOptimizer:
         self._click_thr = click_limit
         self._impression_thr = impression_limit
         self._step_up = step_up
+        self._step_up_limit = step_up_limit
 
         self._excluded_campaigns = excluded_campaigns
         self._excluded_portfolios = excluded_portfolios
@@ -99,7 +100,7 @@ class ApexOptimizer:
         bid = float(item["Bid"])
 
         if orders == 0 and impression <= self._impression_thr:
-            item["Bid"] = min(self._max_bid_value, bid + self._step_up)
+            item["Bid"] = min(self._step_up_limit, bid + self._step_up)
             item["Operation"] = "update"
 
         return item

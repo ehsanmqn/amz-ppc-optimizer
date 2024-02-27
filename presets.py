@@ -63,13 +63,13 @@ us_presets = {
     "increase_by": 0.2,         # x100 %
     "decrease_by": 0.2,         # x100 %
     "max_bid": 3,               # Currency
-    "min_bid": 0.05,           # Currency
+    "min_bid": 0.05,            # Currency
     "high_acos": 0.3,           # x100 %
     "mid_acos": 0.25,           # x100 %
     "click_limit": 11,          # Count
     "impression_limit": 300,    # Count
     "step_up": 0.05,            # Currency
-    "step_up_limit": 0.35          # Currency
+    "step_up_limit": 0.35       # Currency
 }
 
 us_excluded_campaigns = [
