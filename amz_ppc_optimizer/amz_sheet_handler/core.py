@@ -16,6 +16,7 @@ class AmzSheetHandler:
     _sponsored_display_campaigns = None
     _sp_search_term_report = None
     _sponsored_product_search_term_r = None
+    _targets = None
 
     def __init__(self, filename=None):
         """
@@ -342,6 +343,17 @@ class AmzSheetHandler:
         # self._sponsored_brand_campaigns = sheet_dataframes['Sponsored Brands Campaigns']
         # self._sponsored_display_campaigns = sheet_dataframes['Sponsored Display Campaigns']
         # self._sp_search_term_report = sheet_dataframes['SP Search Term Report']
+
+    def read_targets_report(self, filename):
+        """
+        Read data from targets file report and store it in class variables
+
+        :param filename: Path to the csv file containing bulk sheet report data
+        :return:
+        """
+
+        self._targets = pandas.read_csv(filename)
+        print(self._targets)
 
     def read_search_terms_report(self, filename):
         """
