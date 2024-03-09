@@ -14,7 +14,9 @@ APEX_STEP_UP = 0.04
 
 class ApexPlusOptimizer:
     """
-    APEX Optimization Class for optimizing PPC campaigns
+    APEX Plus Optimization Class for optimizing PPC campaigns
+    This class try to optimize PPCs based on the APEX algorithm and the Amazon suggested bid. This way prevent the
+    optimizer to increase bids more than the suggested bid by amazon in case of over fitted CPCs
     """
 
     _data_sheet = None
