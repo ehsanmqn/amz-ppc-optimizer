@@ -12,7 +12,7 @@ APEX_IMPRESSION_THR = 1000
 APEX_STEP_UP = 0.04
 
 
-class ApexOptimizer:
+class ApexPlusOptimizer:
     """
     APEX Optimization Class for optimizing PPC campaigns
     """
