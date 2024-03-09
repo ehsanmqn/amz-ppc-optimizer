@@ -353,7 +353,6 @@ class AmzSheetHandler:
         """
 
         self._targets = pandas.read_csv(filename)
-        print(self._targets)
 
     def read_search_terms_report(self, filename):
         """
