@@ -139,9 +139,19 @@ class ApexPlusOptimizer:
         """
         acos = float(item["ACOS"])
         cpc = float(item["CPC"])
+        keyword = item["Keyword Text"]
+        match_type = item["Match Type"].lower()
+        campaign = item["Campaign Name (Informational only)"]
+        ad_group = item["Ad Group Name (Informational only)"]
+
+        suggested_bid = 1000
+        targeting_result = handler.get_keyword_from_targets(self._targets_sheet, keyword, campaign, ad_group,
+                                                            match_type)
+        if targeting_result is not None:
+            suggested_bid = targeting_result["Suggested bid"]
 
         if cpc != 0 and 0 < acos < self._mid_acos:
-            item["Bid"] = min(self._max_bid_value, round(cpc * self._increase_bid_by, 2))
+            item["Bid"] = min(self._max_bid_value, min(cpc * self._increase_bid_by, suggested_bid))
             item["Operation"] = "update"
 
         return item
