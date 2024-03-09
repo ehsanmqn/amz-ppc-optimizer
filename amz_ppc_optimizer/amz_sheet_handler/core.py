@@ -893,6 +893,16 @@ class AmzSheetHandler:
         return True
 
     @staticmethod
+    def get_keyword_from_targets(datagram, keyword, campaign, add_group, match_type):
+        result = datagram[(datagram["Campaign"] == campaign) &
+                          (datagram["Ad group"] == add_group) &
+                          (datagram["Targeting Type"] == "Keyword - " + match_type) &
+                          (datagram["Target"] == keyword)]
+        if len(result) == 0:
+            return result
+        return None
+
+    @staticmethod
     def is_product_ad_exists(datagram, campaign, ad_group, sku):
 
         result = datagram[(datagram["Entity"] == "Product Ad") &
