@@ -40,7 +40,7 @@ class ApexPlusOptimizer:
     _excluded_portfolios = []
 
     def __init__(self, data, targets, desired_acos, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2, high_acos=0.3,
-                 mid_acos=0.25, click_limit=11, impression_limit=300, step_up=0.04, step_up_limit=0.35,
+                 mid_acos=0.25, click_limit=11, impression_limit=300, step_up=0.04, low_impression_max_value=0.35,
                  excluded_campaigns=None, excluded_portfolios=None):
 
         if excluded_portfolios is None:
@@ -64,7 +64,7 @@ class ApexPlusOptimizer:
         self._click_thr = click_limit
         self._impression_thr = impression_limit
         self._step_up = step_up
-        self._step_up_limit = step_up_limit
+        self._low_impression_max_value = low_impression_max_value
 
         self._excluded_campaigns = excluded_campaigns
         self._excluded_portfolios = excluded_portfolios
@@ -101,18 +101,23 @@ class ApexPlusOptimizer:
         impression = int(item["Impressions"])
         orders = int(item["Orders"])
         bid = float(item["Bid"])
-        keyword = item["Keyword Text"]
-        match_type = item["Match Type"].lower()
-        campaign = item["Campaign Name (Informational only)"]
-        ad_group = item["Ad Group Name (Informational only)"]
 
         suggested_bid = 1000
-        targeting_result = handler.get_keyword_from_targets(self._targets_sheet, keyword, campaign, ad_group, match_type)
-        if targeting_result is not None:
-            suggested_bid = targeting_result["Suggested bid"]
+        if handler.is_keyword(item):
+            keyword = item["Keyword Text"]
+            match_type = str(item["Match Type"]).lower()
+            campaign = item["Campaign Name (Informational only)"]
+            ad_group = item["Ad Group Name (Informational only)"]
+
+            targeting_result = handler.get_keyword_from_targets(self._targets_sheet, keyword, campaign, ad_group, match_type)
+            if targeting_result is not None:
+                suggested_bid = targeting_result["Suggested bid"]
+                suggested_bid = float(suggested_bid)
 
         if orders == 0 and impression <= self._impression_thr:
-            item["Bid"] = min(self._step_up_limit, min(bid + self._step_up, suggested_bid))
+            item["Bid"] = min(self._low_impression_max_value, min(bid + self._step_up, suggested_bid))
+            if suggested_bid != 1000:
+                print(">> UPDATE 1: limit: {}, adjusted: {}, suggested: {}, final: {}".format(self._low_impression_max_value, bid + self._step_up, suggested_bid, item["Bid"]))
             item["Operation"] = "update"
 
         return item
@@ -139,19 +144,24 @@ class ApexPlusOptimizer:
         """
         acos = float(item["ACOS"])
         cpc = float(item["CPC"])
-        keyword = item["Keyword Text"]
-        match_type = item["Match Type"].lower()
-        campaign = item["Campaign Name (Informational only)"]
-        ad_group = item["Ad Group Name (Informational only)"]
 
         suggested_bid = 1000
-        targeting_result = handler.get_keyword_from_targets(self._targets_sheet, keyword, campaign, ad_group,
-                                                            match_type)
-        if targeting_result is not None:
-            suggested_bid = targeting_result["Suggested bid"]
+        if handler.is_keyword(item):
+            keyword = item["Keyword Text"]
+            match_type = str(item["Match Type"]).lower()
+            campaign = item["Campaign Name (Informational only)"]
+            ad_group = item["Ad Group Name (Informational only)"]
+
+            targeting_result = handler.get_keyword_from_targets(self._targets_sheet, keyword, campaign, ad_group,
+                                                                match_type)
+            if targeting_result is not None:
+                suggested_bid = targeting_result["Suggested bid"]
+                suggested_bid = float(suggested_bid)
 
         if cpc != 0 and 0 < acos < self._mid_acos:
+            last_value = item["Bid"]
             item["Bid"] = min(self._max_bid_value, min(cpc * self._increase_bid_by, suggested_bid))
+            print(">> UPDATE 2: limit: {}, adjusted: {}, suggested: {}, last: {}, final: {}".format(self._max_bid_value, cpc * self._increase_bid_by, suggested_bid, last_value, item["Bid"]))
             item["Operation"] = "update"
 
         return item
