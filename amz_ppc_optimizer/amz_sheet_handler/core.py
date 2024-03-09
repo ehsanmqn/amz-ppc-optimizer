@@ -898,7 +898,16 @@ class AmzSheetHandler:
                           (datagram["Ad group"] == add_group) &
                           (datagram["Targeting Type"] == "Keyword - " + match_type) &
                           (datagram["Target"] == keyword)]
-        if len(result) == 0:
+        if len(result) != 0:
+            return result
+        return None
+
+    @staticmethod
+    def get_product_from_targets(datagram, asin, campaign, add_group):
+        result = datagram[(datagram["Campaign"] == campaign) &
+                          (datagram["Ad group"] == add_group) &
+                          (datagram["Target"] == asin)]
+        if len(result) != 0:
             return result
         return None
 

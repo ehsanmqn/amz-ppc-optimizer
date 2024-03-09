@@ -111,13 +111,19 @@ class ApexPlusOptimizer:
 
             targeting_result = handler.get_keyword_from_targets(self._targets_sheet, keyword, campaign, ad_group, match_type)
             if targeting_result is not None:
-                suggested_bid = targeting_result["Suggested bid"]
-                suggested_bid = float(suggested_bid)
+                suggested_bid = float(targeting_result["Suggested bid"].iloc[0])
+
+        if handler.is_product(item):
+            asin = item["Product Targeting Expression"]
+            campaign = item["Campaign Name (Informational only)"]
+            ad_group = item["Ad Group Name (Informational only)"]
+
+            targeting_result = handler.get_product_from_targets(self._targets_sheet, asin, campaign, ad_group)
+            if targeting_result is not None:
+                suggested_bid = float(targeting_result["Suggested bid"].iloc[0])
 
         if orders == 0 and impression <= self._impression_thr:
             item["Bid"] = min(self._low_impression_max_value, min(bid + self._step_up, suggested_bid))
-            if suggested_bid != 1000:
-                print(">> UPDATE 1: limit: {}, adjusted: {}, suggested: {}, final: {}".format(self._low_impression_max_value, bid + self._step_up, suggested_bid, item["Bid"]))
             item["Operation"] = "update"
 
         return item
@@ -155,13 +161,19 @@ class ApexPlusOptimizer:
             targeting_result = handler.get_keyword_from_targets(self._targets_sheet, keyword, campaign, ad_group,
                                                                 match_type)
             if targeting_result is not None:
-                suggested_bid = targeting_result["Suggested bid"]
-                suggested_bid = float(suggested_bid)
+                suggested_bid = float(targeting_result["Suggested bid"].iloc[0])
+
+        if handler.is_product(item):
+            asin = item["Product Targeting Expression"]
+            campaign = item["Campaign Name (Informational only)"]
+            ad_group = item["Ad Group Name (Informational only)"]
+
+            targeting_result = handler.get_product_from_targets(self._targets_sheet, asin, campaign, ad_group)
+            if targeting_result is not None:
+                suggested_bid = float(targeting_result["Suggested bid"].iloc[0])
 
         if cpc != 0 and 0 < acos < self._mid_acos:
-            last_value = item["Bid"]
             item["Bid"] = min(self._max_bid_value, min(cpc * self._increase_bid_by, suggested_bid))
-            print(">> UPDATE 2: limit: {}, adjusted: {}, suggested: {}, last: {}, final: {}".format(self._max_bid_value, cpc * self._increase_bid_by, suggested_bid, last_value, item["Bid"]))
             item["Operation"] = "update"
 
         return item

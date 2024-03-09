@@ -3,36 +3,50 @@ import presets
 
 from amz_ppc_optimizer import AmzSheetHandler
 from amz_ppc_optimizer import ApexOptimizer
+from amz_ppc_optimizer import ApexPlusOptimizer
 
-MARKET_PLACE = 'US'
+MARKET_PLACE = 'AE'
 
 
 def main():
     sheet_handler = AmzSheetHandler()
     targets = sheet_handler.read_targets_report("Targets_Mar_9_2024.csv")
-    print(targets)
 
-    return
-    sheet_handler.read_bulk_sheet_report(filename="bulk-a3xo34lx9b4xu-20240205-20240219-1708524973790.xlsx")
+    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20240120-20240219-1708522968984 (1).xlsx")
 
     keyword_optimizer = None
 
     market_place_filler = ''
     if MARKET_PLACE == "AE":
-        keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp,
-                                          desired_acos=presets.ae_presets["desired_acos"],
-                                          increase_by=presets.ae_presets["increase_by"],
-                                          decrease_by=presets.ae_presets["decrease_by"],
-                                          max_bid=presets.ae_presets["max_bid"],
-                                          min_bid=presets.ae_presets["min_bid"],
-                                          high_acos=presets.ae_presets["high_acos"],
-                                          mid_acos=presets.ae_presets["mid_acos"],
-                                          click_limit=presets.ae_presets["click_limit"],
-                                          impression_limit=presets.ae_presets["impression_limit"],
-                                          step_up=presets.ae_presets["step_up"],
-                                          excluded_portfolios=presets.ae_excluded_portfolios,
-                                          excluded_campaigns=presets.ae_excluded_campaigns,
-                                          step_up_limit=presets.ae_presets["step_up_limit"])
+        keyword_optimizer = ApexPlusOptimizer(sheet_handler.sponsored_prod_camp,
+                                              targets,
+                                              desired_acos=presets.ae_presets["desired_acos"],
+                                              increase_by=presets.ae_presets["increase_by"],
+                                              decrease_by=presets.ae_presets["decrease_by"],
+                                              max_bid=presets.ae_presets["max_bid"],
+                                              min_bid=presets.ae_presets["min_bid"],
+                                              high_acos=presets.ae_presets["high_acos"],
+                                              mid_acos=presets.ae_presets["mid_acos"],
+                                              click_limit=presets.ae_presets["click_limit"],
+                                              impression_limit=presets.ae_presets["impression_limit"],
+                                              step_up=presets.ae_presets["step_up"],
+                                              excluded_portfolios=presets.ae_excluded_portfolios,
+                                              excluded_campaigns=presets.ae_excluded_campaigns,
+                                              low_impression_max_value=presets.ae_presets["step_up_limit"])
+        # keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp,
+        #                                   desired_acos=presets.ae_presets["desired_acos"],
+        #                                   increase_by=presets.ae_presets["increase_by"],
+        #                                   decrease_by=presets.ae_presets["decrease_by"],
+        #                                   max_bid=presets.ae_presets["max_bid"],
+        #                                   min_bid=presets.ae_presets["min_bid"],
+        #                                   high_acos=presets.ae_presets["high_acos"],
+        #                                   mid_acos=presets.ae_presets["mid_acos"],
+        #                                   click_limit=presets.ae_presets["click_limit"],
+        #                                   impression_limit=presets.ae_presets["impression_limit"],
+        #                                   step_up=presets.ae_presets["step_up"],
+        #                                   excluded_portfolios=presets.ae_excluded_portfolios,
+        #                                   excluded_campaigns=presets.ae_excluded_campaigns,
+        #                                   step_up_limit=presets.ae_presets["step_up_limit"])
         market_place_filler = "AE_"
     elif MARKET_PLACE == "US":
         keyword_optimizer = ApexOptimizer(sheet_handler.sponsored_prod_camp,
