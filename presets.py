@@ -55,7 +55,7 @@ ae_presets = {
     "click_limit": 11,          # Count
     "impression_limit": 300,    # Count
     "step_up": 0.15,            # Currency
-    "step_up_limit": 1          # Currency
+    "low_impression_max_value": 1          # Currency
 }
 
 us_presets = {
@@ -69,7 +69,7 @@ us_presets = {
     "click_limit": 11,          # Count
     "impression_limit": 300,    # Count
     "step_up": 0.05,            # Currency
-    "step_up_limit": 0.35       # Currency
+    "low_impression_max_value": 0.35       # Currency
 }
 
 us_excluded_campaigns = [

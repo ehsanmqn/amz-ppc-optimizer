@@ -204,7 +204,7 @@ class ApexPlusOptimizer:
             dynamic_bid_campaigns = self._dynamic_bidding_campaigns["Campaign Name (Informational only)"].values.tolist()
             self._excluded_campaigns += dynamic_bid_campaigns
 
-        print("[ INFO ] APEX Plus Optimizer started.")
+        print("[ INFO ] APEX+ Optimizer started.")
 
         row_counter = 0
         process_counter = 0

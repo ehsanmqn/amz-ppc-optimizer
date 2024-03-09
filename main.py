@@ -11,7 +11,6 @@ MARKET_PLACE = 'AE'
 def main():
     sheet_handler = AmzSheetHandler()
     targets = sheet_handler.read_targets_report("Targets_Mar_9_2024.csv")
-
     sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20240120-20240219-1708522968984 (1).xlsx")
 
     keyword_optimizer = None
@@ -32,7 +31,7 @@ def main():
                                               step_up=presets.ae_presets["step_up"],
                                               excluded_portfolios=presets.ae_excluded_portfolios,
                                               excluded_campaigns=presets.ae_excluded_campaigns,
-                                              low_impression_max_value=presets.ae_presets["step_up_limit"])
+                                              low_impression_max_value=presets.ae_presets["low_impression_max_value"])
         market_place_filler = "AE_"
     elif MARKET_PLACE == "US":
         keyword_optimizer = ApexPlusOptimizer(sheet_handler.sponsored_prod_camp,
@@ -48,10 +47,10 @@ def main():
                                               step_up=presets.us_presets["step_up"],
                                               excluded_portfolios=presets.us_excluded_portfolios,
                                               excluded_campaigns=presets.us_excluded_campaigns,
-                                              low_impression_max_value=presets.us_presets["step_up_limit"])
+                                              low_impression_max_value=presets.us_presets["low_impression_max_value"])
         market_place_filler = "US_"
     else:
-        print("Marketplace is invalid!")
+        print("[ EROR ] Marketplace is invalid!")
         exit()
 
     keyword_optimizer.optimize_spa_keywords(exclude_dynamic_bids=False)
