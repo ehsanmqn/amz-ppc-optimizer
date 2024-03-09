@@ -204,7 +204,12 @@ class ApexPlusOptimizer:
             dynamic_bid_campaigns = self._dynamic_bidding_campaigns["Campaign Name (Informational only)"].values.tolist()
             self._excluded_campaigns += dynamic_bid_campaigns
 
+        print("[ INFO ] APEX Plus Optimizer started.")
+
+        row_counter = 0
+        process_counter = 0
         for index, row in self._data_sheet.iterrows():
+            row_counter += 1
             if handler.is_keyword_or_product(row):
                 if handler.is_enabled(row) and handler.is_campaign_enabled(row) and handler.is_ad_group_enabled(row):
 
@@ -244,4 +249,9 @@ class ApexPlusOptimizer:
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
 
+                    process_counter += 1
+                    print("█", end='')
+
+        print("\n\n[ INFO ] {} items out of {} have been processed.".format(process_counter, row_counter))
+        print("[ INFO ] Please wait a moment till the process finished.")
         return self._data_sheet
