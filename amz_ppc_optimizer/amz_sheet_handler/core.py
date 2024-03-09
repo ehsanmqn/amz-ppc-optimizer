@@ -354,6 +354,8 @@ class AmzSheetHandler:
 
         self._targets = pandas.read_csv(filename)
 
+        return self._targets
+
     def read_search_terms_report(self, filename):
         """
         Read the search terms report from an Excel file and store it in the '_sponsored_product_search_term_r' attribute.
