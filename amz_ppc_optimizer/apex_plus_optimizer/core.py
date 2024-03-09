@@ -39,7 +39,7 @@ class ApexPlusOptimizer:
     _excluded_campaigns = []
     _excluded_portfolios = []
 
-    def __init__(self, data, desired_acos, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2, high_acos=0.3,
+    def __init__(self, data, targets, desired_acos, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2, high_acos=0.3,
                  mid_acos=0.25, click_limit=11, impression_limit=300, step_up=0.04, step_up_limit=0.35,
                  excluded_campaigns=None, excluded_portfolios=None):
 
@@ -50,6 +50,7 @@ class ApexPlusOptimizer:
             excluded_campaigns = []
 
         self._data_sheet = data
+        self._targets_sheet = targets
         self._campaigns = handler.get_campaigns(self._data_sheet)
         self._dynamic_bidding_campaigns = handler.get_dynamic_bidding_campaigns(self._data_sheet)
 
@@ -100,9 +101,18 @@ class ApexPlusOptimizer:
         impression = int(item["Impressions"])
         orders = int(item["Orders"])
         bid = float(item["Bid"])
+        keyword = item["Keyword Text"]
+        match_type = item["Match Type"].lower()
+        campaign = item["Campaign Name (Informational only)"]
+        ad_group = item["Ad Group Name (Informational only)"]
+
+        suggested_bid = 1000
+        targeting_result = handler.get_keyword_from_targets(self._targets_sheet, keyword, campaign, ad_group, match_type)
+        if targeting_result is not None:
+            suggested_bid = targeting_result["Suggested bid"]
 
         if orders == 0 and impression <= self._impression_thr:
-            item["Bid"] = min(self._step_up_limit, bid + self._step_up)
+            item["Bid"] = min(self._step_up_limit, min(bid + self._step_up, suggested_bid))
             item["Operation"] = "update"
 
         return item
