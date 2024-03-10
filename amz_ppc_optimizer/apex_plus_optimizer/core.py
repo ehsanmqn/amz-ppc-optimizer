@@ -1,3 +1,5 @@
+import pandas
+
 from amz_ppc_optimizer import AmzSheetHandler as handler
 
 APEX_TARGET_ACOS = 0.3
@@ -39,7 +41,8 @@ class ApexPlusOptimizer:
     _excluded_campaigns = []
     _excluded_portfolios = []
 
-    def __init__(self, data, targets, desired_acos, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2, high_acos=0.3,
+    def __init__(self, data, targets, desired_acos, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2,
+                 high_acos=0.3,
                  mid_acos=0.25, click_limit=11, impression_limit=300, step_up=0.04, low_impression_max_value=0.35,
                  excluded_campaigns=None, excluded_portfolios=None):
 
@@ -92,6 +95,30 @@ class ApexPlusOptimizer:
 
         return item
 
+    def get_suggested_bid(self, item):
+        campaign = item["Campaign Name (Informational only)"]
+        ad_group = item["Ad Group Name (Informational only)"]
+
+        suggested_bid = 1000
+        result = None
+
+        if handler.is_keyword(item):
+            keyword = item["Keyword Text"]
+            match_type = str(item["Match Type"]).lower()
+            result = handler.get_keyword_from_targets(self._targets_sheet, keyword, campaign, ad_group, match_type)
+
+        elif handler.is_product(item):
+            asin = item["Product Targeting Expression"]
+            result = handler.get_product_from_targets(self._targets_sheet, asin, campaign, ad_group)
+
+        if result is not None:
+            if pandas.isna(result["Suggested bid"].iloc[0]):
+                suggested_bid = self._min_bid_value
+            else:
+                suggested_bid = float(result["Suggested bid"].iloc[0])
+
+        return suggested_bid
+
     def low_impression_optimization(self, item):
         """
         Rule 2: Increase bid for low impression bids
@@ -101,26 +128,7 @@ class ApexPlusOptimizer:
         impression = int(item["Impressions"])
         orders = int(item["Orders"])
         bid = float(item["Bid"])
-
-        suggested_bid = 1000
-        if handler.is_keyword(item):
-            keyword = item["Keyword Text"]
-            match_type = str(item["Match Type"]).lower()
-            campaign = item["Campaign Name (Informational only)"]
-            ad_group = item["Ad Group Name (Informational only)"]
-
-            targeting_result = handler.get_keyword_from_targets(self._targets_sheet, keyword, campaign, ad_group, match_type)
-            if targeting_result is not None:
-                suggested_bid = float(targeting_result["Suggested bid"].iloc[0])
-
-        if handler.is_product(item):
-            asin = item["Product Targeting Expression"]
-            campaign = item["Campaign Name (Informational only)"]
-            ad_group = item["Ad Group Name (Informational only)"]
-
-            targeting_result = handler.get_product_from_targets(self._targets_sheet, asin, campaign, ad_group)
-            if targeting_result is not None:
-                suggested_bid = float(targeting_result["Suggested bid"].iloc[0])
+        suggested_bid = self.get_suggested_bid(item)
 
         if orders == 0 and impression <= self._impression_thr:
             item["Bid"] = min(self._low_impression_max_value, min(bid + self._step_up, suggested_bid))
@@ -150,27 +158,7 @@ class ApexPlusOptimizer:
         """
         acos = float(item["ACOS"])
         cpc = float(item["CPC"])
-
-        suggested_bid = 1000
-        if handler.is_keyword(item):
-            keyword = item["Keyword Text"]
-            match_type = str(item["Match Type"]).lower()
-            campaign = item["Campaign Name (Informational only)"]
-            ad_group = item["Ad Group Name (Informational only)"]
-
-            targeting_result = handler.get_keyword_from_targets(self._targets_sheet, keyword, campaign, ad_group,
-                                                                match_type)
-            if targeting_result is not None:
-                suggested_bid = float(targeting_result["Suggested bid"].iloc[0])
-
-        if handler.is_product(item):
-            asin = item["Product Targeting Expression"]
-            campaign = item["Campaign Name (Informational only)"]
-            ad_group = item["Ad Group Name (Informational only)"]
-
-            targeting_result = handler.get_product_from_targets(self._targets_sheet, asin, campaign, ad_group)
-            if targeting_result is not None:
-                suggested_bid = float(targeting_result["Suggested bid"].iloc[0])
+        suggested_bid = self.get_suggested_bid(item)
 
         if cpc != 0 and 0 < acos < self._mid_acos:
             item["Bid"] = min(self._max_bid_value, min(cpc * self._increase_bid_by, suggested_bid))
@@ -201,7 +189,8 @@ class ApexPlusOptimizer:
 
         if exclude_dynamic_bids:
             print("[ INFO ] Dynamic bid campaigns excluded from optimization process.")
-            dynamic_bid_campaigns = self._dynamic_bidding_campaigns["Campaign Name (Informational only)"].values.tolist()
+            dynamic_bid_campaigns = self._dynamic_bidding_campaigns[
+                "Campaign Name (Informational only)"].values.tolist()
             self._excluded_campaigns += dynamic_bid_campaigns
 
         print("[ INFO ] APEX+ Optimizer started.")
