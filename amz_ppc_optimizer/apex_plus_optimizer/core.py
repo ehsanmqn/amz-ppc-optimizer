@@ -41,36 +41,50 @@ class ApexPlusOptimizer:
     _excluded_campaigns = []
     _excluded_portfolios = []
 
-    def __init__(self, data, targets, desired_acos, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2,
-                 high_acos=0.3,
-                 mid_acos=0.25, click_limit=11, impression_limit=300, step_up=0.04, low_impression_max_value=0.35,
+    def __init__(self, data, targets, presets=None,
+                 desired_acos=0.3, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2, step_up=0.04,
+                 high_acos=0.3, mid_acos=0.25, click_limit=11, impression_limit=300, low_impression_max_value=0.35,
                  excluded_campaigns=None, excluded_portfolios=None):
-
-        if excluded_portfolios is None:
-            excluded_portfolios = []
-
-        if excluded_campaigns is None:
-            excluded_campaigns = []
 
         self._data_sheet = data
         self._targets_sheet = targets
-        self._campaigns = handler.get_campaigns(self._data_sheet)
-        self._dynamic_bidding_campaigns = handler.get_dynamic_bidding_campaigns(self._data_sheet)
 
-        self._target_acos_thr = desired_acos
-        self._increase_bid_by = 1 + increase_by
-        self._decrease_bid_by = 1 - decrease_by
-        self._max_bid_value = max_bid
-        self._min_bid_value = min_bid
-        self._high_acos = high_acos
-        self._mid_acos = mid_acos
-        self._click_thr = click_limit
-        self._impression_thr = impression_limit
-        self._step_up = step_up
-        self._low_impression_max_value = low_impression_max_value
+        if presets is None:
+            self._campaigns = handler.get_campaigns(self._data_sheet)
+            self._dynamic_bidding_campaigns = handler.get_dynamic_bidding_campaigns(self._data_sheet)
+            self._target_acos_thr = desired_acos
+            self._increase_bid_by = 1 + increase_by
+            self._decrease_bid_by = 1 - decrease_by
+            self._max_bid_value = max_bid
+            self._min_bid_value = min_bid
+            self._high_acos = high_acos
+            self._mid_acos = mid_acos
+            self._click_thr = click_limit
+            self._impression_thr = impression_limit
+            self._step_up = step_up
+            self._low_impression_max_value = low_impression_max_value
 
-        self._excluded_campaigns = excluded_campaigns
-        self._excluded_portfolios = excluded_portfolios
+            if excluded_portfolios is None:
+                self._excluded_portfolios = []
+
+            if excluded_campaigns is None:
+                self._excluded_campaigns = []
+        else:
+            self._campaigns = handler.get_campaigns(self._data_sheet)
+            self._dynamic_bidding_campaigns = handler.get_dynamic_bidding_campaigns(self._data_sheet)
+            self._target_acos_thr = presets["desired_acos"]
+            self._increase_bid_by = 1 + presets["increase_by"]
+            self._decrease_bid_by = 1 - presets["decrease_by"]
+            self._max_bid_value = presets["max_bid"]
+            self._min_bid_value = presets["min_bid"]
+            self._high_acos = presets["high_acos"]
+            self._mid_acos = presets["mid_acos"]
+            self._click_thr = presets["click_limit"]
+            self._impression_thr = presets["impression_limit"]
+            self._step_up = presets["step_up"]
+            self._low_impression_max_value = presets["low_impression_max_value"]
+            self._excluded_campaigns = presets["excluded_campaigns"]
+            self._excluded_portfolios = presets["excluded_portfolios"]
 
     @property
     def datasheet(self):
