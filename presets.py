@@ -74,7 +74,7 @@ us_presets = {
         "CatchAll - ASIN",
         "CatchAll - Broad"
     ],
-    "us_excluded_portfolios": [
+    "excluded_portfolios": [
         "SuperBrush"
     ]
 }
