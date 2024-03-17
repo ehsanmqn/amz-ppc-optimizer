@@ -68,7 +68,7 @@ us_presets = {
     "mid_acos": 0.25,           # x100 %
     "click_limit": 11,          # Count
     "impression_limit": 300,    # Count
-    "step_up": 0.05,            # Currency
+    "step_up": 0.02,            # Currency
     "low_impression_max_value": 0.35,       # Currency
     "no_data_bid": 0.05,        # Currency
     "excluded_campaigns": [
