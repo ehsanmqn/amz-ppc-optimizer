@@ -177,7 +177,12 @@ class ApexPlusOptimizer:
         suggested_bid = self.get_suggested_bid(item)
 
         if cpc != 0 and 0 < acos < self._mid_acos:
-            item["Bid"] = min(self._max_bid_value, min(cpc * self._increase_bid_by, suggested_bid))
+            bid = min(self._max_bid_value, min(cpc * self._increase_bid_by, suggested_bid))
+
+            if bid == suggested_bid:
+                bid += 1
+
+            item["Bid"] = bid
             item["Operation"] = "update"
 
         return item
