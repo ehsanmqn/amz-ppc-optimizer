@@ -95,22 +95,6 @@ class ApexPlusOptimizer:
     def is_dynamic_bidding(self, item):
         return item["Campaign Name (Informational only)"] in self._dynamic_bidding_campaigns
 
-    def low_conversion_rate_optimization(self, item):
-        """
-        Rule 1: Decrease bid for low conversion rate bids
-        :param item:
-        :return:
-        """
-        clicks = int(item["Clicks"])
-        orders = int(item["Orders"])
-        bid = float(item["Bid"])
-
-        if orders == 0 and clicks >= self._click_thr:
-            item["Bid"] = max(self._min_bid_value, bid * self._decrease_bid_by)
-            item["Operation"] = "update"
-
-        return item
-
     def get_suggested_bid(self, item):
         campaign = item["Campaign Name (Informational only)"]
         ad_group = item["Ad Group Name (Informational only)"]
@@ -134,6 +118,22 @@ class ApexPlusOptimizer:
                 suggested_bid = float(result["Suggested bid"].iloc[0])
 
         return suggested_bid
+
+    def low_conversion_rate_optimization(self, item):
+        """
+        Rule 1: Decrease bid for low conversion rate bids
+        :param item:
+        :return:
+        """
+        clicks = int(item["Clicks"])
+        orders = int(item["Orders"])
+        bid = float(item["Bid"])
+
+        if orders == 0 and clicks >= self._click_thr:
+            item["Bid"] = max(self._min_bid_value, bid * self._decrease_bid_by)
+            item["Operation"] = "update"
+
+        return item
 
     def low_impression_optimization(self, item):
         """
@@ -190,9 +190,10 @@ class ApexPlusOptimizer:
         """
         acos = float(item["ACOS"])
         cpc = float(item["CPC"])
+        suggested_bid = self.get_suggested_bid(item)
 
         if cpc != 0 and acos != 0 and acos > self._high_acos:
-            item["Bid"] = max(self._min_bid_value, round((self._target_acos_thr / acos) * cpc, 2))
+            item["Bid"] = max(self._min_bid_value, min(self._target_acos_thr / acos * cpc, suggested_bid))
             item["Operation"] = "update"
 
         return item
