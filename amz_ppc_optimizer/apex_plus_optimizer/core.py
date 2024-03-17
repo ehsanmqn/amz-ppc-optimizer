@@ -117,7 +117,7 @@ class ApexPlusOptimizer:
         if result is not None:
             # Check for No current data situation
             if pandas.isna(result["Suggested bid"].iloc[0]):
-                suggested_bid = self._min_bid_value
+                suggested_bid = self._no_data_bid_value
             else:
                 suggested_bid = float(result["Suggested bid"].iloc[0])
 
