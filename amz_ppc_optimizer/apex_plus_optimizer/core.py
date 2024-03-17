@@ -12,7 +12,7 @@ APEX_MID_ACOS_THR = 0.25
 APEX_CLICK_THR = 11
 APEX_IMPRESSION_THR = 1000
 APEX_STEP_UP = 0.04
-
+NO_DATA_BID_VALUE = 0.31
 
 class ApexPlusOptimizer:
     """
@@ -38,13 +38,14 @@ class ApexPlusOptimizer:
     _click_thr = APEX_CLICK_THR
     _impression_thr = APEX_IMPRESSION_THR
     _step_up = APEX_STEP_UP
+    _no_data_bid_value = NO_DATA_BID_VALUE
     _excluded_campaigns = []
     _excluded_portfolios = []
 
     def __init__(self, data, targets,
                  desired_acos=0.3, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2, step_up=0.04,
                  high_acos=0.3, mid_acos=0.25, click_limit=11, impression_limit=300, low_impression_max_value=0.35,
-                 excluded_campaigns=None, excluded_portfolios=None):
+                 no_data_bid=0.31, excluded_campaigns=None, excluded_portfolios=None):
         self._data_sheet = data
         self._targets_sheet = targets
 
@@ -61,6 +62,7 @@ class ApexPlusOptimizer:
         self._impression_thr = impression_limit
         self._step_up = step_up
         self._low_impression_max_value = low_impression_max_value
+        self._no_data_bid_value = no_data_bid
 
         if excluded_portfolios is None:
             self._excluded_portfolios = []
@@ -87,6 +89,7 @@ class ApexPlusOptimizer:
         self._low_impression_max_value = presets["low_impression_max_value"]
         self._excluded_campaigns = presets["excluded_campaigns"]
         self._excluded_portfolios = presets["excluded_portfolios"]
+        self._no_data_bid_value = presets["no_data_bid"]
 
     @property
     def datasheet(self):
@@ -112,6 +115,7 @@ class ApexPlusOptimizer:
             result = handler.get_product_from_targets(self._targets_sheet, asin, campaign, ad_group)
 
         if result is not None:
+            # Check for No current data situation
             if pandas.isna(result["Suggested bid"].iloc[0]):
                 suggested_bid = self._min_bid_value
             else:

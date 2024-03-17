@@ -34,6 +34,7 @@ ae_presets = {
     "impression_limit": 300,    # Count
     "step_up": 0.15,            # Currency
     "low_impression_max_value": 1,          # Currency
+    "no_data_bid": 0.31,        # Currency
     "excluded_portfolios": [],
     "excluded_campaigns": [
         "Loofah - Long2- Exact - 30",
@@ -69,6 +70,7 @@ us_presets = {
     "impression_limit": 300,    # Count
     "step_up": 0.05,            # Currency
     "low_impression_max_value": 0.35,       # Currency
+    "no_data_bid": 0.05,        # Currency
     "excluded_campaigns": [
         "CatchAll - Auto",
         "CatchAll - ASIN",
