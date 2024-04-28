@@ -39,13 +39,14 @@ class ApexPlusOptimizer:
     _impression_thr = APEX_IMPRESSION_THR
     _step_up = APEX_STEP_UP
     _no_data_bid_value = NO_DATA_BID_VALUE
+    _low_impr_incr_bid = False
     _excluded_campaigns = []
     _excluded_portfolios = []
 
     def __init__(self, data, targets,
                  desired_acos=0.3, increase_by=0.2, decrease_by=0.1, max_bid=6, min_bid=0.2, step_up=0.04,
                  high_acos=0.3, mid_acos=0.25, click_limit=11, impression_limit=300, low_impression_max_value=0.35,
-                 no_data_bid=0.31, excluded_campaigns=None, excluded_portfolios=None):
+                 no_data_bid=0.31, excluded_campaigns=None, excluded_portfolios=None, low_impression_increase_bid=True):
         self._data_sheet = data
         self._targets_sheet = targets
 
@@ -63,6 +64,7 @@ class ApexPlusOptimizer:
         self._step_up = step_up
         self._low_impression_max_value = low_impression_max_value
         self._no_data_bid_value = no_data_bid
+        self._low_impr_incr_bid = low_impression_increase_bid
 
         if excluded_portfolios is None:
             self._excluded_portfolios = []
@@ -90,6 +92,7 @@ class ApexPlusOptimizer:
         self._excluded_campaigns = presets["excluded_campaigns"]
         self._excluded_portfolios = presets["excluded_portfolios"]
         self._no_data_bid_value = presets["no_data_bid"]
+        self._low_impr_incr_bid = presets["low_impression_increase_bid"]
 
     @property
     def datasheet(self):
@@ -246,10 +249,11 @@ class ApexPlusOptimizer:
                         continue
 
                     # Optimize low impression keywords by stepping up bid
-                    row = self.low_impression_optimization(row)
-                    if row["Operation"] == "update":
-                        self._data_sheet.loc[index] = row
-                        continue
+                    if self._low_impr_incr_bid is True:
+                        row = self.low_impression_optimization(row)
+                        if row["Operation"] == "update":
+                            self._data_sheet.loc[index] = row
+                            continue
 
                     # Do nothing for low clicked keywords
                     # This can be removed
