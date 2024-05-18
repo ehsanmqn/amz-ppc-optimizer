@@ -27,15 +27,15 @@ ae_presets = {
     "increase_by": 0.2,         # x100 %
     "decrease_by": 0.2,         # x100 %
     "max_bid": 6,               # Currency
-    "min_bid": 0.234,           # Currency
+    "min_bid": 0.1,           # Currency
     "high_acos": 0.3,           # x100 %
     "mid_acos": 0.25,           # x100 %
-    "click_limit": 11,          # Count
-    "impression_limit": 300,    # Count
-    "step_up": 0.15,            # Currency
+    "click_limit": 5,          # Count
+    "impression_limit": 100,    # Count
+    "step_up": 0.037,            # Currency
     "low_impression_increase_bid": False,
-    "low_impression_max_value": 1,          # Currency
-    "no_data_bid": 0.31,        # Currency
+    "low_impression_max_value": 0.5,          # Currency
+    "no_data_bid": 0.1,        # Currency
     "excluded_portfolios": [],
     "excluded_campaigns": [
         "Loofah - Long2- Exact - 30",
@@ -69,9 +69,9 @@ us_presets = {
     "mid_acos": 0.25,           # x100 %
     "click_limit": 11,          # Count
     "impression_limit": 300,    # Count
-    "step_up": 0.02,            # Currency
+    "step_up": 0.01,            # Currency
     "low_impression_increase_bid": False,
-    "low_impression_max_value": 0.35,       # Currency
+    "low_impression_max_value": 0.3,       # Currency
     "no_data_bid": 0.05,        # Currency
     "excluded_campaigns": [
         "CatchAll - Auto",
