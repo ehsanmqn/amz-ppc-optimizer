@@ -30,7 +30,7 @@ ae_presets = {
     "min_bid": 0.1,           # Currency
     "high_acos": 0.3,           # x100 %
     "mid_acos": 0.25,           # x100 %
-    "click_limit": 5,          # Count
+    "click_limit": 3,          # Count
     "impression_limit": 100,    # Count
     "step_up": 0.037,            # Currency
     "low_impression_increase_bid": False,

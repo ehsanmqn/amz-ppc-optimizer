@@ -97,7 +97,6 @@ class ApexPlusOptimizer:
     @property
     def datasheet(self):
         return self._data_sheet
-
     def is_dynamic_bidding(self, item):
         return item["Campaign Name (Informational only)"] in self._dynamic_bidding_campaigns
 
