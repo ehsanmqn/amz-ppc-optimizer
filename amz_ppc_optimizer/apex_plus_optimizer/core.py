@@ -155,8 +155,8 @@ class ApexPlusOptimizer:
         if orders == 0 and impression <= self._impression_thr:
             bid = min(self._low_impression_max_value, min(bid + self._step_up, suggested_bid))
 
-            if bid == suggested_bid:
-                bid += 1
+            # if bid == suggested_bid:
+            #     bid += 1
 
             item["Bid"] = bid
             item["Operation"] = "update"
