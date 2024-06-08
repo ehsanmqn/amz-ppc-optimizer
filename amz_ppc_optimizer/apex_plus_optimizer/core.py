@@ -1,3 +1,5 @@
+import math
+
 import pandas
 
 from amz_ppc_optimizer import AmzSheetHandler as handler
@@ -235,6 +237,12 @@ class ApexPlusOptimizer:
             if handler.is_keyword_or_product(row):
                 if handler.is_enabled(row) and handler.is_campaign_enabled(row) and handler.is_ad_group_enabled(row):
 
+                    process_counter += 1
+                    print("█", end='')
+
+                    if process_counter % 100 is 0:
+                        print()
+
                     if handler.get_portfolio_name(row) in self._excluded_portfolios:
                         continue
 
@@ -271,9 +279,6 @@ class ApexPlusOptimizer:
                     row = self.unprofitable_acos_optimization(row)
                     if row["Operation"] == "update":
                         self._data_sheet.loc[index] = row
-
-                    process_counter += 1
-                    print("█", end='')
 
         print("\n\n[ INFO ] {} items out of {} have been processed.".format(process_counter, row_counter))
         print("[ INFO ] Please wait a moment till the process finished.")

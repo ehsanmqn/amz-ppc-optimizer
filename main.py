@@ -10,8 +10,8 @@ MARKET_PLACE = 'AE'
 
 def main():
     sheet_handler = AmzSheetHandler()
-    targets = sheet_handler.read_targets_report("Targets_Mar_9_2024.csv")
-    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20240120-20240219-1708522968984 (1).xlsx")
+    targets = sheet_handler.read_targets_report("Targets_Jun_8_2024.csv")
+    sheet_handler.read_bulk_sheet_report(filename="bulk-aw3emyt3cnq5r-20240505-20240605-1717849817485.xlsx")
 
     keyword_optimizer = None
 

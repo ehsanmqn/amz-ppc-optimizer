@@ -33,8 +33,8 @@ ae_presets = {
     "click_limit": 3,          # Count
     "impression_limit": 100,    # Count
     "step_up": 0.037,            # Currency
-    "low_impression_increase_bid": False,
-    "low_impression_max_value": 0.5,          # Currency
+    "low_impression_increase_bid": True,
+    "low_impression_max_value": 1.5,          # Currency
     "no_data_bid": 0.1,        # Currency
     "excluded_portfolios": [],
     "excluded_campaigns": [
